@@ -1,0 +1,961 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>K - Nearest Neighbour &#8212; Data Science Notes</title>
+    
+  <link href="_static/css/theme.css" rel="stylesheet">
+  <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="_static/js/index.be7d3bbb2ef33a8344ce.js">
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/togglebutton.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script>
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Linear Regression" href="3.1%20Linear%20Regression.html" />
+    <link rel="prev" title="Pandas" href="1.3%20Introduction%20to%20Pandas.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="_static/logo.svg" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">Data Science Notes</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="intro.html">
+   Introduction
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Machine Learning
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="1.1%20Introduction%20to%20Numpy.html">
+   Numpy
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="1.2%20Introduction%20to%20Matplotlib.html">
+   Matplotlib: Visualization with Python
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="1.3%20Introduction%20to%20Pandas.html">
+   Pandas
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   K - Nearest Neighbour
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="3.1%20Linear%20Regression.html">
+   Linear Regression
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="3.2%20Multi-Variate%20Regression.html">
+   Multi Variable Regression
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="3.3%20MLE%20-%20Linear%20Regression.html">
+   MLE - Linear Regression
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="3.4%20GLM%20-%20Linear%20Regression.html">
+   Generalised linear model-Linear Regression
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="4.%20Gradient%20Descent.html">
+   Gradient Descent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="5.1%20%20Logistic%20Regression.html">
+   Logistic Regression
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="5.2%20Maximum%20Likelihood%20Estimation%20and%20Implementation.html">
+   Logistic Regression MLE &amp; Implementation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="6.%20Decision%20Trees.html">
+   Decision Tree Algorithm
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="7.%20Ensemble.html">
+   Ensemble Learning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="9.1%20Naive%20Bayes.html">
+   Naive Bayes Algorithm
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="9.2%20Multinomial%20Naive%20Bayes.html">
+   Multinomial Naive Bayes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="11.%20Imbalanced%20Dataset.html">
+   Imbalanced Dataset
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="12.%20PCA.html">
+   Principal Component Analysis
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  About
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="About%20the%20Authors.html">
+   About the Authors
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="_sources/2. KNN.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/executablebooks/jupyter-book/master?urlpath=tree/2. KNN.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#introduction">
+   Introduction
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#classification-by-knn">
+   Classification by KNN
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#importing-the-data">
+     Importing the Data
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#plotting-the-data">
+     Plotting the Data
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#value-of-k">
+     Value of K
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#accuracy">
+     Accuracy
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#training-validation-datasets">
+     Training &amp; Validation Datasets
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#knn-code-classification">
+   KNN - Code (Classification)
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#plotting-the-divided-data">
+     Plotting the divided data
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#hyperparameter">
+     Hyperparameter :-
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#regression-by-knn">
+   Regression by KNN
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#knn-code-regression">
+   KNN - Code (Regression)
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#splitting-the-data">
+     Splitting the Data
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id1">
+     Plotting the Divided Data
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#plotting-the-prediction-and-the-closest-points-that-helped-in-making-the-prediction">
+       Plotting the prediction and the closest points that helped in making the prediction
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#limitations-of-knn">
+   Limitations of KNN
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#further-readings">
+   Further Readings
+  </a>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <section class="tex2jax_ignore mathjax_ignore" id="k-nearest-neighbour">
+<h1>K - Nearest Neighbour<a class="headerlink" href="#k-nearest-neighbour" title="Permalink to this headline">¶</a></h1>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>The k-nearest neighbors (KNN) algorithm is a simple, easy-to-implement supervised machine learning algorithm that can be used to solve both classification and regression problems.</p></li>
+<li><p>K-NN algorithm assumes the similarity between the new case/data and available cases and put the new case into the category that is most similar to the available categories.</p></li>
+<li><p>K-NN algorithm stores all the available data and classifies a new data point based on the similarity. This means when new data appears then it can be easily classified into a well suite category by using K- NN algorithm.</p></li>
+</ul>
+<p>So Let’s use KNN for classification first, then we’ll get to the Regression part.</p>
+</section>
+<section id="classification-by-knn">
+<h2>Classification by KNN<a class="headerlink" href="#classification-by-knn" title="Permalink to this headline">¶</a></h2>
+<p>To understand KNN easily, let’s take the help of an example. Consider a dataset of fruits containing papaya, watermelons and banana. We’ll import the data under the variable X, which will be containing their weights(in grams) and lengths(in cms), and then we’ll import their corresponding class information under the variable y.</p>
+<p><strong>X looks like:</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[[</span><span class="mf">172.11442877</span><span class="p">,</span>  <span class="mf">45.5178053</span><span class="p">],</span>
+
+<span class="p">[</span><span class="mf">632.42895259</span><span class="p">,</span>  <span class="mf">35.1191498</span><span class="p">],</span>
+
+<span class="p">[</span><span class="mf">566.95401123</span><span class="p">,</span>  <span class="mf">45.58070533</span><span class="p">],</span>
+
+<span class="p">[</span><span class="mf">843.01570417</span><span class="p">,</span>  <span class="mf">41.95568043</span><span class="p">],</span>
+
+<span class="p">[</span><span class="mf">667.04934768</span><span class="p">,</span>  <span class="mf">41.76381231</span><span class="p">],</span><span class="o">...</span> <span class="mi">500</span> <span class="n">instances</span><span class="p">]</span>
+</pre></div>
+</div>
+<p><strong>y looks like:</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span><span class="o">...</span> <span class="mi">500</span> <span class="n">instances</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Note here 0 is used for papaya, 1 is used for watermelon &amp; 2 is used for banana.</p>
+<p>X.shape =&gt; (500,2) -&gt; 500 instances and 2 features(weight &amp; length)</p>
+<p>y.shape =&gt; (500,) -&gt; class to every corresponding X instance</p>
+<section id="importing-the-data">
+<h3>Importing the Data<a class="headerlink" href="#importing-the-data" title="Permalink to this headline">¶</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;./Data/KNN/Classification/X_data.npy&quot;</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;./Data/KNN/Classification/Y_data.npy&quot;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(500, 2) (500,)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="plotting-the-data">
+<h3>Plotting the Data<a class="headerlink" href="#plotting-the-data" title="Permalink to this headline">¶</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;*This isn&#39;t a real Dataset, it is only made to teach KNN concepts.&quot;</span><span class="p">)</span>
+<span class="n">papaya</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">y</span><span class="o">==</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">watermelons</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">y</span><span class="o">==</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">banana</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">y</span><span class="o">==</span><span class="mi">2</span><span class="p">]</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">papaya</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span><span class="n">papaya</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;Papaya&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">watermelons</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span><span class="n">watermelons</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;Watermelon&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">banana</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span><span class="n">banana</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;Banana&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Weight(in grams)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Length (in cm)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>*This isn&#39;t a real Dataset, it is only made to teach KNN concepts.
+</pre></div>
+</div>
+<img alt="_images/2. KNN_3_1.png" src="_images/2. KNN_3_1.png" />
+</div>
+</div>
+<p>Now as we have plotted the given data, let’s see some new points that we have to classify using KNN, lets take 4 new points, A,B,C &amp; D.</p>
+<p>A = [[300],[50]]</p>
+<p>B = [[700],[40]]</p>
+<p>C = [[600],[80]]</p>
+<p>D = [[600],[60]]</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;*This isn&#39;t a real Dataset, it is only made to teach KNN concepts.&quot;</span><span class="p">)</span>
+<span class="n">papaya</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">y</span><span class="o">==</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">watermelons</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">y</span><span class="o">==</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">banana</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">y</span><span class="o">==</span><span class="mi">2</span><span class="p">]</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">papaya</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span><span class="n">papaya</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;Papaya&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">watermelons</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span><span class="n">watermelons</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;Watermelon&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">banana</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span><span class="n">banana</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;Banana&quot;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">([</span><span class="mi">300</span><span class="p">],[</span><span class="mi">50</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;Unidentified Point&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">([</span><span class="mi">700</span><span class="p">],[</span><span class="mi">40</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">([</span><span class="mi">600</span><span class="p">],[</span><span class="mi">80</span><span class="p">],</span> <span class="n">c</span> <span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">([</span><span class="mi">600</span><span class="p">],[</span><span class="mi">60</span><span class="p">],</span> <span class="n">c</span> <span class="o">=</span> <span class="s2">&quot;black&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Weight(in grams)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Length (in cm)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>*This isn&#39;t a real Dataset, it is only made to teach KNN concepts.
+</pre></div>
+</div>
+<img alt="_images/2. KNN_5_1.png" src="_images/2. KNN_5_1.png" />
+</div>
+</div>
+<p>Now before applying any algorithm, just by seeing at the graph we can tell point A(300,50), belongs to Banana, similarly B(700,40) belongs to Papaya and C(600,80) belongs to Watermelon. But can we tell which group should D(600,60) belong to?, and how exactly we were able to tell about A, B &amp; C?</p>
+<p>The answer is simple, we saw that the point A is lying in somewhere middle of the Banana cluster, same for B &amp; C, or in other words we can say that we saw its neighbouring points. And to classify point D, we can use same technique i.e. we can see <strong>some</strong> closest points, and find the max. no. of points belonging to a group, and we can say point D should also belong to that group.</p>
+<p>Now what is the value of this <strong>some</strong>?</p>
+<p>=&gt; This some is called the parameter <strong>K</strong> in KNN</p>
+</section>
+<section id="value-of-k">
+<h3>Value of K<a class="headerlink" href="#value-of-k" title="Permalink to this headline">¶</a></h3>
+<p>If we keep value of <em>K = 1</em> , it will only consider a single closest point, which will not be fair because there may be existing an outlier(a falsely classified point) nearest to it, means our algorithm will only consider that point and will false classify the new point too. So, we should consider increasing the value of K.</p>
+<p>What if we consider all the points? i.e. K=len(X)</p>
+<p>It will also be unfair because in this case it will consider all the existing points of the data, and will always classify the new point to the majority class.</p>
+<p>By now you must have thought of putting K = len(X)/2, but there’s no certainity that this time our model will correctly classify the new point. (Cosider a data where class A has 5 points, and class B has 50 points, it will not perform well.)</p>
+<p>So to understand about the value of K, we should first learn about 3 topics -&gt; Training Data, Validation Data &amp; Accuracy.</p>
+</section>
+<section id="accuracy">
+<h3>Accuracy<a class="headerlink" href="#accuracy" title="Permalink to this headline">¶</a></h3>
+<p>Accuracy is defined as the degree to which the result of a measurement conforms to the correct value, or we can say it is a metric that tells us about the accuracy of the model.</p>
+</section>
+<section id="training-validation-datasets">
+<h3>Training &amp; Validation Datasets<a class="headerlink" href="#training-validation-datasets" title="Permalink to this headline">¶</a></h3>
+<p>To ensure maximum accuracy of a model, we should test it on certain test cases, and match the predicted value to the real true value. So, to achieve this we’ll need some data, whose true value are known to us. So, we divide our given data into 2 parts in ratio of 8:2 (can differ depending on data). The 80% of the data is classified as the training dataset, and the rest 20% of the data is classified as validation dataset.</p>
+<p>So now, the value of K is measured between 1 and len(X), so that we can achieve maximum accuracy.</p>
+</section>
+</section>
+<section id="knn-code-classification">
+<h2>KNN - Code (Classification)<a class="headerlink" href="#knn-code-classification" title="Permalink to this headline">¶</a></h2>
+<p>So, as discussed, first let’s divide our data into training and Validation Datasets.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">train_idxs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">)),</span> <span class="n">size</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">)</span><span class="o">*</span><span class="mf">0.8</span><span class="p">),</span> <span class="n">replace</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
+<span class="n">test_idxs</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">)):</span>
+    <span class="k">if</span> <span class="n">i</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">train_idxs</span><span class="p">:</span>
+        <span class="n">test_idxs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+        
+<span class="n">test_idxs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">test_idxs</span><span class="p">)</span>
+
+<span class="n">X_train</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">train_idxs</span><span class="p">]</span>
+<span class="n">y_train</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="n">train_idxs</span><span class="p">]</span>
+
+<span class="n">X_test</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">test_idxs</span><span class="p">]</span>
+<span class="n">y_test</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="n">test_idxs</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="plotting-the-divided-data">
+<h3>Plotting the divided data<a class="headerlink" href="#plotting-the-divided-data" title="Permalink to this headline">¶</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;*This isn&#39;t a real Dataset, it is only made to teach KNN concepts.&quot;</span><span class="p">)</span>
+
+<span class="n">papaya</span> <span class="o">=</span> <span class="n">X_train</span><span class="p">[</span><span class="n">y_train</span><span class="o">==</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">watermelons</span> <span class="o">=</span> <span class="n">X_train</span><span class="p">[</span><span class="n">y_train</span><span class="o">==</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">banana</span> <span class="o">=</span> <span class="n">X_train</span><span class="p">[</span><span class="n">y_train</span><span class="o">==</span><span class="mi">2</span><span class="p">]</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">papaya</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span><span class="n">papaya</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;Papaya&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">watermelons</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span><span class="n">watermelons</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;Watermelon&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">banana</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span><span class="n">banana</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;Banana&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X_test</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">X_test</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">c</span> <span class="o">=</span> <span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;Unidentified Points&quot;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Weight(in grams)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Length (in cm)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>*This isn&#39;t a real Dataset, it is only made to teach KNN concepts.
+</pre></div>
+</div>
+<img alt="_images/2. KNN_10_1.png" src="_images/2. KNN_10_1.png" />
+</div>
+</div>
+<p>So now let’s start coding KNN</p>
+<p>First we’ll need a function to calculate the distance between two points, so that we can find the closest ones later on.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">distance</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span><span class="n">p2</span><span class="p">):</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="p">((</span><span class="n">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">p2</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">p1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">p2</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mf">0.5</span> <span class="c1">#Distance Formula</span>
+    <span class="k">return</span> <span class="n">d</span>
+</pre></div>
+</div>
+</div>
+</div>
+<blockquote>
+<div><p><strong>Note:</strong></p>
+<blockquote>
+<div><p>The distance Formula <span class="math notranslate nohighlight">\(\sqrt[]{(x_2 - x_1)^2+(y_2 - y_1)^2}\)</span>, is also known as <span class="math notranslate nohighlight">\(L_2-norm\)</span>.<br>
+Norms are some functions that bring an n-d vector to 1-d constant.<br>
+For eg: Sum, Distance, Dot products.<br>
+To know more about norms, read <a class="reference external" href="https://en.wikipedia.org/wiki/Norm_(mathematics)">https://en.wikipedia.org/wiki/Norm_(mathematics)</a><br>
+and learn about <span class="math notranslate nohighlight">\(L_0 , L_1 , L_2 and L_\infty\)</span> norms, which may help you further.<br></p>
+</div></blockquote>
+</div></blockquote>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Now let&#39;s make the predict function, which takes a point as input, and returns its predicted class</span>
+<span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="n">p</span><span class="p">,</span><span class="n">k</span><span class="p">):</span>
+    <span class="n">distances</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">instance</span> <span class="ow">in</span> <span class="n">X_train</span><span class="p">:</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">distance</span><span class="p">(</span><span class="n">p</span><span class="p">,</span><span class="n">instance</span><span class="p">)</span>
+        <span class="n">distances</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+        
+    <span class="n">distances</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">distances</span><span class="p">)</span>
+    <span class="n">top_indexes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">distances</span><span class="p">)[:</span><span class="n">k</span><span class="p">]</span>
+    <span class="n">k_neighbours</span> <span class="o">=</span> <span class="n">y_train</span><span class="p">[</span><span class="n">top_indexes</span><span class="p">]</span>
+    
+    <span class="n">unique_classes</span><span class="p">,</span> <span class="n">counts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">k_neighbours</span><span class="p">,</span> <span class="n">return_counts</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+    <span class="n">predicted_class</span> <span class="o">=</span> <span class="n">unique_classes</span><span class="p">[</span><span class="n">counts</span><span class="o">.</span><span class="n">argmax</span><span class="p">()]</span>
+    
+    <span class="n">confidence</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">counts</span><span class="p">)</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">counts</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">predicted_class</span><span class="p">,</span> <span class="n">confidence</span><span class="o">*</span><span class="mi">100</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now let’s take a random value of k as 5, to test our code, and try to predict the classes of A,B,C &amp; D</p>
+<p>A = [[300],[50]]</p>
+<p>B = [[700],[40]]</p>
+<p>C = [[600],[80]]</p>
+<p>D = [[600],[60]]</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">predict</span><span class="p">([</span><span class="mi">300</span><span class="p">,</span><span class="mi">50</span><span class="p">],</span><span class="mi">5</span><span class="p">))</span> <span class="c1">#A</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">predict</span><span class="p">([</span><span class="mi">700</span><span class="p">,</span><span class="mi">40</span><span class="p">],</span><span class="mi">5</span><span class="p">))</span> <span class="c1">#B</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">predict</span><span class="p">([</span><span class="mi">600</span><span class="p">,</span><span class="mi">80</span><span class="p">],</span><span class="mi">5</span><span class="p">))</span> <span class="c1">#C</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">predict</span><span class="p">([</span><span class="mi">600</span><span class="p">,</span><span class="mi">60</span><span class="p">],</span><span class="mi">5</span><span class="p">))</span> <span class="c1">#D</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(2, 100.0)
+(0, 100.0)
+(1, 100.0)
+(0, 60.0)
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can see, we got the correct predictions for A,B &amp; C as well as D(although with 60% probability)
+And at this point, we know our code is working properly fine and getting the job done.
+So now lets move on, and optimize our code for the value of <strong>K</strong>.</p>
+<p>For that we should first define a function for calculating accuracy.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">accuracy</span><span class="p">(</span><span class="n">k</span><span class="p">):</span>
+    <span class="n">predictions</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">instance</span> <span class="ow">in</span> <span class="n">X_test</span><span class="p">:</span>
+        <span class="n">predictions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">predict</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span><span class="n">k</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+        
+    <span class="n">acc</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">predictions</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="n">predictions</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="n">y_test</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+            <span class="n">acc</span><span class="o">+=</span><span class="mi">1</span>
+            
+    <span class="n">acc</span> <span class="o">=</span> <span class="p">(</span><span class="n">acc</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">predictions</span><span class="p">))</span><span class="o">*</span><span class="mi">100</span>
+    <span class="k">return</span> <span class="n">acc</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now let’s plot a graph between different values of K v/s their accuracy</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">k_list</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">15</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="mi">30</span><span class="p">,</span><span class="mi">50</span><span class="p">,</span><span class="mi">60</span><span class="p">,</span><span class="mi">100</span><span class="p">,</span><span class="mi">120</span><span class="p">,</span><span class="mi">150</span><span class="p">,</span><span class="mi">180</span><span class="p">,</span><span class="mi">200</span><span class="p">,</span><span class="mi">220</span><span class="p">,</span><span class="mi">230</span><span class="p">,</span><span class="mi">250</span><span class="p">,</span><span class="mi">275</span><span class="p">,</span><span class="mi">300</span><span class="p">,</span><span class="mi">325</span><span class="p">,</span><span class="mi">350</span><span class="p">,</span><span class="mi">375</span><span class="p">,</span><span class="mi">400</span><span class="p">]</span>
+<span class="n">accuracies</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">k_list</span><span class="p">:</span>
+    <span class="n">accuracies</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">accuracy</span><span class="p">(</span><span class="n">k</span><span class="p">))</span>
+    
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">k_list</span><span class="p">,</span><span class="n">accuracies</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/2. KNN_20_0.png" src="_images/2. KNN_20_0.png" />
+</div>
+</div>
+<p>So, we can see for different values of K, we got different accuracies. And we can see for which values of K, we’re getting maximum accuracy.</p>
+</section>
+<section id="hyperparameter">
+<h3>Hyperparameter :-<a class="headerlink" href="#hyperparameter" title="Permalink to this headline">¶</a></h3>
+<p>Here as we saw, we ourselves have to set the value of <strong>K</strong>, and the whole performance of the model depends on its value. These type of values, that we have to set on our own, and which affects the performance of the model are called <strong>Hyperparameters</strong>.</p>
+</section>
+</section>
+<section id="regression-by-knn">
+<h2>Regression by KNN<a class="headerlink" href="#regression-by-knn" title="Permalink to this headline">¶</a></h2>
+<p>Now as we’ve done a classification task, let’s see a regression task as well, with the help of an Example too.
+Below is a house price dataset, having only single feature of land size. So X contains land size(in sq. feet) of some houses of a locality, and y contains their corresponding prices (in crores).</p>
+<p><strong>X looks like :</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[[</span><span class="mf">1599.60448522</span><span class="p">],</span>
+<span class="p">[</span><span class="mf">1793.63237666</span><span class="p">],</span>
+<span class="p">[</span><span class="mf">4588.03138463</span><span class="p">],</span>
+<span class="p">[</span><span class="mf">3621.75315899</span><span class="p">],</span>
+<span class="p">[</span><span class="mf">4343.08060035</span><span class="p">],</span><span class="o">...</span> <span class="mi">50</span> <span class="n">instances</span><span class="p">]</span>
+</pre></div>
+</div>
+<p><strong>y looks like:</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="mf">2.65917039</span><span class="p">,</span> <span class="mf">2.27477643</span><span class="p">,</span> <span class="mf">5.08075256</span><span class="p">,</span> <span class="mf">3.97100962</span><span class="p">,</span> <span class="mf">4.61060872</span><span class="p">,</span><span class="o">...</span> <span class="mi">50</span> <span class="n">instances</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;./Data/KNN/Regression/X_data.npy&quot;</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;./Data/KNN/Regression/Y_data.npy&quot;</span><span class="p">)</span>
+<span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">y</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>((50, 1), (50,))
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;*This isn&#39;t a real Dataset, it is only made to teach KNN concepts.&quot;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Land Size (in sq. feet)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;House Price (in crores)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>*This isn&#39;t a real Dataset, it is only made to teach KNN concepts.
+</pre></div>
+</div>
+<img alt="_images/2. KNN_24_1.png" src="_images/2. KNN_24_1.png" />
+</div>
+</div>
+<p>Now to perform regression by KNN, we follow the same methodology. To predict the price of a new house, we’ll conisder the house of prices whose land sizes are very close to the new instance. and then finally we can find out their mean which will be the price of our new house.</p>
+</section>
+<section id="knn-code-regression">
+<h2>KNN - Code (Regression)<a class="headerlink" href="#knn-code-regression" title="Permalink to this headline">¶</a></h2>
+<p>So as done earlier, let’s first split our data to training and validation datasets.</p>
+<section id="splitting-the-data">
+<h3>Splitting the Data<a class="headerlink" href="#splitting-the-data" title="Permalink to this headline">¶</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">train_idxs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">)),</span> <span class="n">size</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">)</span><span class="o">*</span><span class="mf">0.8</span><span class="p">),</span> <span class="n">replace</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
+<span class="n">test_idxs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">))</span> <span class="k">if</span> <span class="n">i</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">train_idxs</span><span class="p">])</span>
+
+<span class="n">X_train</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">train_idxs</span><span class="p">]</span>
+<span class="n">y_train</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="n">train_idxs</span><span class="p">]</span>
+
+<span class="n">X_test</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">test_idxs</span><span class="p">]</span>
+<span class="n">y_test</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="n">test_idxs</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="id1">
+<h3>Plotting the Divided Data<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;*This isn&#39;t a real Dataset, it is only made to teach KNN concepts.&quot;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span><span class="n">y_train</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Training Data&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;Validation Data&quot;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Land Size (in sq. feet)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;House Price (in crores)&quot;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>*This isn&#39;t a real Dataset, it is only made to teach KNN concepts.
+</pre></div>
+</div>
+<img alt="_images/2. KNN_29_1.png" src="_images/2. KNN_29_1.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">distance</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span><span class="n">p2</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">abs</span><span class="p">(</span><span class="n">p2</span><span class="o">-</span><span class="n">p1</span><span class="p">)</span> <span class="c1"># return absolute value</span>
+
+<span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+    <span class="n">distances</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">instance</span> <span class="ow">in</span> <span class="n">X_train</span><span class="p">:</span>
+        <span class="n">distances</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">distance</span><span class="p">(</span><span class="n">instance</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">point</span><span class="p">))</span>
+        
+    <span class="n">distances</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">distances</span><span class="p">)</span>
+    <span class="n">top_indexes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">distances</span><span class="p">)[:</span><span class="n">k</span><span class="p">]</span>
+    <span class="n">y_pred</span> <span class="o">=</span> <span class="n">y_train</span><span class="p">[</span><span class="n">top_indexes</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">y_pred</span> <span class="p">,</span><span class="n">top_indexes</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">land_size</span> <span class="o">=</span> <span class="mi">3000</span>
+<span class="n">prediction</span><span class="p">,</span> <span class="n">closest_points</span> <span class="o">=</span> <span class="n">predict</span><span class="p">(</span><span class="n">land_size</span><span class="p">,</span><span class="mi">5</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">prediction</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3.597148662984181
+</pre></div>
+</div>
+</div>
+</div>
+<section id="plotting-the-prediction-and-the-closest-points-that-helped-in-making-the-prediction">
+<h4>Plotting the prediction and the closest points that helped in making the prediction<a class="headerlink" href="#plotting-the-prediction-and-the-closest-points-that-helped-in-making-the-prediction" title="Permalink to this headline">¶</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;*This isn&#39;t a real Dataset, it is only made to teach KNN concepts.&quot;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span><span class="n">y_train</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Training Data&quot;</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="s2">&quot;blue&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X_train</span><span class="p">[</span><span class="n">closest_points</span><span class="p">]</span> <span class="p">,</span><span class="n">y_train</span><span class="p">[</span><span class="n">closest_points</span><span class="p">],</span> <span class="n">c</span> <span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Closest Points&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">land_size</span><span class="p">,</span> <span class="n">prediction</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="s2">&quot;yellow&quot;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;New instance&quot;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Land Size (in sq. feet)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;House Price (in crores)&quot;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>*This isn&#39;t a real Dataset, it is only made to teach KNN concepts.
+</pre></div>
+</div>
+<img alt="_images/2. KNN_33_1.png" src="_images/2. KNN_33_1.png" />
+</div>
+</div>
+<p>As done earlier, we can make an accuracy function and then plot the graph of K v/s accuracy, and instead of using randomly k = 5, we can get the value of K, that gives us the maximum accuracy.</p>
+<p>*You should try it on your own, as it can be a good practice problem.</p>
+<p>Now as we can see, a line can be fitted in this data, to get a good prediction, so let’s try to plot a line using this data.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">predictions</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">house</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span><span class="mi">6500</span><span class="p">):</span>
+    <span class="n">prediction</span> <span class="o">=</span> <span class="n">predict</span><span class="p">(</span><span class="n">house</span><span class="p">,</span> <span class="mi">5</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">predictions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">prediction</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span><span class="mi">6500</span><span class="p">),</span> <span class="n">predictions</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="s2">&quot;red&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/2. KNN_36_0.png" src="_images/2. KNN_36_0.png" />
+</div>
+</div>
+<p>As we can see, it is approximating a very good curve, but it would be better if this curve could be a straight line because :</p>
+<ul class="simple">
+<li><p>For a very small about of change in land size, there should be a increase/decrease in the price, but as we can see, in some areas, this isn’t the case.</p></li>
+<li><p>Another problem is when we’re trying to predict a price of land size less than 1500, or more than 5000, it is giving us the constant price, because our data is limited to this area.</p></li>
+</ul>
+</section>
+</section>
+</section>
+<section id="limitations-of-knn">
+<h2>Limitations of KNN<a class="headerlink" href="#limitations-of-knn" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>It is totally dependent on data, as everytime we need to predict even a single point, it will require the whole dataset.</p></li>
+<li><p>As we need the entire data everytime, it takes up a lot of memory.</p></li>
+<li><p>Our whole algorithm is dependent on a single parameter <strong>K</strong></p></li>
+</ul>
+<p>But despite these limitations, KNN is a very good and easy algorithm and it is even used in today’s technologies. Like our Face Recognition system in our phones uses KNN at some level.</p>
+</section>
+<section id="further-readings">
+<h2>Further Readings<a class="headerlink" href="#further-readings" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Norm_(mathematics)">https://en.wikipedia.org/wiki/Norm_(mathematics)</a></p></li>
+</ul>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        
+            <!-- Previous / next buttons -->
+<div class='prev-next-area'> 
+    <a class='left-prev' id="prev-link" href="1.3%20Introduction%20to%20Pandas.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Pandas</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="3.1%20Linear%20Regression.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Linear Regression</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer">
+    <div class="container">
+      <p>
+        
+          By Coding Blocks Pvt Ltd<br/>
+        
+            &copy; Copyright 2021.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+
+  </body>
+</html>

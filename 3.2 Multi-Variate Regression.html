@@ -1,0 +1,757 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Multi Variable Regression &#8212; Data Science Notes</title>
+    
+  <link href="_static/css/theme.css" rel="stylesheet">
+  <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="_static/js/index.be7d3bbb2ef33a8344ce.js">
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/togglebutton.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script>
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="MLE - Linear Regression" href="3.3%20MLE%20-%20Linear%20Regression.html" />
+    <link rel="prev" title="Linear Regression" href="3.1%20Linear%20Regression.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="_static/logo.svg" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">Data Science Notes</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="intro.html">
+   Introduction
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Machine Learning
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="1.1%20Introduction%20to%20Numpy.html">
+   Numpy
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="1.2%20Introduction%20to%20Matplotlib.html">
+   Matplotlib: Visualization with Python
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="1.3%20Introduction%20to%20Pandas.html">
+   Pandas
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="2.%20KNN.html">
+   K - Nearest Neighbour
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="3.1%20Linear%20Regression.html">
+   Linear Regression
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Multi Variable Regression
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="3.3%20MLE%20-%20Linear%20Regression.html">
+   MLE - Linear Regression
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="3.4%20GLM%20-%20Linear%20Regression.html">
+   Generalised linear model-Linear Regression
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="4.%20Gradient%20Descent.html">
+   Gradient Descent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="5.1%20%20Logistic%20Regression.html">
+   Logistic Regression
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="5.2%20Maximum%20Likelihood%20Estimation%20and%20Implementation.html">
+   Logistic Regression MLE &amp; Implementation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="6.%20Decision%20Trees.html">
+   Decision Tree Algorithm
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="7.%20Ensemble.html">
+   Ensemble Learning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="9.1%20Naive%20Bayes.html">
+   Naive Bayes Algorithm
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="9.2%20Multinomial%20Naive%20Bayes.html">
+   Multinomial Naive Bayes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="11.%20Imbalanced%20Dataset.html">
+   Imbalanced Dataset
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="12.%20PCA.html">
+   Principal Component Analysis
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  About
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="About%20the%20Authors.html">
+   About the Authors
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="_sources/3.2 Multi-Variate Regression.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/executablebooks/jupyter-book/master?urlpath=tree/3.2 Multi-Variate Regression.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#introduction">
+   Introduction
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#data-visualisation">
+     Data Visualisation
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#equating-the-loss-function">
+   Equating the Loss Function
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#a-short-note-on-gradients-and-jacobians">
+     A short note on Gradients and Jacobians
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#minimizing-the-loss">
+     Minimizing the Loss
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#finding-the-gradient-vector-derivative">
+       Finding the Gradient (Vector Derivative)
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#value-of-w-for-minimum-loss">
+       Value of W for minimum Loss:
+      </a>
+      <ul class="nav section-nav flex-column">
+       <li class="toc-h5 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#explanation-of-the-differentiated-terms">
+         Explanation of the differentiated terms
+        </a>
+       </li>
+      </ul>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#let-s-code-multi-variate-regression-model">
+   Let’s Code Multi-variate Regression Model
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#the-constant-column">
+     The constant column
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#code">
+     Code
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#recap">
+   Recap
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#limitation-of-multi-variate-regression">
+   Limitation of Multi-variate Regression
+  </a>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <section class="tex2jax_ignore mathjax_ignore" id="multi-variable-regression">
+<h1>Multi Variable Regression<a class="headerlink" href="#multi-variable-regression" title="Permalink to this headline">¶</a></h1>
+<p><img alt="" src="_images/multivariate1.png" /></p>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>Now as we saw in <strong>Linear Regression</strong> (Univariate Regression), we had <strong>only one independent feature</strong> or we can say we had only one explanatory variable, for our dependent variable.</p>
+<p>In our house prediction dataset, we took only a single feature of <strong>Land Size</strong> and our house price was dependent on that, but talking about real life, we know that land size isn’t the only factor which affects the house price. There are a lot of other factors like: <em>locality, no. of floors, society, hospitals availabily, water, electricity, hygiene, parking space</em>, and there are a lot of other factors too that affect the house price. For that we will need something that can handle multiple features.</p>
+<p>This is where Multi-Variable Regression comes in place. In Multi-variable Regression, we train our model by using <strong>more than one feature</strong>. In that case we’ll need <strong>multiple values of m &amp; c</strong>, as we know every feature scales the price differently. So as every feature scales price differently, we can assign different weights to different features of X.</p>
+<p>So now instead of predicting the values with the help of <span class="math notranslate nohighlight">\(mx + c\)</span>, we have to use the equation:</p>
+<blockquote>
+<div><p><span class="math notranslate nohighlight">\(y_{pred} = m_1x_1 + m_2x_2 + m_3x_3 + m_4x_4 + m_5x_5 + ..... m_nx_n + c\)</span> (where n = no. of features)</p>
+</div></blockquote>
+<p>and as we’re defining these <span class="math notranslate nohighlight">\(m\)</span> as weights, we will start calling them <span class="math notranslate nohighlight">\(w\)</span> instead. So now I can write my equation as:</p>
+<p><span class="math notranslate nohighlight">\(y_{pred} = w_1x_1 + w_2x_2 + w_3x_3 + w_4x_4 + w_5x_5 + ..... w_nx_n + w_0\)</span> (where n = no. of features)</p>
+<p><span class="math notranslate nohighlight">\(y_{pred} = \sum_{i=1}^{n} w_ix_i + w_0\)</span></p>
+<p><span class="math notranslate nohighlight">\(y_{pred} = \sum_{i=1}^{n} w_ix_i + w_0x_0 \hspace{1.5cm}\)</span> [<span class="math notranslate nohighlight">\(x_0 = 1\)</span>]</p>
+<p><span class="math notranslate nohighlight">\(y_{pred} = \sum_{i=0}^{n} w_ix_i\)</span></p>
+<blockquote>
+<div><p>*Here I added the constant term <span class="math notranslate nohighlight">\(w_0\)</span> in the <span class="math notranslate nohighlight">\(\sum\)</span> to make calculation easier, for that I’ve to add a contant <code class="docutils literal notranslate"><span class="pre">1</span></code> column to X</p>
+</div></blockquote>
+<p>So now let’s see a data in which we have multiple features.</p>
+<p><strong>Loading the Dataset</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;./Data/Multi-Variable Regression/X_data.npy&quot;</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;./Data/Multi-Variable Regression/Y_data.npy&quot;</span><span class="p">)</span>
+
+<span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">y</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>((100, 3), (100,))
+</pre></div>
+</div>
+</div>
+</div>
+<section id="data-visualisation">
+<h3>Data Visualisation<a class="headerlink" href="#data-visualisation" title="Permalink to this headline">¶</a></h3>
+<p><em>As X has multiple features, it is not possible to visulaize them all at once on a 2-D plot.</em></p>
+<p>Here the shape of X is (100,3) which means our data has 3 independent explanatory variables. So here we cannot plot graph between X and y because here the visualisation between them becomes 4 dimensional.</p>
+<p><strong>X Looks Like:</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span>
+       <span class="p">[</span> <span class="mf">8.83205645</span><span class="p">,</span>  <span class="mf">8.76465601</span><span class="p">,</span> <span class="mf">10.09153653</span><span class="p">,</span>  <span class="mf">1.</span>        <span class="p">],</span>  
+       <span class="p">[</span> <span class="mf">9.01352254</span><span class="p">,</span>  <span class="mf">9.5813335</span> <span class="p">,</span>  <span class="mf">8.85015318</span><span class="p">,</span>  <span class="mf">1.</span>        <span class="p">],</span>  
+       <span class="p">[</span> <span class="mf">9.30929403</span><span class="p">,</span> <span class="mf">10.4272574</span> <span class="p">,</span> <span class="mf">11.03505238</span><span class="p">,</span>  <span class="mf">1.</span>        <span class="p">],</span>  
+       <span class="p">[</span> <span class="mf">9.043744</span>  <span class="p">,</span> <span class="mf">10.35861032</span><span class="p">,</span>  <span class="mf">9.03470043</span><span class="p">,</span>  <span class="mf">1.</span>        <span class="p">],</span>  
+       <span class="p">[</span><span class="mf">10.1568975</span> <span class="p">,</span> <span class="mf">11.31259121</span><span class="p">,</span> <span class="mf">10.57351177</span><span class="p">,</span>  <span class="mf">1.</span>        <span class="p">],</span><span class="o">...</span> <span class="mi">100</span> <span class="n">instances</span> \<span class="p">])</span>  
+       
+</pre></div>
+</div>
+<p><strong>y looks like:</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="mf">374.60735649</span><span class="p">,</span> <span class="mf">390.97320007</span><span class="p">,</span> <span class="mf">520.29176639</span><span class="p">,</span> <span class="mf">422.60635903</span><span class="p">,</span><span class="mf">602.22912664</span><span class="p">,</span><span class="o">...</span> <span class="mi">100</span> <span class="n">instances</span><span class="p">]</span> <span class="p">)</span>  
+</pre></div>
+</div>
+<p>As we just saw, having multiple features in the data means we have to give multiple weights (one weight to every feature). So here our W will be a vector too, having the shape of <strong>(features, 1)</strong>, and in this case i.e. <strong>(4,1)</strong></p>
+<p>So shapes of X, y and W are:</p>
+<p><strong>X</strong> =&gt; <strong>(100,4)</strong></p>
+<p><strong>y</strong> =&gt; <strong>(100,)</strong></p>
+<p><strong>W</strong> =&gt; <strong>(4,1)</strong></p>
+<blockquote>
+<div><p>*<em>Note: (100,) and (100,1) are one and the same thing, it is a minor difference of how numpy processes the data.</em></p>
+</div></blockquote>
+</section>
+</section>
+<section id="equating-the-loss-function">
+<h2>Equating the Loss Function<a class="headerlink" href="#equating-the-loss-function" title="Permalink to this headline">¶</a></h2>
+<p>Now we know that</p>
+<blockquote>
+<div><p><span class="math notranslate nohighlight">\(y_{pred} = \sum_{i=0}^{n} w_ix_i\)</span></p>
+<p><span class="math notranslate nohighlight">\(y_{pred}i = w_ix_i \hspace{1cm}\)</span> (Note here <span class="math notranslate nohighlight">\(x_i\)</span> is a vector of shape (1,4) i.e. a single instance of X)</p>
+<p><span class="math notranslate nohighlight">\(y_{pred} = XW \hspace{1.25cm}\)</span>(X and W are vectors)</p>
+</div></blockquote>
+<p><strong>Let’s call <span class="math notranslate nohighlight">\(y_{pred}\)</span> as <span class="math notranslate nohighlight">\(\hat{y}\)</span> and <span class="math notranslate nohighlight">\(y_{true}\)</span> as <span class="math notranslate nohighlight">\(y\)</span>, for solving the equations further</strong></p>
+<blockquote>
+<div><p><span class="math notranslate nohighlight">\(\hat{y} = XW\)</span></p>
+</div></blockquote>
+<p>As per Linear Regression, my Loss is:</p>
+<blockquote>
+<div><p><span class="math notranslate nohighlight">\(L = \sum_{i=1}^{n}(y_i - \hat{y}_i)^2\)</span></p>
+<p><span class="math notranslate nohighlight">\(L = (y_1 - \hat{y}_1)^2 + (y_2 - \hat{y}_2)^2 + (y_3 - \hat{y}_3)^2 + ......... + (y_n - \hat{y}_n)^2\)</span></p>
+<p><span class="math notranslate nohighlight">\(L = (y-\hat{y})^T(y-\hat{y})\hspace{1cm}\)</span>(Since <span class="math notranslate nohighlight">\(y\)</span> and <span class="math notranslate nohighlight">\(\hat{y}\)</span> are vectors)</p>
+</div></blockquote>
+<p>and we know <span class="math notranslate nohighlight">\(\hat{y} = XW\)</span>, So the equation becomes:</p>
+<blockquote>
+<div><p><span class="math notranslate nohighlight">\(L = (y-XW)^T(y-XW)\)</span></p>
+</div></blockquote>
+<p>As we know we have to minimize our loss function, for that we have to find its minima by differentiating, but as we can see y, W and X are vectors. So, variable differentiation is not possible here, instead we have to find
+their Gradients/Jacobians (Vector Differentiation).</p>
+<hr class="docutils" />
+<section id="a-short-note-on-gradients-and-jacobians">
+<h3>A short note on Gradients and Jacobians<a class="headerlink" href="#a-short-note-on-gradients-and-jacobians" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p><strong>Gradients:</strong></p>
+<p>As we call <span class="math notranslate nohighlight">\(\dfrac{dy}{dx}\)</span> of a function <span class="math notranslate nohighlight">\(y = f(x)\)</span> as first derivative, the gradient is the first derivative of a vector.</p>
+<p>The gradient <span class="math notranslate nohighlight">\(\triangledown f\)</span> of a function <span class="math notranslate nohighlight">\(f : \mathbb{R}^n → \mathbb{R}\)</span> is the vector of its first partial derivatives.</p>
+<p>The gradient matrix of a vector function <span class="math notranslate nohighlight">\(f(x)\)</span> that maps <span class="math notranslate nohighlight">\(\mathbb{R}^n → \mathbb{R}\)</span> where <span class="math notranslate nohighlight">\(x \in \{x_1, x_2, .... x_n\}\)</span> and <span class="math notranslate nohighlight">\(f \in \{f_1, f_2, .... f_m\}\)</span> is written as:</p>
+<p><span class="math notranslate nohighlight">\(\triangledown_f = \dfrac{\partial (f_1,f_2,...,f_m)}{\partial (x_1,x_2,...,x_n)} = \begin{bmatrix} 
+\frac{\partial f_1}{\partial x_1} &amp; \cdots &amp; \frac{\partial f_m}{\partial x_1}\\ 
+\vdots &amp; \ddots &amp; \vdots \\ 
+\frac{\partial f_1}{\partial x_n} &amp; \cdots &amp; \frac{\partial f_m}{\partial x_n}\\ 
+\end{bmatrix}\)</span></p>
+<p><strong>Jacobians</strong></p>
+<p>Whereas the Jacobian is taken of a vector function <span class="math notranslate nohighlight">\(f(x)\)</span> that maps <span class="math notranslate nohighlight">\(\mathbb{R}^n → \mathbb{R}\)</span> where <span class="math notranslate nohighlight">\(x \in \{ x_1, x_2, ..., x_n\}\)</span> and <span class="math notranslate nohighlight">\(f \in \{ f_1, f_2, ... , f_m \}\)</span> is written as:</p>
+<p><span class="math notranslate nohighlight">\(J_f = \dfrac{\partial (f_1,f_2,...,f_m)}{\partial (x_1,x_2,...,x_n)} = \begin{bmatrix}  
+\frac{\partial f_1}{\partial x_1} &amp; \cdots &amp; \frac{\partial f_1}{\partial x_n}\\ 
+\vdots &amp; \ddots &amp; \vdots \\
+\frac{\partial f_m}{\partial x_1} &amp; \cdots &amp; \frac{\partial f_m}{\partial x_n}\\ 
+\end{bmatrix}\)</span></p>
+<p><span class="math notranslate nohighlight">\(\therefore (J_f)^T = \triangledown f\)</span></p>
+</div></blockquote>
+</section>
+<hr class="docutils" />
+<section id="minimizing-the-loss">
+<h3>Minimizing the Loss<a class="headerlink" href="#minimizing-the-loss" title="Permalink to this headline">¶</a></h3>
+<p>Now let’s get back to our loss function:</p>
+<p>As the Loss function equation has only one variable <strong>W</strong>, rest <strong>X</strong> &amp; <strong>y</strong> are constants, we’ve to find the value of <strong>W</strong> such that the value of Loss is minimum.</p>
+<p><span class="math notranslate nohighlight">\(L(W) = (y-XW)^T(y-XW)\)</span></p>
+<p>Simplifying the Loss Function:</p>
+<p><span class="math notranslate nohighlight">\(L(W) = (y^T - (XW)^T)(y-XW)\)</span></p>
+<p><span class="math notranslate nohighlight">\(L(W) = (y^T-W^TX^T)(y-XW)\)</span></p>
+<p><span class="math notranslate nohighlight">\(L(W) = y^Ty - y^TXW - W^TX^Ty + W^TX^TXW\)</span></p>
+<hr class="docutils" />
+<blockquote>
+<div><p>Now if we take a look at the shape of these terms</p>
+<blockquote>
+<div><p><span class="math notranslate nohighlight">\(y^Ty =&gt; (1\times m) \times (m\times1) = 1 \times 1\)</span></p>
+<p><span class="math notranslate nohighlight">\(y^TXW =&gt; (1\times m)\times(m \times n+1)\times(n+1 \times 1) = 1 \times 1\)</span></p>
+<p><span class="math notranslate nohighlight">\(W^TX^Ty =&gt; (1\times n+1)\times(n+1 \times m)\times(m \times 1) = 1 \times 1\)</span></p>
+<p><span class="math notranslate nohighlight">\(W^TX^TXW =&gt; (1\times n+1)\times(n+1 \times m)\times(m \times n+1)\times(n+1 \times 1) = 1 \times 1\)</span></p>
+</div></blockquote>
+<p>*Having shape <span class="math notranslate nohighlight">\(1 \times 1\)</span> means these are just constant terms after evaluating</p>
+</div></blockquote>
+<hr class="docutils" />
+<p>And as we know <span class="math notranslate nohighlight">\([Constant]^T = [Constant]\)</span></p>
+<p>So, <span class="math notranslate nohighlight">\([W^TX^Ty]^T = W^TX^Ty\)</span></p>
+<p><span class="math notranslate nohighlight">\(y^TXW = W^TX^Ty \hspace{2cm}\)</span> <strong>=&gt; Putting this in above loss equation.</strong></p>
+<p><span class="math notranslate nohighlight">\(L(W) = y^Ty - y^TXW - y^TXW + W^TX^TXW\)</span></p>
+<p><span class="math notranslate nohighlight">\(L(W) = y^Ty -2 [y^TXW] + W^TX^TXW\)</span></p>
+<section id="finding-the-gradient-vector-derivative">
+<h4>Finding the Gradient (Vector Derivative)<a class="headerlink" href="#finding-the-gradient-vector-derivative" title="Permalink to this headline">¶</a></h4>
+<p>Now let’s find the gradient of this equation and equate it to 0 to find the minima.</p>
+<p><span class="math notranslate nohighlight">\(\dfrac{\partial L}{\partial W} = 0\)</span></p>
+<p><span class="math notranslate nohighlight">\(\dfrac{\partial L}{\partial W} = \dfrac{\partial (y^Ty)}{\partial W} - \dfrac{\partial (2[y^TXW])}{\partial W} + \dfrac{\partial (W^TX^TXW)}{\partial W}\)</span></p>
+<blockquote>
+<div><p>Take a look at these terms<br />
+Explanation of all these derivatives is at the end after the derivation.*</p>
+<blockquote>
+<div><ol class="simple">
+<li><p><span class="math notranslate nohighlight">\(\dfrac{\partial (y^Ty)}{\partial W} = 0\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\dfrac{\partial (2[y^TXW])}{\partial W} = 2[y^TX]^T\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\dfrac{\partial (W^TX^TXW)}{\partial W} = [(X^TX)^T + (X^TX)]W\)</span></p></li>
+</ol>
+</div></blockquote>
+</div></blockquote>
+<p><span class="math notranslate nohighlight">\(0 = 0 - 2[y^TX]^T + [(X^TX)^T + (X^TX)]W\)</span></p>
+<p><span class="math notranslate nohighlight">\(0 = 0 - 2[X^Ty] + [X^TX + X^TX]W\)</span></p>
+<p><span class="math notranslate nohighlight">\(0 = 0 - 2[X^Ty] + 2[X^TXW]\)</span></p>
+<p><span class="math notranslate nohighlight">\(2[X^Ty] = 2[X^TXW]\)</span></p>
+<p><span class="math notranslate nohighlight">\(X^Ty = X^TXW\)</span></p>
+<p><strong>Multiplying <span class="math notranslate nohighlight">\((X^TX)^{-1}\)</span> on both sides.</strong></p>
+<p><span class="math notranslate nohighlight">\((X^TX)^{-1}(X^Ty) = (X^TX)^{-1}(X^TXW)\)</span></p>
+<p><span class="math notranslate nohighlight">\((X^TX)^{-1}X^Ty = W\)</span></p>
+<p><span class="math notranslate nohighlight">\(W = (X^TX)^{-1}X^Ty\)</span></p>
+</section>
+<section id="value-of-w-for-minimum-loss">
+<h4>Value of W for minimum Loss:<a class="headerlink" href="#value-of-w-for-minimum-loss" title="Permalink to this headline">¶</a></h4>
+<p>So to <strong>minimize the Loss</strong> [L(W)], we found that we have to put the value of <strong>W</strong> as:</p>
+<p><span class="math notranslate nohighlight">\(W = (X^TX)^{-1}X^Ty\)</span></p>
+<hr class="docutils" />
+<hr class="docutils" />
+<section id="explanation-of-the-differentiated-terms">
+<h5>Explanation of the differentiated terms<a class="headerlink" href="#explanation-of-the-differentiated-terms" title="Permalink to this headline">¶</a></h5>
+<blockquote>
+<div><p><strong>1.</strong> <span class="math notranslate nohighlight">\(y^Ty\)</span></p>
+<blockquote>
+<div><p>As <span class="math notranslate nohighlight">\(y^Ty\)</span> has no term of <span class="math notranslate nohighlight">\(W\)</span>, it will be treated as constant. Hence differentiated as 0.<br />
+So, <span class="math notranslate nohighlight">\(\dfrac{\partial (y^Ty)}{\partial W} = 0 \hspace{1cm}\)</span></p>
+</div></blockquote>
+<hr class="docutils" />
+<p><strong>2.</strong> <span class="math notranslate nohighlight">\(2[y^TXW]\)</span></p>
+<blockquote>
+<div><p>As <span class="math notranslate nohighlight">\(2y^TX\)</span> is constant, let’s denote it with <span class="math notranslate nohighlight">\(A\)</span>.<br />
+So, now we have to find <span class="math notranslate nohighlight">\(\dfrac{\partial (AW)}{\partial W}\)</span><br />
+Let <span class="math notranslate nohighlight">\(f(W) = AW \hspace{3cm}\)</span>       where <span class="math notranslate nohighlight">\(A = \begin{bmatrix}p &amp; q\\r &amp; s\end{bmatrix}\)</span> and <span class="math notranslate nohighlight">\(W = \begin{bmatrix} w_1\\w_2 \end{bmatrix}\)</span></p>
+<p><span class="math notranslate nohighlight">\(f(W)=\begin{bmatrix} pw_1 + qw_2 \\ rw_1 + sw_2 \end{bmatrix}\)</span></p>
+<p>Finding Gradient</p>
+<p><span class="math notranslate nohighlight">\(\dfrac{\partial f(W)}{\partial W} = \begin{bmatrix} \dfrac{\partial (pw_1 + qw_2)}{\partial w_1} &amp; \dfrac{\partial (rw_1 + sw_2)}{\partial w_1} \\ \dfrac{\partial (pw_1 + qw_2)}{\partial w_2} &amp; \dfrac{\partial (rw_1 + sw_2)}{\partial w_2} \end{bmatrix}\)</span><br />
+<span class="math notranslate nohighlight">\(\dfrac{\partial f(W)}{\partial W} = \begin{bmatrix} p &amp; r \\ q &amp; s \end{bmatrix}\)</span></p>
+<p><span class="math notranslate nohighlight">\(\dfrac{\partial f(W)}{\partial W} = A^T\)</span></p>
+<p>So, <span class="math notranslate nohighlight">\(\dfrac{\partial (AW)}{\partial W} = A^T \hspace{2cm}\)</span> <strong>(Putting the Value of A)</strong></p>
+<p><span class="math notranslate nohighlight">\(\dfrac{\partial ([2y^TX]W)}{\partial W} = {[2y^TX]}^T\)</span></p>
+</div></blockquote>
+<hr class="docutils" />
+<p><strong>3.</strong> <span class="math notranslate nohighlight">\(W^TX^TXW\)</span></p>
+<blockquote>
+<div><p>As <span class="math notranslate nohighlight">\(X^TX\)</span> is constant, so let’s denote it with A</p>
+<p><span class="math notranslate nohighlight">\(f(W) = W^TAW \hspace{5cm}\)</span>    where <span class="math notranslate nohighlight">\(A = \begin{bmatrix}p &amp; q\\r &amp; s\end{bmatrix}\)</span> and <span class="math notranslate nohighlight">\(W = \begin{bmatrix} w_1\\w_2 \end{bmatrix}\)</span></p>
+<p><span class="math notranslate nohighlight">\(f(W) = \begin{bmatrix} w_1 &amp; w_2\end{bmatrix}\begin{bmatrix}p &amp; q\\r &amp; s\end{bmatrix}\begin{bmatrix} w_1\\w_2 \end{bmatrix}\)</span></p>
+<p><span class="math notranslate nohighlight">\(f(W) = \begin{bmatrix} pw_1^2 + qw_2w_1 + rw_1w_2 + sw_2^2\end{bmatrix}\)</span><br />
+Finding Gradient</p>
+<p><span class="math notranslate nohighlight">\(\dfrac{\partial f(W)}{\partial W} = \begin{bmatrix} \dfrac{\partial(pw_1^2 + qw_2w_1 + rw_1w_2 + sw_2^2)}{\partial w_1} \\ \dfrac{\partial(pw_1^2 + qw_2w_1 + rw_1w_2 + sw_2^2)}{\partial w_2}\end{bmatrix}\)</span></p>
+<p><span class="math notranslate nohighlight">\(\dfrac{\partial f(W)}{\partial W} = \begin{bmatrix} 2pw_1 + qw_2 + rw_2 \\ qw_1 + rw_1 + 2sw_2 \end{bmatrix}\)</span></p>
+<p>On further Simplification</p>
+<p><span class="math notranslate nohighlight">\(\dfrac{\partial f(W)}{\partial W} = \begin{bmatrix} 2pw_1 + qw_2 + rw_2 \\ qw_1 + rw_1 + 2sw_2 \end{bmatrix} = \begin{bmatrix} 2p &amp; r+q \\ q+r &amp; 2s \end{bmatrix} \begin{bmatrix}w_1 \\ w_2 \end{bmatrix}\)</span></p>
+<p><span class="math notranslate nohighlight">\(\dfrac{\partial f(W)}{\partial W} = \begin{bmatrix} \begin{bmatrix} p &amp; r \\ q &amp; s\end{bmatrix} + \begin{bmatrix}  p &amp; q \\ r &amp; s \end{bmatrix} \end{bmatrix}\begin{bmatrix}w_1 \\ w_2 \end{bmatrix}\)</span></p>
+<p><span class="math notranslate nohighlight">\(\dfrac{\partial f(W)}{\partial W} = (A^T + A)W \hspace{4cm}\)</span>    <strong>(Putting the value of A)</strong></p>
+<p><span class="math notranslate nohighlight">\(\dfrac{\partial f(W)}{\partial W} = ([X^TX]^T + [X^TX])W\)</span><br />
+<span class="math notranslate nohighlight">\(\dfrac{\partial (W^TX^TXW)}{\partial W} = ([X^TX]^T + [X^TX])W\)</span></p>
+</div></blockquote>
+</div></blockquote>
+<hr class="docutils" />
+</section>
+</section>
+</section>
+</section>
+<hr class="docutils" />
+<section id="let-s-code-multi-variate-regression-model">
+<h2>Let’s Code Multi-variate Regression Model<a class="headerlink" href="#let-s-code-multi-variate-regression-model" title="Permalink to this headline">¶</a></h2>
+<p>Now as we’ve derived the value of W mathematically, let’s try to implement it’s code and apply it to a data.</p>
+<p><span class="math notranslate nohighlight">\(\large{W = (X^TX)^{-1}X^Ty}\)</span></p>
+<p>Before getting to the code part, remember we’ve to add an constant <span class="math notranslate nohighlight">\(x_0\)</span> column in our dataset, as we’ve seen at the time of derivation.</p>
+<section id="the-constant-column">
+<h3>The constant column<a class="headerlink" href="#the-constant-column" title="Permalink to this headline">¶</a></h3>
+<p>As we just saw, as we assigned weights to every feature, We used <span class="math notranslate nohighlight">\(w_1, w_2, w_3...\)</span> instead of <span class="math notranslate nohighlight">\(m_1,m_2,m_3...\)</span> and we replaced the constant <strong>c</strong> with <span class="math notranslate nohighlight">\(w_0\)</span>, and to make calculations easier we’ll just multiply <span class="math notranslate nohighlight">\(x_0\)</span> with <span class="math notranslate nohighlight">\(w_0\)</span> (where <span class="math notranslate nohighlight">\(x_0 = 1\)</span>). As this <span class="math notranslate nohighlight">\(x_0\)</span> is a column having every value <strong>1</strong>, we’ve to add this in our dataset. This is a very common practice and we’ll see this further as well in other models.</p>
+<p><strong>Adding the constant column in dataset</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ones_column</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">X</span><span class="p">,</span><span class="n">ones_column</span><span class="p">])</span>
+<span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">y</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>((100, 4), (100,))
+</pre></div>
+</div>
+</div>
+</div>
+<p>As we can see here X had shape <strong>(100,3)</strong>, but after we added the constant term it became <strong>(100,4)</strong> which means now X has 3 features with a constant term for all the 100 instances. But as our y was the price of the house it still have constant values for all the 100 instances. So it has shape <strong>(100,)</strong></p>
+</section>
+<section id="code">
+<h3>Code<a class="headerlink" href="#code" title="Permalink to this headline">¶</a></h3>
+<p>Now let’s write the code for the multi-variate regression model. Eventually we have to fit a plane in our data, so let’s define a function <strong>fit</strong>. And then we’ve to predict the values of the unseen data with the help of this plane, so we’ll define a <strong>predict</strong> function as well.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">y</span><span class="p">):</span>
+    <span class="n">W</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X</span><span class="p">))</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">T</span><span class="p">)</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">W</span>
+
+<span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">W</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">X</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">W</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now let’s train our model on our data, and try to predict a random point from the data.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">W</span> <span class="o">=</span> <span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
+<span class="n">prediction</span> <span class="o">=</span> <span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="mi">10</span><span class="p">],</span><span class="n">W</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Prediction =&gt; &quot;</span><span class="p">,</span><span class="n">prediction</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;True Value =&gt; &quot;</span><span class="p">,</span><span class="n">y</span><span class="p">[</span><span class="mi">10</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Prediction =&gt;  483.0905992868411
+True Value =&gt;  482.4763357660064
+</pre></div>
+</div>
+</div>
+</div>
+<p>As we can see, the prediction is very close to the true value of y, which means our model is performing very accurately.<br>
+Now we can also print the value of W, to see the corresponding weights of every feature, and as we added the constant column at the end, the last value of this W vector will be our constant term “c”.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">W</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[   85.83960823    37.51369037    45.03995795 -1157.7084498 ]
+</pre></div>
+</div>
+</div>
+</div>
+<p>In simpler terms, we can say for the equation:</p>
+<p><span class="math notranslate nohighlight">\(y = m_1x_1 + m_2x_2 + m_3x_3 + c\)</span></p>
+<p><span class="math notranslate nohighlight">\(m_1 = 85.83960823\)</span></p>
+<p><span class="math notranslate nohighlight">\(m_2 = 37.51369037\)</span></p>
+<p><span class="math notranslate nohighlight">\(m_3 = 45.03995795\)</span></p>
+<p><span class="math notranslate nohighlight">\(c = -1157.7084498\)</span></p>
+</section>
+</section>
+<section id="recap">
+<h2>Recap<a class="headerlink" href="#recap" title="Permalink to this headline">¶</a></h2>
+<p>We’ve covered a lot about the multi-variate regression, so let’s sum up the concepts quickly.</p>
+<ol class="simple">
+<li><p>First we found a loss function of our data by the help of equation of a plane, which came out to be <span class="math notranslate nohighlight">\(L = (y-XW)^T(y-XW)\)</span>.</p></li>
+<li><p>Then to find the optimal solution, we’ve to minimize this Loss function but as the parameters <strong>W</strong>, <strong>X</strong> and <strong>y</strong> of this loss were vectors, we had to take help of Gradients &amp; Jacobians to find their minima.</p></li>
+<li><p>We found that the values <strong>X</strong> and <strong>y</strong> were constant, so the Loss was totally dependent on <strong>W</strong>, so we had to find a value of <strong>W</strong> such that the Loss is minimum.</p></li>
+<li><p>We found value of <strong>W</strong>, with the help of Gradients &amp; Jacobians which came out to be <span class="math notranslate nohighlight">\(W = (X^TX)^{-1}X^Ty\)</span>.</p></li>
+<li><p>Using this value of W, we wrote a <strong>fit</strong> function which helps to find us the optimal parameters i.e. value of “W”.</p></li>
+<li><p>Then we used the <strong>predict</strong> function finally, to predict the values of the unseen data.</p></li>
+</ol>
+</section>
+<section id="limitation-of-multi-variate-regression">
+<h2>Limitation of Multi-variate Regression<a class="headerlink" href="#limitation-of-multi-variate-regression" title="Permalink to this headline">¶</a></h2>
+<p>Currently, here we took a very small amount of points i.e. 100, and had only 3 features, but in real-life datasets, we have a lot more instances and features than this, which will require a lot of memory usage (mainly RAM usage), and in most of the cases our system RAM is not enough to load the entire dataset at once, and as it involves a lot of vector multiplication and inverse calculation, it is very computationally heavy and memory inefficient.<br />
+So to overcome this limitation, we use an optimization technique like Gradient Descent, which we’ll see in a later module.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        
+            <!-- Previous / next buttons -->
+<div class='prev-next-area'> 
+    <a class='left-prev' id="prev-link" href="3.1%20Linear%20Regression.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Linear Regression</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="3.3%20MLE%20-%20Linear%20Regression.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">MLE - Linear Regression</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer">
+    <div class="container">
+      <p>
+        
+          By Coding Blocks Pvt Ltd<br/>
+        
+            &copy; Copyright 2021.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+
+  </body>
+</html>

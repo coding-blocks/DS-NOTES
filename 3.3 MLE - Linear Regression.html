@@ -1,0 +1,604 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>MLE - Linear Regression &#8212; Data Science Notes</title>
+    
+  <link href="_static/css/theme.css" rel="stylesheet">
+  <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="_static/js/index.be7d3bbb2ef33a8344ce.js">
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/togglebutton.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script>
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Generalised linear model-Linear Regression" href="3.4%20GLM%20-%20Linear%20Regression.html" />
+    <link rel="prev" title="Multi Variable Regression" href="3.2%20Multi-Variate%20Regression.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="_static/logo.svg" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">Data Science Notes</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="intro.html">
+   Introduction
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Machine Learning
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="1.1%20Introduction%20to%20Numpy.html">
+   Numpy
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="1.2%20Introduction%20to%20Matplotlib.html">
+   Matplotlib: Visualization with Python
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="1.3%20Introduction%20to%20Pandas.html">
+   Pandas
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="2.%20KNN.html">
+   K - Nearest Neighbour
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="3.1%20Linear%20Regression.html">
+   Linear Regression
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="3.2%20Multi-Variate%20Regression.html">
+   Multi Variable Regression
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   MLE - Linear Regression
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="3.4%20GLM%20-%20Linear%20Regression.html">
+   Generalised linear model-Linear Regression
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="4.%20Gradient%20Descent.html">
+   Gradient Descent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="5.1%20%20Logistic%20Regression.html">
+   Logistic Regression
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="5.2%20Maximum%20Likelihood%20Estimation%20and%20Implementation.html">
+   Logistic Regression MLE &amp; Implementation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="6.%20Decision%20Trees.html">
+   Decision Tree Algorithm
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="7.%20Ensemble.html">
+   Ensemble Learning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="9.1%20Naive%20Bayes.html">
+   Naive Bayes Algorithm
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="9.2%20Multinomial%20Naive%20Bayes.html">
+   Multinomial Naive Bayes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="11.%20Imbalanced%20Dataset.html">
+   Imbalanced Dataset
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="12.%20PCA.html">
+   Principal Component Analysis
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  About
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="About%20the%20Authors.html">
+   About the Authors
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="_sources/3.3 MLE - Linear Regression.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/executablebooks/jupyter-book/master?urlpath=tree/3.3 MLE - Linear Regression.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#introduction">
+   Introduction
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#probabilty-distributions">
+   Probabilty Distributions
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#normal-distribution">
+     Normal Distribution
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#conditional-probability">
+   Conditional Probability
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#proof">
+   Proof
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#considering-for-every-data-given">
+     Considering for every data given
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#conclusion">
+   Conclusion
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#further-reading">
+   Further Reading
+  </a>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <section class="tex2jax_ignore mathjax_ignore" id="mle-linear-regression">
+<h1>MLE - Linear Regression<a class="headerlink" href="#mle-linear-regression" title="Permalink to this headline">¶</a></h1>
+<p>Previously in linear regression section for calculating the optimal values of parameters of best fit line we defined a loss function. which we were minimising in order to find values of parameters. But we took that loss function intuitively and solved the equation and came up with right values of <a class="reference external" href="http://parameters.In">parameters.In</a> this section we will try to find the loss function that can be used to find  optimal values of parameters by a method called <strong>Maximum Likelihood Estimation</strong></p>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>In statistics, <strong>Maximum likelihood estimation</strong> (MLE) is a method of estimating the parameters of a probability distribution by maximizing a likelihood function, so that under the assumed statistical model the observed data is most probable.<br />
+Maximum likelihood estimation is a method that determines values for the parameters of a model. The parameter values are found such that they maximise the likelihood that the process described by the model produced the data that were actually observed.</p>
+<p>For better and deep understanding you can refer to following - <a class="reference external" href="https://shorturl.at/msFI3">https://shorturl.at/msFI3</a></p>
+<p>Basically we try to find out value of parameters for which likelihood(probability) of that data will be maximum Here we will use this method for Linear Regression.We first required to understand what a probability distribution is.</p>
+</section>
+<section id="probabilty-distributions">
+<h2>Probabilty Distributions<a class="headerlink" href="#probabilty-distributions" title="Permalink to this headline">¶</a></h2>
+<p>In probability theory and statistics, a probability distribution is the mathematical function that gives the probabilities of occurrence of different possible outcomes for an experiment. It is a mathematical description of a random phenomenon in terms of its sample space and the probabilities of events (subsets of the sample space).</p>
+<p><strong>Types of Distributions :-</strong></p>
+<ol class="simple">
+<li><p>Bernoulli Distribution</p></li>
+<li><p>Uniform Distribution</p></li>
+<li><p>Binomial Distribution</p></li>
+<li><p>Normal Distribution</p></li>
+<li><p>Poisson Distribution</p></li>
+</ol>
+<p>You can read more about probability distributions by refering to the following link - <a class="reference external" href="https://en.wikipedia.org/wiki/Probability_distribution">https://en.wikipedia.org/wiki/Probability_distribution</a></p>
+<p>There are many other types of distribution too Here we will use normal <a class="reference external" href="http://distribution.In">distribution.In</a> linear regression we assumed that there is <strong>Homoscedasticity</strong> which mean that The variance of residual is the same for any value of X. mean Error is random of every given data and is independent.Thus we can assume that the <strong>Error is from a normal distribution</strong>.</p>
+<section id="normal-distribution">
+<h3>Normal Distribution<a class="headerlink" href="#normal-distribution" title="Permalink to this headline">¶</a></h3>
+<p>Normal distribution, also known as the Gaussian distribution, is a probability distribution that is symmetric about the mean, showing that data near the mean are more frequent in occurrence than data far from the mean. In graph form, normal distribution will appear as a bell curve.</p>
+<p>In probability theory, a normal (or Gaussian or Gauss or Laplace–Gauss) distribution is a type of continuous probability distribution for a real-valued random variable. The general form of its probability density function is-</p>
+<blockquote>
+<div><p><span class="math notranslate nohighlight">\(\large{{\displaystyle p(x)={\dfrac {1}{\sigma {\sqrt {2\pi }}}}e^{-{\frac {1}{2}}\left({\frac {x-\mu }{\sigma }}\right)^{2}}}}\)</span></p>
+<p><span class="math notranslate nohighlight">\(\large{p(x)}\)</span>	=	probability density function</p>
+<p><span class="math notranslate nohighlight">\(\large\sigma\)</span>=	standard deviation</p>
+<p><span class="math notranslate nohighlight">\(\large\mu\)</span>	=	mean</p>
+</div></blockquote>
+<p><img alt="" src="_images/mle1.png" /></p>
+<p>Reading more about normal distribution is recommended you can refer to the wikipedia page:</p>
+<p>( <a class="reference external" href="https://en.wikipedia.org/wiki/Normal_distribution">https://en.wikipedia.org/wiki/Normal_distribution</a> )</p>
+<p>,or can refer to these series of video to start of the things (<a class="reference external" href="https://shorturl.at/cqxTW">https://shorturl.at/cqxTW</a> ).</p>
+<p>As we have discussed we will be assuming error of the model as normally distributed we can assume the values of <span class="math notranslate nohighlight">\(\mu\)</span> and <span class="math notranslate nohighlight">\(\sigma\)</span> for simplification we can assume-</p>
+<blockquote>
+<div><p><span class="math notranslate nohighlight">\(\mu=0\)</span></p>
+<p><span class="math notranslate nohighlight">\(\sigma=1\)</span></p>
+</div></blockquote>
+<p>Such normal distribution having above specified values of <span class="math notranslate nohighlight">\(\mu\)</span> as 0 and <span class="math notranslate nohighlight">\(\sigma\)</span> as 1 are called standard normal distribution.
+Thus Our <strong>Error of the model belongs to the standard normal distribution</strong>. and have a function like-</p>
+<blockquote>
+<div><p><span class="math notranslate nohighlight">\(\large{{\displaystyle p(e)={\dfrac {1}{{\sqrt {2\pi }}}}e^{-{\frac {1}{2}}\left({e}\right)^{2}}}}\)</span></p>
+</div></blockquote>
+<p>And will look something like this notice that the mean is Zero-</p>
+<p><img alt="" src="_images/mle2.png" /></p>
+<p>where,   <span class="math notranslate nohighlight">\(\large e\)</span>=Error</p>
+<p>We also Know That,</p>
+<blockquote>
+<div><p><span class="math notranslate nohighlight">\(\large {e=Y_{true}-Y_{pred}}\)</span></p>
+<p><span class="math notranslate nohighlight">\(\large{Y_{true}=Y_{pred}+ e}\)</span></p>
+</div></blockquote>
+<p>For a given data say <span class="math notranslate nohighlight">\(X_i\)</span> where i goes 1 to n where n is total number of data given to us we can write the above equation’s general form as follows-</p>
+<blockquote>
+<div><p><span class="math notranslate nohighlight">\(\large{Y_{true}{i}=Y_{pred}{i}+ e_{i}}\)</span></p>
+</div></blockquote>
+</section>
+</section>
+<section id="conditional-probability">
+<h2>Conditional Probability<a class="headerlink" href="#conditional-probability" title="Permalink to this headline">¶</a></h2>
+<p>Here as we have now considered the values for a given data say <span class="math notranslate nohighlight">\(X_i\)</span> where i goes from 1 to n (n= total number of data),we also need to write the probility distribution’s equation too defining that, probability whoose value is for a given data is called <strong>Conditional probability</strong></p>
+<p>Conditional probability is defined as the likelihood of an event or outcome occurring, based on the occurrence of a previous event or outcome. Conditional probability is calculated by multiplying the probability of the preceding event by the updated probability of the succeeding, or conditional, event.</p>
+<p><span class="math notranslate nohighlight">\({P(A|B)}\)</span> is probability of <em>A</em> when <em>B</em> is alredy given or has already occured Therefore the equation of probaility distribution of error will be written like-</p>
+<blockquote>
+<div><p><span class="math notranslate nohighlight">\(\large{{\displaystyle p(e_i|X_i)={\frac {1}{{\sqrt {2\pi }}}}e^{-{\frac {1}{2}}\left({e_i}\right)^{2}}}}\)</span></p>
+<blockquote>
+<div><p>You can read more about conditinal probability in detail from here -</p>
+<p><a class="reference external" href="https://en.wikipedia.org/wiki/Conditional_probability">https://en.wikipedia.org/wiki/Conditional_probability</a></p>
+</div></blockquote>
+</div></blockquote>
+</section>
+<section id="proof">
+<h2>Proof<a class="headerlink" href="#proof" title="Permalink to this headline">¶</a></h2>
+<p>Asuming for a given fixed data say <span class="math notranslate nohighlight">\(X_i\)</span> we can say that prediction is will be a constant (fixed value) as our model parameters reamain fixed and give same output for same data in a model. For the equation <span class="math notranslate nohighlight">\({Y_{true}{i}=Y_{pred}{i}+ e{i}}\)</span> as <span class="math notranslate nohighlight">\(Y_{pred}{i}\)</span> is constant and for a given data and <span class="math notranslate nohighlight">\(e_i\)</span> belongs to a standard normal distribution from given information and equation we can conclude that <span class="math notranslate nohighlight">\(Y_{true}{i}\)</span> <strong>will also belong to a Normal distribution</strong></p>
+<p>As for given data say <span class="math notranslate nohighlight">\(X_i\)</span>, <span class="math notranslate nohighlight">\(Y_{pred}{i}\)</span> is constant sum of it with <span class="math notranslate nohighlight">\(e_i\)</span> which belongs to a standard normal distribution will result in a normally distributed data but <strong>every value will get incresed by</strong> <span class="math notranslate nohighlight">\(Y_{pred}{i}\)</span> but resultant distribution will be a Normal distribution.Therfore, for <span class="math notranslate nohighlight">\(Y_{pred}{i}\)</span>’s distribution mean will be <span class="math notranslate nohighlight">\(\large e_i\)</span>’s mean + <span class="math notranslate nohighlight">\(Y_{pred}{i}\)</span> which is equals to <span class="math notranslate nohighlight">\(Y_{pred}{i}\)</span>.As every value is getting scaled The standard deviation( <span class="math notranslate nohighlight">\(\large \sigma\)</span>) will remain the same.</p>
+<p>Thus,</p>
+<blockquote>
+<div><p><span class="math notranslate nohighlight">\(\large{{\displaystyle p(Y_{true}{i}|X_i)={\frac {1}{{\sqrt {2\pi }}}}e^{-{\frac {1}{2}}\left({Y_{true}{i}-Y_{pred}{i}}\right)^{2}}}}\)</span></p>
+</div></blockquote>
+<p>Assuming a case of <strong>Simple linear regression</strong> we know that there will only single feature and single output and it will be estimated by using a 2-D line called <strong>best fit line</strong> having optimal values of parameters <strong>m</strong> and <strong>c</strong> thus,</p>
+<blockquote>
+<div><p><span class="math notranslate nohighlight">\(\large{Y_{pred}{i}=m \times X_i+c}\)</span></p>
+</div></blockquote>
+<p>Putting value of <span class="math notranslate nohighlight">\(Y_{pred}{i}\)</span> from above equation in distribution’s equation-</p>
+<blockquote>
+<div><p><span class="math notranslate nohighlight">\(\large{{\displaystyle p(Y_{true}{i}|X_i)={\frac {1}{{\sqrt {2\pi }}}}e^{-{\frac {1}{2}}\left({Y_{true}{i}-(m \times X_i+c)}\right)^{2}}}}\)</span></p>
+</div></blockquote>
+<p>As you can see from above equation probability of <span class="math notranslate nohighlight">\(Y_{true}{i}\)</span> for a given <span class="math notranslate nohighlight">\(X_i\)</span> depends on <strong>m</strong> and <strong>c</strong> which are the parameters of our best fit line we can represent this is in equation as follows-</p>
+<blockquote>
+<div><p><span class="math notranslate nohighlight">\(\large{{\displaystyle p(Y_{true}{i}|X_i;m,c)={\frac {1}{{\sqrt {2\pi }}}}e^{-{\frac {1}{2}}\left({Y_{true}{i}-(m \times X_i+c)}\right)^{2}}}}\)</span></p>
+</div></blockquote>
+<p>Above equation means the probability of <span class="math notranslate nohighlight">\(Y_{true}{i}\)</span> for a given <span class="math notranslate nohighlight">\(X_i\)</span> which depends on the value of <strong>m</strong> and <strong>c</strong>.</p>
+<section id="considering-for-every-data-given">
+<h3>Considering for every data given<a class="headerlink" href="#considering-for-every-data-given" title="Permalink to this headline">¶</a></h3>
+<p>Up until now we have derived our every equation for a given value of X sat <span class="math notranslate nohighlight">\(X_i\)</span> where i goes from 1 to n. As, our model is  generalised for every value of x in the given data we need to maximise the likelihood of each and every value of X</p>
+<p>Therefore,we are required to maximise-</p>
+<blockquote>
+<div><p><span class="math notranslate nohighlight">\(\large{p(Y_{true}{1},Y_{true}{2},......Y_{true}{n}|X_1,X_2......X_n;m,c)}\)</span></p>
+</div></blockquote>
+<p>When Considering linear regression we took a assumption called <strong>Independence</strong> Which states that Observations are independent of each other. i.e Value of <span class="math notranslate nohighlight">\(Y_{true}{i}\)</span> is only dependent on <span class="math notranslate nohighlight">\(X_i\)</span> and has no relation with eiether any othe <span class="math notranslate nohighlight">\(Y_{true}\)</span> or <span class="math notranslate nohighlight">\(X\)</span>.
+such events are called <strong>Independent events</strong>.</p>
+<p><strong>Independent events</strong> are those events whose occurrence is not dependent on any other event. For example, if we flip a coin in the air and get the outcome as Head, then again if we flip the coin but this time we get the outcome as Tail. In both cases, the occurrence of both events is independent of each other. It is one of the types of events in probability.</p>
+<blockquote>
+<div><p>If A and B are independent events, then</p>
+<p>P(A│B) = P(A)</p>
+<p>Using Multiplication rule of probability, P(A ∩ B) = P(B) .P(A│B)</p>
+<p>P(A ∩ B) = P(B) .P(A)</p>
+</div></blockquote>
+<p><em>You can read more about independent events and it’s properties from here-</em> <a class="reference external" href="https://byjus.com/maths/independent-events/">https://byjus.com/maths/independent-events/</a></p>
+<hr class="docutils" />
+<p>We can use the above discussed observation To write the eqaution of probability distribution like following-</p>
+<p><span class="math notranslate nohighlight">\(\normalsize{p(Y_{true}{1},Y_{true}{2},......Y_{true}{n}|X_1,X_2......X_n;m,c)=p(Y_{true}{1}|X_1) \times p(Y_{true}{2}|X_2) \times ......p(Y_{true}{n}|X_n)}\)</span></p>
+<p>Which can be written like-</p>
+<p><span class="math notranslate nohighlight">\(\normalsize{p(Y_{true}{1},Y_{true}{2},......Y_{true}{n}|X_1,X_2......X_n;m,c)=\prod_{i=1}^n p(Y_{true}{i}|X_i;m,c)}\)</span></p>
+<p>Therefore now we have to maximize the foolowing term-</p>
+<blockquote>
+<div><p><span class="math notranslate nohighlight">\(\large{\prod_{i=1}^n p(Y_{true}{i}|X_i;m,c)}\)</span></p>
+</div></blockquote>
+<p>We know that,</p>
+<blockquote>
+<div><p><span class="math notranslate nohighlight">\(\large{{\displaystyle p(Y_{true}{i}|X_i;m,c)={\frac {1}{{\sqrt {2\pi }}}}e^{-{\frac {1}{2}}\left({Y_{true}{i}-(m \times X_i+c)}\right)^{2}}}}\)</span></p>
+</div></blockquote>
+<p>Therfore, We have to maximise :-</p>
+<blockquote>
+<div><p><span class="math notranslate nohighlight">\(\large{\prod_{i=1}^n {\frac {1}{{\sqrt {2\pi }}}}e^{-{\frac {1}{2}}\left({Y_{true}{i}-(m*X_i+c)}\right)^{2}}}\)</span></p>
+</div></blockquote>
+<p><strong>Taking Log</strong></p>
+<p>The above derived expression has products(<span class="math notranslate nohighlight">\(\prod\)</span>) and exponential term in it we can take the log of the whole expression to simplify things as according to property of log-</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(log(e)=1\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(log(a^n)=n*log(a)\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\normalsize{log(a_1*a_2*a_3.....a_n)=log(a_1)+log(a_2)+log(a_3).....+log(a_n)}\)</span></p></li>
+</ul>
+<p>The Equation can be also written as-</p>
+<blockquote>
+<div><p><span class="math notranslate nohighlight">\(\normalsize{log(\prod_{i=1}^n a_i)=\sum_{i=1}^n log(a_i)}\)</span></p>
+</div></blockquote>
+<hr class="docutils" />
+<blockquote>
+<div><p><strong>But will taking log effect our answer?</strong></p>
+<blockquote>
+<div><p>Answer no, beacuse we are not intrested in the actual maximum value as in MLE we maximise the likelihood and find that value of <strong>parameters</strong> on which maximum was achieved not the maximum <a class="reference external" href="http://value.As">value.As</a>, log is a <strong>monotonically increasing function</strong> i.e. A function is one that increases as x does for all real x. you can read more monotonic finction from here (<a class="reference external" href="https://en.wikipedia.org/wiki/Monotonic_function">https://en.wikipedia.org/wiki/Monotonic_function</a>)</p>
+</div></blockquote>
+</div></blockquote>
+<hr class="docutils" />
+<p>As, we are only intrested in value of paramters and the maximisation of likelihood(Probability function) when applied log due to it’s property(monotonically increasing) the new function will achieve it’s maximum value at the same value of parametrs.maximum value might get changed but we are not worried about that.</p>
+<p>After applying log and using above specified equations-</p>
+<blockquote>
+<div><p><span class="math notranslate nohighlight">\(\large{\sum_{i=1}^n {log(\frac {1}{{\sqrt {2\pi }}})}-{\frac {1}{2}}\left({Y_{true}{i}-(m \times X_i+c)}\right)^{2}}\)</span></p>
+</div></blockquote>
+<p>using the proprety if summation-</p>
+<blockquote>
+<div><p><span class="math notranslate nohighlight">\(\large{\sum_{i=1}^n {log(\frac {1}{{\sqrt {2\pi }}})}-\sum_{i=1}^n{\frac {1}{2}}\left({Y_{true}{i}-(m \times X_i+c)}\right)^{2}}\)</span></p>
+</div></blockquote>
+<p>As first term of the above equation is constant therefore-</p>
+<blockquote>
+<div><p><span class="math notranslate nohighlight">\(\large{n \times {log(\frac {1}{{\sqrt {2\pi }}})}-\sum_{i=1}^n{\frac {1}{2}}\left({Y_{true}{i}-(m \times X_i+c)}\right)^{2}}\)</span></p>
+</div></blockquote>
+<p>Now,we know that we have to maximize the above expression in order to find the value of parameters of our best fit line (<strong>m</strong> and <strong>c</strong>).</p>
+<blockquote>
+<div><p><span class="math notranslate nohighlight">\(\large{n \times {log(\frac {1}{{\sqrt {2\pi }}})}-\sum_{i=1}^n{\frac {1}{2}}\left({Y_{true}{i}-(m \times X_i+c)}\right)^{2}}------Maximise\)</span></p>
+</div></blockquote>
+<p>Looking closely on the above expression we can notice that it has two terms and to maximise whole expression we have to maximise the indivisual term as you can see the first term is constant and will have not have any effect on the maximisation of the expression therefore in order to maximise the likelihood we have to maximise the second term which is:-</p>
+<blockquote>
+<div><p><span class="math notranslate nohighlight">\(\normalsize{-\sum_{i=1}^n{\frac {1}{2}}\left({Y_{true}{i}-(m \times X_i+c)}\right)^{2}}------Maximise\)</span></p>
+</div></blockquote>
+<p>As you can see there is a negative sign associated with it thus maximising the whole term will mean to minimise the mod of the term-</p>
+<blockquote>
+<div><p><span class="math notranslate nohighlight">\(\normalsize{\sum_{i=1}^n{\frac {1}{2}}\left({Y_{true}{i}-(m \times X_i+c)}\right)^{2}}------Minimise\)</span></p>
+</div></blockquote>
+</section>
+</section>
+<section id="conclusion">
+<h2>Conclusion<a class="headerlink" href="#conclusion" title="Permalink to this headline">¶</a></h2>
+<p>Observing carefully the expression <span class="math notranslate nohighlight">\(\sum_{i=1}^n{\dfrac {1}{2}}\left({Y_{true}{i}-(m \times X_i+c)}\right)^{2}\)</span> we can notice that it is nothing but our loss function that we took in the beginning of the linear regression module there we took it intuitively and minimised it here we got it by mathematical proof.Therefore we can say that-</p>
+<blockquote>
+<div><p><span class="math notranslate nohighlight">\(\normalsize{Loss=\sum_{i=1}^n{\dfrac {1}{2}}\left({Y_{true}{i}-(m*X_i+c)}\right)^{2}}\)</span></p>
+</div></blockquote>
+<p>Here, You will observe as extra (1/2) term associated with it but again we are not worried about the minimum value of the loss but the value of parameters of our best fit line- <strong>m</strong> and <strong>c</strong> when loss is minimum. extra 1/2 term will just sacle the value of loss by itself but will no effect on optimal values of the parameters.</p>
+<p>Now as we have mathematically proved that our loss function is correct and we have to minise it in order to find the optimal values of the parameters best fit line. we can use the method discussed in the linear regression section to find the formulae of <strong>m</strong> and <strong>c</strong> and verify it.</p>
+<p><strong>Hence we used <code class="docutils literal notranslate"><span class="pre">Maximum</span> <span class="pre">likelihood</span> <span class="pre">estimation</span></code> and successfully solved and found out relation between parameters succesfully.</strong></p>
+</section>
+<section id="further-reading">
+<h2>Further Reading<a class="headerlink" href="#further-reading" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="https://en.wikipedia.org/wiki/Monotonic_function">https://en.wikipedia.org/wiki/Monotonic_function</a>)</p>
+<p><a class="reference external" href="https://byjus.com/maths/independent-events/">https://byjus.com/maths/independent-events/</a></p>
+<p><a class="reference external" href="https://en.wikipedia.org/wiki/Normal_distribution">https://en.wikipedia.org/wiki/Normal_distribution</a></p>
+<p><a class="reference external" href="https://en.wikipedia.org/wiki/Probability_distribution">https://en.wikipedia.org/wiki/Probability_distribution</a></p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        
+            <!-- Previous / next buttons -->
+<div class='prev-next-area'> 
+    <a class='left-prev' id="prev-link" href="3.2%20Multi-Variate%20Regression.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Multi Variable Regression</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="3.4%20GLM%20-%20Linear%20Regression.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Generalised linear model-Linear Regression</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer">
+    <div class="container">
+      <p>
+        
+          By Coding Blocks Pvt Ltd<br/>
+        
+            &copy; Copyright 2021.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+
+  </body>
+</html>

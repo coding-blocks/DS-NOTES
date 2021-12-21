@@ -1,0 +1,681 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Gradient Descent &#8212; Data Science Notes</title>
+    
+  <link href="_static/css/theme.css" rel="stylesheet">
+  <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="_static/js/index.be7d3bbb2ef33a8344ce.js">
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/togglebutton.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script>
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Logistic Regression" href="5.1%20%20Logistic%20Regression.html" />
+    <link rel="prev" title="Generalised linear model-Linear Regression" href="3.4%20GLM%20-%20Linear%20Regression.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="_static/logo.svg" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">Data Science Notes</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="intro.html">
+   Introduction
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Machine Learning
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="1.1%20Introduction%20to%20Numpy.html">
+   Numpy
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="1.2%20Introduction%20to%20Matplotlib.html">
+   Matplotlib: Visualization with Python
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="1.3%20Introduction%20to%20Pandas.html">
+   Pandas
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="2.%20KNN.html">
+   K - Nearest Neighbour
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="3.1%20Linear%20Regression.html">
+   Linear Regression
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="3.2%20Multi-Variate%20Regression.html">
+   Multi Variable Regression
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="3.3%20MLE%20-%20Linear%20Regression.html">
+   MLE - Linear Regression
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="3.4%20GLM%20-%20Linear%20Regression.html">
+   Generalised linear model-Linear Regression
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Gradient Descent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="5.1%20%20Logistic%20Regression.html">
+   Logistic Regression
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="5.2%20Maximum%20Likelihood%20Estimation%20and%20Implementation.html">
+   Logistic Regression MLE &amp; Implementation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="6.%20Decision%20Trees.html">
+   Decision Tree Algorithm
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="7.%20Ensemble.html">
+   Ensemble Learning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="9.1%20Naive%20Bayes.html">
+   Naive Bayes Algorithm
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="9.2%20Multinomial%20Naive%20Bayes.html">
+   Multinomial Naive Bayes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="11.%20Imbalanced%20Dataset.html">
+   Imbalanced Dataset
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="12.%20PCA.html">
+   Principal Component Analysis
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  About
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="About%20the%20Authors.html">
+   About the Authors
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="_sources/4. Gradient Descent.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/executablebooks/jupyter-book/master?urlpath=tree/4. Gradient Descent.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#introduction">
+   Introduction
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#general-algorithm">
+     General Algorithm
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#n-epochs">
+       <span class="math notranslate nohighlight">
+        \(n\_epochs\)
+       </span>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#alpha-learning-rate">
+       <span class="math notranslate nohighlight">
+        \(\alpha\)
+       </span>
+       - Learning Rate
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#types-of-gradient-descent">
+   Types of Gradient Descent
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#batch-gradient-descent">
+     Batch Gradient Descent
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#applying-gradient-descent-approach">
+       Applying Gradient Descent Approach
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#stochastic-gradient-descent">
+     Stochastic Gradient Descent
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#mini-batch-gradient-descent">
+     Mini-Batch Gradient Descent
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#further-readings">
+   Further Readings
+  </a>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <section class="tex2jax_ignore mathjax_ignore" id="gradient-descent">
+<h1>Gradient Descent<a class="headerlink" href="#gradient-descent" title="Permalink to this headline">¶</a></h1>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p><em>Gradient Descent</em> is a generic optimization algorithm capable of finding optimal solutions to a wide range of problems. The general idea of Gradient Descent is to tweak parameters iteratively in order to minimize a cost function.</p>
+<p>Suppose we have to minimize the value of “W” for a given loss function. Concretely, we start by filling “W” with random values (<em>random initialization</em>). Then we improve it gradually, taking one baby step at a time, each step attempting to decrease the loss function, until the algorithm converges to a minimum.</p>
+<p><img alt="" src="_images/gd1.png" /></p>
+<p>Let’s first try to grab the concept with a raw example, keeping all ML algorithms aside.</p>
+<p>Let’s say we have an equation <span class="math notranslate nohighlight">\(y = 3x^2 - 2x + 5\)</span>. By solving this equation,</p>
+<p><span class="math notranslate nohighlight">\(\dfrac{dy}{dx} = 6x - 2\)</span></p>
+<p><span class="math notranslate nohighlight">\(\dfrac{dy}{dx}= 
+\begin{cases}
+    +_{ve} ,&amp; \text{when } x &gt; \frac{1}{3}\\
+    0,              &amp; \text{when } x = \frac{1}{3}\\
+    -_{ve} ,&amp; \text{when } x &lt; \frac{1}{3}\\
+\end{cases}\)</span></p>
+<p>and we know that minimum values exist when <span class="math notranslate nohighlight">\(\frac{dy}{dx} = 0\)</span>, so <span class="math notranslate nohighlight">\(y\)</span> will be minimum at <span class="math notranslate nohighlight">\(x=\frac{1}{3}\)</span></p>
+<p><img alt="" src="_images/gd2.png" /></p>
+<p>Suppose we don’t know about the minima of this equation, and we want to find it by Gradient Descent. So we’ll start by initializing a random value of <span class="math notranslate nohighlight">\(x\)</span>, and then proceed to the minima.</p>
+<blockquote>
+<div><p>Let’s try putting <span class="math notranslate nohighlight">\(x = \frac{1}{6}\)</span></p>
+</div></blockquote>
+<p>So, <span class="math notranslate nohighlight">\(\frac{dy}{dx} = -2\)</span>, we know that for minimum value <span class="math notranslate nohighlight">\(\frac{dy}{dx}\)</span> should be <span class="math notranslate nohighlight">\(0\)</span>. So that means we have to move in the +ve X direction.</p>
+<blockquote>
+<div><p>So Let’s try putting <span class="math notranslate nohighlight">\(x = \frac{2}{3}\)</span></p>
+</div></blockquote>
+<p>So, <span class="math notranslate nohighlight">\(\frac{dy}{dx} = 2\)</span>, we know that for minimum value <span class="math notranslate nohighlight">\(\frac{dy}{dx}\)</span> should be <span class="math notranslate nohighlight">\(0\)</span>. So that means we have moved ahead of minima in +ve direction, we have to move back in -ve direction.</p>
+<blockquote>
+<div><p>Let’s proceed by putting <span class="math notranslate nohighlight">\(x = \frac{1}{3}\)</span></p>
+</div></blockquote>
+<p>So, <span class="math notranslate nohighlight">\(\frac{dy}{dx} = 0\)</span>, and we know that for minimum value <span class="math notranslate nohighlight">\(\frac{dy}{dx}\)</span> should be <span class="math notranslate nohighlight">\(0\)</span>. So that means we have got our minima at <span class="math notranslate nohighlight">\(x=\frac{1}{3}\)</span>.</p>
+<p>So by performing these iterations, we can reach the minima of an equation.<br />
+Now in case of vectors,<br />
+Suppose the jacobian matrix is <span class="math notranslate nohighlight">\(\begin{bmatrix} 2 \\ 3 \end{bmatrix}\)</span>. This tells we have gone further in both <span class="math notranslate nohighlight">\(w_1\)</span> and <span class="math notranslate nohighlight">\(w_2\)</span> direction, and we need to go back, and similarly <span class="math notranslate nohighlight">\(\begin{bmatrix} 2 \\ -3 \end{bmatrix}\)</span> tells us that we have gone further in <span class="math notranslate nohighlight">\(w_1\)</span> but we still need to proceed in <span class="math notranslate nohighlight">\(w_2\)</span> direction.</p>
+<p>This is the basic idea for the gradient descent approach, and how it helps to approach the minima.</p>
+<hr class="docutils" />
+<section id="general-algorithm">
+<h3>General Algorithm<a class="headerlink" href="#general-algorithm" title="Permalink to this headline">¶</a></h3>
+<p>Now for larger calculations, we need a general formula for Gradient Descent.</p>
+<blockquote>
+<div><p><strong>for</strong> <span class="math notranslate nohighlight">\(n\_epochs\)</span>:</p>
+<p><span class="math notranslate nohighlight">\(\hspace{1cm}w' = w' - \alpha\dfrac{dL}{dw}\)</span></p>
+</div></blockquote>
+<p>Here, we have two new Parameters =&gt; “<span class="math notranslate nohighlight">\(n\_epochs\)</span>” and “<span class="math notranslate nohighlight">\(\alpha\)</span>”</p>
+<section id="n-epochs">
+<h4><span class="math notranslate nohighlight">\(n\_epochs\)</span><a class="headerlink" href="#n-epochs" title="Permalink to this headline">¶</a></h4>
+<p>It is the no. of iterations, we need to perform to reach the minima. It is an important parameter as if it’s value is too low, our model will stop before reaching the minima, and thus increasing the error of the model. And if it’s value is set too high, it will affect the efficieny of the model, making it very slow.</p>
+<p>So it’s value is adjusted in a way that neither our model stops before reaching the minima, nor it goes through unnecessary iterations, making the model slow.</p>
+<p>Note that if our model reaches the minima the <span class="math notranslate nohighlight">\(\frac{dL}{dw}\)</span> term becomes 0, which means the value of <span class="math notranslate nohighlight">\(w'\)</span> will no longer be updated in the further epochs, but the program still continues to run without making any contribution, that is why we call them unnecessary iterations, which makes the model slow.</p>
+</section>
+<section id="alpha-learning-rate">
+<h4><span class="math notranslate nohighlight">\(\alpha\)</span> - Learning Rate<a class="headerlink" href="#alpha-learning-rate" title="Permalink to this headline">¶</a></h4>
+<p>It is another important parameter in Gradient Descent, which tells us about the size of the steps in each iterations. if the learning rate is too small, then the algorithm will have to go through many iterations to converge, which will take a long time making our model very slow.</p>
+</section>
+<p>See in fig. below</p>
+<p><img alt="small%20learning%20rate.png" src="_images/gd3.png" /></p>
+<p>On the other hand, if the learning rate <span class="math notranslate nohighlight">\(\alpha\)</span> is too high, we might end up jumping across the valley and end up on the other side, possibly even higher up than we were before. This might make the algorithm diverge, with larger and larger values, failing to find a good solution. These kind of jumps are also known as “Outward Oscilaations”.</p>
+<p>See the figure below for visualisation.</p>
+<p><img alt="large%20learning%20rate.png" src="_images/gd4.png" /></p>
+<p>Finally, it’s not necessary that the Loss function have only one global minima, or we can say it’s not necessary that it’s in a shape of a regular bowl. There may be holes, rigdes, plateus, and all sorts of irregular terrains, making the convergence different. So it totally depends on the initialization that if the loss converges to the global minima, or gets stuck in a local minima. Below given are two random initializations, one that is on the left gets stuck on a local minima, while one the right slowly approaches to the global one.</p>
+<p><img alt="gd2.png" src="_images/gd5.png" /></p>
+<p>But fortunately in <strong>most of the cases</strong>, the loss function of a Linear Regression happens to be in a shape of regular bowl, which means no local minima’s exist on the curve, just one global minimum exists. Plus another thing in our favour is, it is a continuous function in which the slope of the curve never changes much abruptly.</p>
+<p>Having these two odds in our favour tells us that the Gradient Descent Optimization is most likely to approach arbitarily close to the global minimum.</p>
+<hr class="docutils" />
+<p>Now as we got the essence of Gradient Descent, let’s take a look on it’s different types.</p>
+</section>
+</section>
+<section id="types-of-gradient-descent">
+<h2>Types of Gradient Descent<a class="headerlink" href="#types-of-gradient-descent" title="Permalink to this headline">¶</a></h2>
+<ol class="simple">
+<li><p>Batch Gradient Descent</p></li>
+<li><p>Stochastic Gradient Descent</p></li>
+<li><p>Mini-Batch Gradient Descent</p></li>
+</ol>
+<section id="batch-gradient-descent">
+<h3>Batch Gradient Descent<a class="headerlink" href="#batch-gradient-descent" title="Permalink to this headline">¶</a></h3>
+<p>In Batch Gradient Descent, all points of the data are considered at every step. As a result it is terribly slow on very large training datasets, as well as making it the most accurate of all.</p>
+<p><strong>So, if computational power and time isn’t an issue, we should always prefer using Batch Gradient Descent, to get the optimum results.</strong></p>
+<p>All of the concepts which we were talking about up until in Gradient Descent, are of Batch Gradient Descent.</p>
+<p>Now, let’s try to code Batch Gradient Descent on a Linear Regression Dataset.</p>
+<p><strong>Importing &amp; Plotting the Data</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;./Data/Linear Regression/X_data.npy&quot;</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;./Data/Linear Regression/Y_data.npy&quot;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/4. Gradient Descent_15_0.png" src="_images/4. Gradient Descent_15_0.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Adding constant column</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">1</span><span class="p">)),</span> <span class="n">X</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(50, 2) (50, 1)
+</pre></div>
+</div>
+</div>
+</div>
+<section id="applying-gradient-descent-approach">
+<h4>Applying Gradient Descent Approach<a class="headerlink" href="#applying-gradient-descent-approach" title="Permalink to this headline">¶</a></h4>
+<p>As we saw in Multi-Variable Regression, the value of <span class="math notranslate nohighlight">\(\frac{dL}{dW}\)</span> was :</p>
+<p><span class="math notranslate nohighlight">\(\dfrac{dL}{dW} = 0 - 2X^Ty + 2X^TXW\)</span></p>
+<p>and then we equated this equation to <span class="math notranslate nohighlight">\(0\)</span> to find the value of W, on which our minima exist, but this time instead of equating it to <span class="math notranslate nohighlight">\(0\)</span>, we’ll apply the approach of Gradient Descent to update our Loss.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">learning_rate</span> <span class="o">=</span> <span class="mf">0.01</span>
+<span class="n">n_epochs</span> <span class="o">=</span> <span class="mi">1000</span>
+
+<span class="n">W</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="mi">1</span><span class="p">)</span> <span class="c1">#Randomly Initializing W</span>
+
+<span class="c1"># Updating W with gradient descent formula for n_epochs times</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_epochs</span><span class="p">):</span>
+    <span class="n">dL_dW</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span> <span class="o">-</span> <span class="mi">2</span><span class="o">*</span><span class="p">((</span><span class="n">X</span><span class="o">.</span><span class="n">T</span><span class="p">)</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">y</span><span class="p">))</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X</span><span class="p">))</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">W</span><span class="p">))</span> <span class="c1"># &lt;= dL/dW</span>
+    <span class="n">W</span> <span class="o">=</span> <span class="n">W</span> <span class="o">-</span> <span class="n">learning_rate</span><span class="o">*</span><span class="n">dL_dW</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">W</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[2.55791360e-02]
+ [3.23245309e+01]]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here we calculated the value of W using Batch Gradient Descent keeping the value of <span class="math notranslate nohighlight">\(\alpha = 0.01\)</span> i.e. learning_rate and we updated the value of W, 1000 times using the general Gradient Descent formula.</p>
+<p>Now as we calculated the value of W using Gradient Descent, let’s compare it with the normal approach we used earlier in Multi-Variable Regression, to find W.</p>
+<p><span class="math notranslate nohighlight">\(W = (X^TX)^{-1}X^Ty\)</span></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">W_direct</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X</span><span class="p">))</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">T</span><span class="p">)</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">W_direct</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[2.55791360e-02]
+ [3.23245309e+01]]
+</pre></div>
+</div>
+</div>
+</div>
+<p>As we can see, the result of both the approaches are very similar.</p>
+<p>Thus we proved that the algorithm of Gradient Descent is itself powerful to reach the minima and we don’t need to calulate the value of gradients on our own. But keep in mind here <strong>learning_rate</strong> and <strong>n_epochs</strong> are two important hyper-parameters, we should focus on.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="stochastic-gradient-descent">
+<h3>Stochastic Gradient Descent<a class="headerlink" href="#stochastic-gradient-descent" title="Permalink to this headline">¶</a></h3>
+<p>The main problem in Batch Gradient Descent is the fact that it still uses the whole training dataset to compute the gradients at every step, which makes it very slow when the training set is large. At the opposite extreme, Stochastic Gradient Descent picks up a random instance in the training dataset at every step and computes the gradients based on that single instance. Obviously, working on a single instance at a time makes the algorithm much faster because it has a very little data to manipulate at every iteration. It also makes it possible to train on huge training datasets, since only one instance needs to be in memory at each iteration.</p>
+<p>On the other hand, due to stochastic nature, this algorithm is much less regular than Batch Gradient Descent: instead of gently decresing until it reaches the minimum, the loss function keeps bouncing up and down, decreasing only on average. Over time it will end up very close to minimum, but once it gets there it will continue to bounce around, never settling down. So once the algorithm stops, the final parameter values are good, but not optimal.</p>
+<p>When the Loss function is very irregular, this can actually help the algorithm jump out of local minima, so Stochastic Gradient Descent has a better chance of finding the global minimum that Batch Gradient Descent does.</p>
+<p>Therefore, randomness is good to escape from local minima but bad because it means that the algorithm can never settle at the minimum. One solution to this dilemma is to gradually reduce the learning rate. The steps start out large (which helps make quick process and escape local minima), then get smaller and smaller, allowing the algorithm to settle at the global minimum.</p>
+<p><strong>If computation speed is our top-most priority, and we can settle down with some very minor errors in our predictions, then Stochastic Gradient Descent is recommended.</strong></p>
+<p>Notice that since instances are picked randomly, some instances may be picked up several times per epoch, while others may not be picked at all. If you want to be sure that the algorithm goes through every instance at each epoch, another approach is to shuffle the training dataset (making sure to shuffle the input features and the labels jointly), then go through it instance by instance, then shuffle it again, and so on. However, this approach generally converges more slowly.</p>
+<blockquote>
+<div><blockquote>
+<div><p>When using Stochastic Gradient Descent, the training instances must be independent and identically distributed (IID) to ensure that the parameters get pulled through the global minimum, on average. A very simple way to ensure this is to shuffle the training dataset at the beginning of each epoch). If you do not shuffle the instances - For example, if the instances are sorted by label - then SGD will start by optimizing for one label, then the next, and so on, and it will not settle close to the global minimum.</p>
+</div></blockquote>
+</div></blockquote>
+<p>To perform Linear Regression, using Stochastic Gradient Descent we can use SGDRegressor class of Scikit-Learn library, however coding the SGDRegressor on our own is not an intense task at all. This is to provide you the idea about the Scikit-Learn Library.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;./Data/Linear Regression/X_data.npy&quot;</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;./Data/Linear Regression/Y_data.npy&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">SGDRegressor</span>
+<span class="n">sgd_reg</span> <span class="o">=</span> <span class="n">SGDRegressor</span><span class="p">(</span><span class="n">max_iter</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span><span class="n">eta0</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)</span>
+<span class="n">sgd_reg</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>SGDRegressor()
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sgd_reg</span><span class="o">.</span><span class="n">intercept_</span><span class="p">,</span> <span class="n">sgd_reg</span><span class="o">.</span><span class="n">coef_</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([-0.00065003]), array([32.29970572]))
+</pre></div>
+</div>
+</div>
+</div>
+<p>And as we can clearly see, the output by SGDRegressor is also very close to the normally calculated result.</p>
+<p><em>Please Notice that<br />
+2.55791360e-02 = 0.00255791360<br />
+3.23245309e+01 = 32.3245309<br />
+So don’t get tangled in the different representation ways.</em></p>
+</section>
+<hr class="docutils" />
+<section id="mini-batch-gradient-descent">
+<h3>Mini-Batch Gradient Descent<a class="headerlink" href="#mini-batch-gradient-descent" title="Permalink to this headline">¶</a></h3>
+<p>It is a rather simple algorithm to understand after studying about Batch-Gradient Descent and Stochastic-Gradient Descent.</p>
+<p>In this algorithm at each step, instead of calculating the gradients based on the full training dataset (as in Batch Gradient Descent), or based on just one instance (as in Stochastic GD), Mini-Batch Gradient Descent computes the gradients on small random sets of instances called <strong>mini-batches</strong>.</p>
+<p>The main advantage of Mini-Bactch GD over Stochastic GD is that you can get a performance boost from hardware optimization of matrix operations, especially when using GPUs.</p>
+<p>Mini-Batch GD reaches a bit closer to global minima as compared to Stochastic Gradient Descent, as well making it harder to escape local minima’s.</p>
+<blockquote>
+<div><p><strong>Note:</strong></p>
+<p>Mini-Batch Gradient Descent can act like both:</p>
+<p>Batch-Gradient descent (when batch_size = training set size), and</p>
+<p>Stochastic Gradient Descent (when batch_size = 1).</p>
+</div></blockquote>
+<p>At the end, there is almost no difference between all the methods after training of the model. All these algorithms end up with very similar models and make predictions in exactly the same way. And the Answer to <em>“Which Algorithm is best among all?”</em> totally depends on type of dataset we’re working on.</p>
+<p>Given below are the different Gradient Descent Paths of these Algorithms, you may be able to compare their convergence rate now.</p>
+<p>The Batch-Gradient Descent has the minimum irregularity among all and at converse we have Stochastic Gradient Descent having the maximum irregualrity. Mini-Batch GD lies somewhere between these two.</p>
+<p><img alt="" src="_images/gd6.png" /></p>
+</section>
+</section>
+<section id="further-readings">
+<h2>Further Readings<a class="headerlink" href="#further-readings" title="Permalink to this headline">¶</a></h2>
+<p>The sklearn implementation of these algorithms are a bit different. It involves a term <strong>“Tolerance”</strong> whose default value is “0.001”, which means if the “W” is updated with the value lesser than tolerance, the algorithm will stop there. So, instead of totally relying on the no. of epochs, this approach seems to be a bit better. You can refer to <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.SGDClassifier.html">https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.SGDClassifier.html</a> for more information regarding sklearn implementation of Gradient Descent.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        
+            <!-- Previous / next buttons -->
+<div class='prev-next-area'> 
+    <a class='left-prev' id="prev-link" href="3.4%20GLM%20-%20Linear%20Regression.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Generalised linear model-Linear Regression</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="5.1%20%20Logistic%20Regression.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Logistic Regression</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer">
+    <div class="container">
+      <p>
+        
+          By Coding Blocks Pvt Ltd<br/>
+        
+            &copy; Copyright 2021.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+
+  </body>
+</html>

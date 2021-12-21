@@ -1,0 +1,524 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Generalised linear model-Linear Regression &#8212; Data Science Notes</title>
+    
+  <link href="_static/css/theme.css" rel="stylesheet">
+  <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="_static/js/index.be7d3bbb2ef33a8344ce.js">
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/togglebutton.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script>
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Gradient Descent" href="4.%20Gradient%20Descent.html" />
+    <link rel="prev" title="MLE - Linear Regression" href="3.3%20MLE%20-%20Linear%20Regression.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="_static/logo.svg" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">Data Science Notes</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="intro.html">
+   Introduction
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Machine Learning
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="1.1%20Introduction%20to%20Numpy.html">
+   Numpy
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="1.2%20Introduction%20to%20Matplotlib.html">
+   Matplotlib: Visualization with Python
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="1.3%20Introduction%20to%20Pandas.html">
+   Pandas
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="2.%20KNN.html">
+   K - Nearest Neighbour
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="3.1%20Linear%20Regression.html">
+   Linear Regression
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="3.2%20Multi-Variate%20Regression.html">
+   Multi Variable Regression
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="3.3%20MLE%20-%20Linear%20Regression.html">
+   MLE - Linear Regression
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Generalised linear model-Linear Regression
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="4.%20Gradient%20Descent.html">
+   Gradient Descent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="5.1%20%20Logistic%20Regression.html">
+   Logistic Regression
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="5.2%20Maximum%20Likelihood%20Estimation%20and%20Implementation.html">
+   Logistic Regression MLE &amp; Implementation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="6.%20Decision%20Trees.html">
+   Decision Tree Algorithm
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="7.%20Ensemble.html">
+   Ensemble Learning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="9.1%20Naive%20Bayes.html">
+   Naive Bayes Algorithm
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="9.2%20Multinomial%20Naive%20Bayes.html">
+   Multinomial Naive Bayes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="11.%20Imbalanced%20Dataset.html">
+   Imbalanced Dataset
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="12.%20PCA.html">
+   Principal Component Analysis
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  About
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="About%20the%20Authors.html">
+   About the Authors
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="_sources/3.4 GLM - Linear Regression.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/executablebooks/jupyter-book/master?urlpath=tree/3.4 GLM - Linear Regression.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#need-of-glm">
+   Need Of GLM
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#glm-equation">
+   GLM Equation
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#glm-for-normal-distribution">
+   GLM For Normal Distribution
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#assumptions-of-glm">
+   Assumptions of GLM:
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#further-readings">
+   Further Readings
+  </a>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <section class="tex2jax_ignore mathjax_ignore" id="generalised-linear-model-linear-regression">
+<h1>Generalised linear model-Linear Regression<a class="headerlink" href="#generalised-linear-model-linear-regression" title="Permalink to this headline">¶</a></h1>
+<p>Now let’s dicuss about a very intresting topic called <strong>Generalised linear model</strong> as the name suggest it is generalisation of linear model, linear model is the linear regression technique in which we were assuming a linear relation between our variables.</p>
+<p>The GLM(generalised linear model) generalizes linear regression by allowing the linear model to be related to the <strong>response variable</strong> via a <strong>link function</strong> and by allowing the magnitude of the variance of each measurement to be a function of its predicted value. generalization of ordinary linear regression that allows for the response variable to have an error distribution other than the normal distribution.</p>
+<p>Generalized linear models were formulated by John Nelder and Robert Wedderburn as a way of unifying various other statistical models, including linear regression, logistic regression and Poisson regression.</p>
+<p>let us first understand some term that are used with context to GLM</p>
+<ul class="simple">
+<li><p><strong>Responce Variable</strong> is the variable whose expected value is getting predicted by our model in our case <span class="math notranslate nohighlight">\(Y\)</span>.</p></li>
+<li><p><strong>Predictor</strong> is the set of observed values relating to our response variable.</p></li>
+<li><p><strong>Link fuction</strong> in a Generalized Linear Model maps a non-linear relationship to a linear one, which means you can fit a linear model to the data.More specifically, it connects the predictors in a model with the expected value of the response (dependent) variable in a linear way.</p></li>
+</ul>
+<p>To summarize things we can say that-</p>
+<blockquote>
+<div><p>GLM models allow us to build a linear relationship between the response and predictors, even though their underlying  relationship is not linear. This is made possible by using a link function, which links the response variable to a linear model.`</p>
+</div></blockquote>
+<section id="need-of-glm">
+<h2>Need Of GLM<a class="headerlink" href="#need-of-glm" title="Permalink to this headline">¶</a></h2>
+<p>As we discussed that that we use to glm to derive a relation between response variable and predictor but it was same with the linear regression let’s see some cases where linear regression will fail to predict accurately but using GLM to that case will improve our accuracy-</p>
+<p>Linear Regression model is not suitable if,</p>
+<p>1. The relationship between X and y is not linear. There exists some non-linear relationship between them. For example, y increases exponentially as X increases.just like in below given graph.</p>
+<p><img alt="image2.png" src="_images/lr1.png" /></p>
+<p>2. Variance of errors in y (commonly called as Homoscedasticity in Linear Regression), is not constant, and varies with X.</p>
+<p>3. Response variable is not continuous, but discrete/categorical. Linear Regression assumes normal distribution of the response variable, which can only be applied on a continuous data.</p>
+<blockquote>
+<div><p><strong>Do remember That basic underlying of GLM is still a linear model but with the help of link function and other mathematical function we generalise that linear model to work in other cases too.</strong></p>
+</div></blockquote>
+</section>
+<section id="glm-equation">
+<h2>GLM Equation<a class="headerlink" href="#glm-equation" title="Permalink to this headline">¶</a></h2>
+<p>There is way to identify and calculate the required parameter such as link function and other to see if GLM will work on not.
+if we can write the the equation of the probability distribution in the form of equation mentioned value then a linear model can be trained for that distribution of data.</p>
+<blockquote>
+<div><p><span class="math notranslate nohighlight">\(\large{P(Y)=b(Y)\times e^{\Large{(\eta T(Y)-a(\eta))}}}\)</span></p>
+</div></blockquote>
+<p><em>As you can see the above written equation belongs to a exponential family,if any distribution’s probabilty equation belongs to a exponential family and can be written in above mentioned form then a linear model can be trained for it and then along with link function will be fit to predict.</em></p>
+<p><strong>Each of the above equation’s term has it’s meaning, let’s look at it one by one-</strong></p>
+<blockquote>
+<div><p>1. Expected value of the function <span class="math notranslate nohighlight">\(T(Y)\)</span> will be our final <a class="reference external" href="http://prediction.It">prediction.It</a> can be written as</p>
+<blockquote>
+<div><p><span class="math notranslate nohighlight">\(E_x[T(Y)]\)</span> will be our prediction</p>
+</div></blockquote>
+<p>2. <span class="math notranslate nohighlight">\(\large\eta\)</span> is the linear predictor or value that our linear model is going to predict.</p>
+<p>Therefore, as seen in earlier in multivariable linear regression section prediction is the dot product of our data(X) and our parameters(W)-</p>
+<blockquote>
+<div><p><span class="math notranslate nohighlight">\(\large\eta=XW\)</span></p>
+</div></blockquote>
+<p>3. <span class="math notranslate nohighlight">\(\large{b(Y)}\)</span> and <span class="math notranslate nohighlight">\(\large{T(Y)}\)</span> is the function of term of Y</p>
+<p>4. <span class="math notranslate nohighlight">\(\large{a(\eta)}\)</span> is the function of term  of <span class="math notranslate nohighlight">\(\eta\)</span> or you can say that function of term XW</p>
+</div></blockquote>
+<p>You can refer to following link for in-depth understanding and intuition of GLM- <a class="reference external" href="https://en.wikipedia.org/wiki/Generalized_linear_model">https://en.wikipedia.org/wiki/Generalized_linear_model</a></p>
+</section>
+<section id="glm-for-normal-distribution">
+<h2>GLM For Normal Distribution<a class="headerlink" href="#glm-for-normal-distribution" title="Permalink to this headline">¶</a></h2>
+<p>As you know in case of linear regression we assumed a <code class="docutils literal notranslate"><span class="pre">normal</span> <span class="pre">distribution</span></code> of the data and applied a linear model on it, Now let’s see using GLM equation comparison that a normal distribution’s data can be predicted using a linear model or not we know it intuitively that it will, but let see it mathematically.</p>
+<p>let’s assume Y to be normally distributed with mean be <span class="math notranslate nohighlight">\(\mu\)</span> and standard deviation 1</p>
+<p><span class="math notranslate nohighlight">\({Y = N(\mu,1)}\)</span></p>
+<p>Therefore,</p>
+<blockquote>
+<div><p><span class="math notranslate nohighlight">\(\large{{\displaystyle P(Y)={\frac {1}{{\sqrt {2\pi }}}}e^{-{\frac {1}{2}}\left({ {Y-\mu }}\right)^{2}}}}\)</span></p>
+</div></blockquote>
+<p>As we know for linear model to work on a distribution it is neccessary for that distribution to belong to exponential family(<span class="math notranslate nohighlight">\(\large e\)</span>). Our normal distribution satisfies this condition now let’s try to write the equation of normal distribution in form of Generalised Linear Model’s equation-</p>
+<blockquote>
+<div><p><span class="math notranslate nohighlight">\({{\displaystyle P(Y)={\dfrac {1}{{\sqrt {2\pi }}}}e^{-{\dfrac {1}{2}}\left({ {Y^2+\mu^2-2\times \mu \times Y }}\right)}}}\)</span></p>
+</div></blockquote>
+<blockquote>
+<div><p><span class="math notranslate nohighlight">\({{\displaystyle P(Y)={\dfrac {1}{{\sqrt {2\pi }}}}e^{-\frac{Y^2}{2}}\times e^{(\mu\times Y-\dfrac{\mu^2}{2})}}}\)</span></p>
+</div></blockquote>
+<p>Now let’s compare to the general equation and find out equation of functions of GLM in case of Normal Distribution.</p>
+<blockquote>
+<div><p><span class="math notranslate nohighlight">\({{\displaystyle P(Y)={\dfrac {1}{{\sqrt {2\pi }}}}e^{-\frac{Y^2}{2}}\times e^{(\mu \times Y-\dfrac{\mu^2}{2})}}}\)</span></p>
+</div></blockquote>
+<blockquote>
+<div><p><span class="math notranslate nohighlight">\(\large{P(Y)=b(Y)\times e^{\Large{(\eta T(Y)-a(\eta))}}}\)</span></p>
+</div></blockquote>
+<hr class="docutils" />
+<p>On comparing the Two equation we can find out that-</p>
+<blockquote>
+<div><p><span class="math notranslate nohighlight">\({b(Y)={\frac {1}{{\sqrt {2\pi }}}}e^{-\frac{Y^2}{2}}}\)</span></p>
+</div></blockquote>
+<blockquote>
+<div><p><span class="math notranslate nohighlight">\({\eta=\mu}\)</span></p>
+</div></blockquote>
+<blockquote>
+<div><p><span class="math notranslate nohighlight">\({T(Y)=Y}\)</span></p>
+</div></blockquote>
+<blockquote>
+<div><p><span class="math notranslate nohighlight">\({a(\eta)=\frac{\mu^2}{2}}\)</span></p>
+</div></blockquote>
+<hr class="docutils" />
+<p>As we saw above <span class="math notranslate nohighlight">\(\eta=\mu\)</span> Therfore,</p>
+<blockquote>
+<div><p><span class="math notranslate nohighlight">\(\large{a(\eta)=\frac{\eta^2}{2}}\)</span></p>
+</div></blockquote>
+<p>As dicussed earlier in this section <span class="math notranslate nohighlight">\(\large\eta\)</span> is the linear predictor or value that our linear model is going to predict, Therfore,<br />
+<span class="math notranslate nohighlight">\(\normalsize{\eta=XW}\)</span> so we can even replace <span class="math notranslate nohighlight">\(\eta\)</span> as <span class="math notranslate nohighlight">\(XW\)</span></p>
+<p>Also we know that  Expected value of the function <span class="math notranslate nohighlight">\(T(Y)\)</span> will be our final prediction which can be written as</p>
+<blockquote>
+<div><p><span class="math notranslate nohighlight">\(\normalsize{E_x[T(Y)]}\)</span> will be our prediction</p>
+</div></blockquote>
+<p>Frome above derived relations we can say that.</p>
+<blockquote>
+<div><p><span class="math notranslate nohighlight">\(\normalsize{E_x[Y]}\)</span> will be our prediction.</p>
+</div></blockquote>
+<p><strong>Expected value of a variable is the mean of that variable</strong>  therefore as Y belongs to a normal distribution we assumed <span class="math notranslate nohighlight">\(\mu\)</span> to be it’s mean Therefore,</p>
+<blockquote>
+<div><p><span class="math notranslate nohighlight">\(\normalsize{E_x[Y]=\mu}\)</span></p>
+</div></blockquote>
+<blockquote>
+<div><p><span class="math notranslate nohighlight">\(\normalsize{E_x[Y]=\eta}\)</span></p>
+</div></blockquote>
+<blockquote>
+<div><p><span class="math notranslate nohighlight">\(\normalsize{E_x[Y]=XW}\)</span></p>
+</div></blockquote>
+<p><strong><code class="docutils literal notranslate"><span class="pre">Therefore,</span> <span class="pre">Normal</span> <span class="pre">distribution</span> <span class="pre">can</span> <span class="pre">be</span> <span class="pre">predicted</span> <span class="pre">using</span> <span class="pre">linear</span> <span class="pre">model.</span></code></strong></p>
+</section>
+<section id="assumptions-of-glm">
+<h2>Assumptions of GLM:<a class="headerlink" href="#assumptions-of-glm" title="Permalink to this headline">¶</a></h2>
+<p>Similar to Linear Regression Model, there are some basic assumptions for Generalized Linear Models as well. Most of the assumptions are similar to Linear Regression models, while some of the assumptions of Linear Regression are modified.</p>
+<ol class="simple">
+<li><p>Data should be independent and random (Each Random variable has the same probability distribution).</p></li>
+<li><p>The response variable y does not need to be normally distributed, but the distribution is from an exponential family (e.g. binomial, Poisson, multinomial, normal)</p></li>
+<li><p>The original response variable need not have a linear relationship with the independent variables, but the transformed response variable (through the link function) is linearly dependent on the independent variables.</p></li>
+<li><p>Homoscedasticity (i.e constant variance) need not be satisfied. Response variable Error variance can increase, or decrease with the independent variables.</p></li>
+<li><p>Errors are independent but need not be normally distributed</p></li>
+</ol>
+<p><em>In this section we saw GLM using linear regression further we will se GLM on other probability distribution and as we will be willing to estimate it using linear model we will require GLM in upcomimg sections in Loistic regression you will se so.</em></p>
+</section>
+<section id="further-readings">
+<h2>Further Readings<a class="headerlink" href="#further-readings" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="https://en.wikipedia.org/wiki/Generalized_linear_model">https://en.wikipedia.org/wiki/Generalized_linear_model</a></p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        
+            <!-- Previous / next buttons -->
+<div class='prev-next-area'> 
+    <a class='left-prev' id="prev-link" href="3.3%20MLE%20-%20Linear%20Regression.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">MLE - Linear Regression</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="4.%20Gradient%20Descent.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Gradient Descent</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer">
+    <div class="container">
+      <p>
+        
+          By Coding Blocks Pvt Ltd<br/>
+        
+            &copy; Copyright 2021.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+
+  </body>
+</html>

@@ -1,0 +1,609 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Imbalanced Dataset &#8212; Data Science Notes</title>
+    
+  <link href="_static/css/theme.css" rel="stylesheet">
+  <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="_static/js/index.be7d3bbb2ef33a8344ce.js">
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/togglebutton.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script>
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Principal Component Analysis" href="12.%20PCA.html" />
+    <link rel="prev" title="Multinomial Naive Bayes" href="9.2%20Multinomial%20Naive%20Bayes.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="_static/logo.svg" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">Data Science Notes</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="intro.html">
+   Introduction
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Machine Learning
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="1.1%20Introduction%20to%20Numpy.html">
+   Numpy
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="1.2%20Introduction%20to%20Matplotlib.html">
+   Matplotlib: Visualization with Python
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="1.3%20Introduction%20to%20Pandas.html">
+   Pandas
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="2.%20KNN.html">
+   K - Nearest Neighbour
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="3.1%20Linear%20Regression.html">
+   Linear Regression
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="3.2%20Multi-Variate%20Regression.html">
+   Multi Variable Regression
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="3.3%20MLE%20-%20Linear%20Regression.html">
+   MLE - Linear Regression
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="3.4%20GLM%20-%20Linear%20Regression.html">
+   Generalised linear model-Linear Regression
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="4.%20Gradient%20Descent.html">
+   Gradient Descent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="5.1%20%20Logistic%20Regression.html">
+   Logistic Regression
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="5.2%20Maximum%20Likelihood%20Estimation%20and%20Implementation.html">
+   Logistic Regression MLE &amp; Implementation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="6.%20Decision%20Trees.html">
+   Decision Tree Algorithm
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="7.%20Ensemble.html">
+   Ensemble Learning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="9.1%20Naive%20Bayes.html">
+   Naive Bayes Algorithm
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="9.2%20Multinomial%20Naive%20Bayes.html">
+   Multinomial Naive Bayes
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Imbalanced Dataset
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="12.%20PCA.html">
+   Principal Component Analysis
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  About
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="About%20the%20Authors.html">
+   About the Authors
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="_sources/11. Imbalanced Dataset.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/executablebooks/jupyter-book/master?urlpath=tree/11. Imbalanced Dataset.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#what-is-imbalanced-dataset">
+   What is Imbalanced Dataset?
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#counter-measures-possible-for-imbalanced-dataset">
+   Counter Measures Possible for Imbalanced Dataset:
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#downsampling">
+     Downsampling:
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#double-the-existing-instances">
+     Double the existing instances:
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#upscaling">
+     Upscaling:
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#accuracy-metrics-to-counter-imbalanced-dataset">
+   Accuracy Metrics to counter Imbalanced Dataset
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#confusion-matrix">
+     Confusion Matrix:
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#precision">
+     Precision
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#recall">
+     Recall
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#f-1-score">
+     F-1 Score:
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#roc-curve">
+   ROC Curve
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#threshold-tuning">
+   Threshold Tuning:
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#auc-area-under-curve">
+     AUC (Area Under Curve):
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <section class="tex2jax_ignore mathjax_ignore" id="imbalanced-dataset">
+<h1>Imbalanced Dataset<a class="headerlink" href="#imbalanced-dataset" title="Permalink to this headline">¶</a></h1>
+<section id="what-is-imbalanced-dataset">
+<h2>What is Imbalanced Dataset?<a class="headerlink" href="#what-is-imbalanced-dataset" title="Permalink to this headline">¶</a></h2>
+<p>Let’s consider a case where we have to do a classification task between two classes, say we have to classify between 2 classes: “A” &amp; “B”, and “A” has a lot more instances than “B”. Then a very worse model can give a very good accuracy score here.</p>
+<p><em>For eg:</em> Suppose we have to classify a cancer dataset, so the people <em>having cancer</em> are a lot lesser than the people <em>not having cancer</em>. So our dataset will have a lot more instances of <em>not having cancer</em> as compared to <em>having cancer</em>. Talking in figures, let’s say we have a dataset in which class “A”(not having cancer) has 2500 instances, and class “B”(having cancer) has only 50 instances. So, even though we train a worst model that classifies everything as “A” will have a very high accuracy.</p>
+<blockquote>
+<div><p>Accuracy = <span class="math notranslate nohighlight">\(\dfrac{2500}{2550}\)</span> = <span class="math notranslate nohighlight">\(98.03\%\)</span></p>
+</div></blockquote>
+<p>As we can see, a model that classifies everything as “A” also have an accuracy score of <span class="math notranslate nohighlight">\(98.03 \%\)</span> which is considered a very descent score for a Machine Learning Model. This problem is known as <strong>Imbalanced Dataset</strong>, and it is a very common problem among ML datasets. So let’s see what counter measures can be taken to solve this issue.</p>
+</section>
+<section id="counter-measures-possible-for-imbalanced-dataset">
+<h2>Counter Measures Possible for Imbalanced Dataset:<a class="headerlink" href="#counter-measures-possible-for-imbalanced-dataset" title="Permalink to this headline">¶</a></h2>
+<section id="downsampling">
+<h3>Downsampling:<a class="headerlink" href="#downsampling" title="Permalink to this headline">¶</a></h3>
+<p>One way of the easiest way of balancing dataset can be randomly sampling from the classes having higher instances, and make no. of instances of each class equal. This way all the classes will have equal no. of datasets, but by doing this we’ll suffer through a lot of information loss. A lot of variability among the data will be lost, so this can’t be a good approach.</p>
+</section>
+<section id="double-the-existing-instances">
+<h3>Double the existing instances:<a class="headerlink" href="#double-the-existing-instances" title="Permalink to this headline">¶</a></h3>
+<p>Another approach can be to double up the existing minority class instances, which seems to be a good option as it doesn’t include any information loss. But here also we’re just assigning doubling the weights of the existing datapoints of minor class, which will not provide us any new information. So even if we didn’t lose any information, we still didn’t got any new information.</p>
+</section>
+<section id="upscaling">
+<h3>Upscaling:<a class="headerlink" href="#upscaling" title="Permalink to this headline">¶</a></h3>
+<p>This is the way we generally use to resolve the imbalanced dataset issue. There can be a lot of ways of upscaling, we’ll see the <strong>SMOTE</strong> method here.</p>
+<p>In this method, we randomly take 2 points from our minority class, and draw a line joining them, and then randomly sample any point lying on that line.</p>
+<p><img alt="" src="_images/imbalance_data1.jpeg" /></p>
+<p>This way we can generate some new instances, and upscale our current dataset which will solve our issue.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="accuracy-metrics-to-counter-imbalanced-dataset">
+<h2>Accuracy Metrics to counter Imbalanced Dataset<a class="headerlink" href="#accuracy-metrics-to-counter-imbalanced-dataset" title="Permalink to this headline">¶</a></h2>
+<p>As we saw, our current way of calculating accuracy isn’t effective on the Imbalanced Dataset, So we can also change our way of calculating accuracy which can also solve our issue of imbalanced dataset.</p>
+<p>We’ll look into 3 new accuracy metrics:</p>
+<ol class="simple">
+<li><p>Precision</p></li>
+<li><p>Recall</p></li>
+<li><p>F1-score</p></li>
+</ol>
+<p>For understanding these metrics, first we have to know about <strong>Confusion Matrix</strong>.</p>
+<section id="confusion-matrix">
+<h3>Confusion Matrix:<a class="headerlink" href="#confusion-matrix" title="Permalink to this headline">¶</a></h3>
+<p>A confusion matrix is a table that is often used to describe the performance of a classification model (or “classifier”) on a set of test data for which the true values are known.</p>
+<p>The confusion matrix shows the ways in which your classification model is confused when it makes predictions.<br>
+Let’s try to understand confusion matrix with the help of an example. Below given matrix is a confusion matrix of a diabetic data of a population:</p>
+<p><img alt="confusion_matrix_simple2.png" src="_images/imbalance_data2.png" /></p>
+<p>What can we learn from this matrix?</p>
+<ul class="simple">
+<li><p>There are two possible predicted classes: “yes” and “no”. If we were predicting the presence of a disease, for example, “yes” would mean they have the disease, and “no” would mean they don’t have the disease.</p></li>
+<li><p>The classifier made a total of 165 predictions (e.g., 165 patients were being tested for the presence of that disease).</p></li>
+<li><p>Out of those 165 cases, the classifier predicted “yes” 110 times, and “no” 55 times.</p></li>
+<li><p>In reality, 105 patients in the sample have the disease, and 60 patients do not.</p></li>
+</ul>
+<p>Let’s now define the most basic terms, which are whole numbers (not rates):</p>
+<ul class="simple">
+<li><p>true positives (TP): These are cases in which we predicted yes (they have the disease), and they do have the disease.</p></li>
+<li><p>true negatives (TN): We predicted no, and they don’t have the disease.</p></li>
+<li><p>false positives (FP): We predicted yes, but they don’t actually have the disease. (Also known as a “Type I error.”)</p></li>
+<li><p>false negatives (FN): We predicted no, but they actually do have the disease. (Also known as a “Type II error.”)</p></li>
+</ul>
+<p>Now let’s modify this table a bit, and add some columns to know about “Total Predicted No”, “Total Predicted Yes” &amp; “Total Actual No”, “Total Actual Yes”</p>
+<p><img alt="confusion_matrix2.png" src="_images/imbalance_data3.png" /></p>
+<p>And Now Precision and Recall can be measured using this confusion matrix.</p>
+</section>
+<section id="precision">
+<h3>Precision<a class="headerlink" href="#precision" title="Permalink to this headline">¶</a></h3>
+<p>It is the ratio of the relevant instances among the retrieved instances.</p>
+<p>This metric is calculated for each class individually.</p>
+<blockquote>
+<div><p><strong>For Class 1 (YES):</strong></p>
+<blockquote>
+<div><p>Precision = <span class="math notranslate nohighlight">\(\dfrac{TP}{TP + FP}\)</span></p>
+<p>Precision = <span class="math notranslate nohighlight">\(\dfrac{100}{100 + 10}\)</span></p>
+<p>Precision = <span class="math notranslate nohighlight">\(90.9\)</span></p>
+</div></blockquote>
+<p><strong>For Class 0 (NO):</strong></p>
+<blockquote>
+<div><p>Precision = <span class="math notranslate nohighlight">\(\dfrac{TN}{TN + FN}\)</span></p>
+<p>Precision = <span class="math notranslate nohighlight">\(\dfrac{50}{50 + 5}\)</span></p>
+<p>Precision = <span class="math notranslate nohighlight">\(90.9\)</span></p>
+</div></blockquote>
+</div></blockquote>
+</section>
+<section id="recall">
+<h3>Recall<a class="headerlink" href="#recall" title="Permalink to this headline">¶</a></h3>
+<p>Recall is the fraction of relevant instances that were retrieved</p>
+<p>This metric is also calculated for each class individually.</p>
+<blockquote>
+<div><p><strong>For Class 1 (YES):</strong></p>
+<blockquote>
+<div><p>Recall = <span class="math notranslate nohighlight">\(\dfrac{TP}{TP + FN}\)</span></p>
+<p>Recall = <span class="math notranslate nohighlight">\(\dfrac{100}{100 + 5}\)</span></p>
+<p>Recall = <span class="math notranslate nohighlight">\(95.2\)</span></p>
+</div></blockquote>
+<p><strong>For Class 0 (NO):</strong></p>
+<blockquote>
+<div><p>Recall = <span class="math notranslate nohighlight">\(\dfrac{TN}{TN + FP}\)</span></p>
+<p>Recall = <span class="math notranslate nohighlight">\(\dfrac{50}{50 + 10}\)</span></p>
+<p>Recall = <span class="math notranslate nohighlight">\(83.3\)</span></p>
+</div></blockquote>
+</div></blockquote>
+<p>So now the Big Question comes: <strong>What should we use Precision or Recall?</strong></p>
+<p>And the answer to this Question is totally dependent on the task we want to perform. Suppose we are buliding an Ad-Blocker for a kids website. So if our model blocks a <strong>non-adult Ad</strong>, then it should not be a problem, but if it allows an <strong>Adult Ad</strong> on the website, then it will be an issue, as the website is made for Kids. So we should rely on a model that must block the “adult ads”, whether it misclassify and block a “non-adult ad”. So in this case, we’ll prefer a model that gives high Recall for Class 0(Non-Adult Ad).</p>
+<hr class="docutils" />
+<blockquote>
+<div><p><strong>Note:</strong></p>
+<blockquote>
+<div><p>It is always recommended to assign <b>+ve</b> to the minority class, means the instances of the minority class belongs to 1 rather than 0. It increases the efficiency of Precision and Recall.</p>
+</div></blockquote>
+</div></blockquote>
+</section>
+<hr class="docutils" />
+<section id="f-1-score">
+<h3>F-1 Score:<a class="headerlink" href="#f-1-score" title="Permalink to this headline">¶</a></h3>
+<p>It is a metric that is used to combine the precision and recall metrics, and give a combined accuracy. It calculates the harmonic mean of Precision &amp; Recall.</p>
+<p>F-1 Score = <span class="math notranslate nohighlight">\(\dfrac{2}{\dfrac{1}{p} + \dfrac{1}{r}}\)</span></p>
+<p><span class="math notranslate nohighlight">\(p\)</span> ==&gt; Precision</p>
+<p><span class="math notranslate nohighlight">\(r\)</span> ==&gt; Recall</p>
+</section>
+</section>
+<section id="roc-curve">
+<h2>ROC Curve<a class="headerlink" href="#roc-curve" title="Permalink to this headline">¶</a></h2>
+<p>This is a commonly used graph that summarizes the performance of a classifier over all possible thresholds. It is generated by plotting the True Positive Rate (y-axis) against the False Positive Rate (x-axis) as you vary the threshold for assigning observations to a given class.</p>
+<p><strong>Recall for class 1:</strong></p>
+<blockquote>
+<div><blockquote>
+<div><p><span class="math notranslate nohighlight">\(\dfrac{TP}{TP + FN} = \dfrac{\textrm{Total True Positive by Model}}{\textrm{Total actually Positive}}\hspace{1cm}\)</span> #[This term is also called <strong>Senstivity</strong>]</p>
+</div></blockquote>
+<p><strong>Senstivity is called True Positive Rate.</strong></p>
+</div></blockquote>
+<p><strong>Recall for Class 0:</strong></p>
+<blockquote>
+<div><blockquote>
+<div><p><span class="math notranslate nohighlight">\(\dfrac{TN}{TN + FP} = \dfrac{\textrm{Total True Negative by Model}}{\textrm{Total actually Negative}}\hspace{1cm}\)</span> #[This term is also called <strong>Specificity</strong>]</p>
+</div></blockquote>
+<p><strong>(1-Specificity) is called False Positive Rate.</strong></p>
+</div></blockquote>
+<p>So ROC Curve is a plot between <strong>Senstivity</strong> v/s <strong>(1 - Specificity)</strong></p>
+<p><img alt="AUC3.png" src="_images/imbalance_data4.png" /></p>
+</section>
+<section id="threshold-tuning">
+<h2>Threshold Tuning:<a class="headerlink" href="#threshold-tuning" title="Permalink to this headline">¶</a></h2>
+<p>When we train a model for classification, it gives us any number between 0 &amp; 1. And we generally say if it’s below 0.5, it belongs to class 0. Or if its above or equal to 0.5, it belongs to class 1.</p>
+<p>So we can say, here <strong>Threshold = 0.5</strong></p>
+<p>But suppose we change the threshold to 0, then every instance will belong to 1. And if we change threshold to 1, then every instance will belong 0.</p>
+<blockquote>
+<div><p>And if <strong>Threshold = 0</strong>, then:</p>
+<blockquote>
+<div><p>Senstitvity = 1</p>
+<p>Specificity = 0</p>
+</div></blockquote>
+</div></blockquote>
+<blockquote>
+<div><p>If <strong>Threshold = 1</strong>, then:</p>
+<blockquote>
+<div><p>Senstivity = 0</p>
+<p>Specificity = 1</p>
+</div></blockquote>
+</div></blockquote>
+<p><strong>So what should we keep the value of threshold?</strong><br />
+The value of best threshold can be found by looking at the <strong>Area under the ROC Curve</strong>.</p>
+<section id="auc-area-under-curve">
+<h3>AUC (Area Under Curve):<a class="headerlink" href="#auc-area-under-curve" title="Permalink to this headline">¶</a></h3>
+<p>It is the area covered under the ROC curve. And the maximum is the value of AUC, the better will be the performance of the model.</p>
+<p><img alt="sensitivity-vs-specificity-vs-ROC-vs-AUC.png" src="_images/imbalance_data5.png" /></p>
+<p>The graph of the First model has maximum AUC, which means it is the best model among all.</p>
+<p>Same way, AUC value of the Second model is average, making it a good model.</p>
+<p>The AUC value of Third model is minimum, making it the worse model.</p>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        
+            <!-- Previous / next buttons -->
+<div class='prev-next-area'> 
+    <a class='left-prev' id="prev-link" href="9.2%20Multinomial%20Naive%20Bayes.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Multinomial Naive Bayes</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="12.%20PCA.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Principal Component Analysis</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer">
+    <div class="container">
+      <p>
+        
+          By Coding Blocks Pvt Ltd<br/>
+        
+            &copy; Copyright 2021.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+
+  </body>
+</html>

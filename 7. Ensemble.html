@@ -1,0 +1,768 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Ensemble Learning &#8212; Data Science Notes</title>
+    
+  <link href="_static/css/theme.css" rel="stylesheet">
+  <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="_static/js/index.be7d3bbb2ef33a8344ce.js">
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/togglebutton.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script>
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Naive Bayes Algorithm" href="9.1%20Naive%20Bayes.html" />
+    <link rel="prev" title="Decision Tree Algorithm" href="6.%20Decision%20Trees.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="_static/logo.svg" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">Data Science Notes</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="intro.html">
+   Introduction
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Machine Learning
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="1.1%20Introduction%20to%20Numpy.html">
+   Numpy
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="1.2%20Introduction%20to%20Matplotlib.html">
+   Matplotlib: Visualization with Python
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="1.3%20Introduction%20to%20Pandas.html">
+   Pandas
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="2.%20KNN.html">
+   K - Nearest Neighbour
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="3.1%20Linear%20Regression.html">
+   Linear Regression
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="3.2%20Multi-Variate%20Regression.html">
+   Multi Variable Regression
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="3.3%20MLE%20-%20Linear%20Regression.html">
+   MLE - Linear Regression
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="3.4%20GLM%20-%20Linear%20Regression.html">
+   Generalised linear model-Linear Regression
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="4.%20Gradient%20Descent.html">
+   Gradient Descent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="5.1%20%20Logistic%20Regression.html">
+   Logistic Regression
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="5.2%20Maximum%20Likelihood%20Estimation%20and%20Implementation.html">
+   Logistic Regression MLE &amp; Implementation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="6.%20Decision%20Trees.html">
+   Decision Tree Algorithm
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Ensemble Learning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="9.1%20Naive%20Bayes.html">
+   Naive Bayes Algorithm
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="9.2%20Multinomial%20Naive%20Bayes.html">
+   Multinomial Naive Bayes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="11.%20Imbalanced%20Dataset.html">
+   Imbalanced Dataset
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="12.%20PCA.html">
+   Principal Component Analysis
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  About
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="About%20the%20Authors.html">
+   About the Authors
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="_sources/7. Ensemble.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/executablebooks/jupyter-book/master?urlpath=tree/7. Ensemble.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#introduction">
+   Introduction
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#wisdom-of-crowd">
+     Wisdom Of Crowd:
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#voting-classifiers">
+   Voting Classifiers
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#learning-regime">
+     Learning Regime
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#types-of-ensemble-learning">
+   Types of Ensemble Learning
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#bootstrap-aggregation-bagging-pasting">
+     Bootstrap Aggregation [Bagging] &amp; Pasting
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#random-forests">
+       Random Forests
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#boosting">
+     Boosting
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#adaboost">
+       AdaBoost
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#gradient-boosting">
+       Gradient Boosting
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#stacking">
+     Stacking
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <section class="tex2jax_ignore mathjax_ignore" id="ensemble-learning">
+<h1>Ensemble Learning<a class="headerlink" href="#ensemble-learning" title="Permalink to this headline">¶</a></h1>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>Ensemble Learning is a way in which we use multiple models to obtain better predictive predictions.</p>
+<section id="wisdom-of-crowd">
+<h3>Wisdom Of Crowd:<a class="headerlink" href="#wisdom-of-crowd" title="Permalink to this headline">¶</a></h3>
+<p>Suppose you pose a complex question to thousands of random people, then aggregate their answers. In many cases you will find that this aggregated answer is better than an expert’s answer. This is called <em>Wisdom of Crowd</em>. Similarly, if you aggregate the predictions of group of predictors (such as classifiers or regressors), you will often get better predictions than with the best individual predictor. A group of predictors is called an <em>ensemle</em>; thus, this technique is called <em>Ensemble Learning</em>.</p>
+<p>Suppose you have a dataset with 10 instances and you have to perform classification task. As per current knowledge, <strong>Which model will you use?</strong></p>
+<p>Most probably you’ll pick the one who will give the highest accuracy on the Validation Dataset.</p>
+<p>Let’s suppose we tried KNN, Logistic Regression and Decision Tree on the data, and the results are something like:</p>
+<blockquote>
+<div><p><strong>KNN</strong> misclassifies instance no. <strong>1</strong> &amp; <strong>7</strong> &amp; <strong>9</strong>.</p>
+<p><strong>Logistic Regression</strong> misclassifies instance no. <strong>2</strong> &amp; <strong>3</strong>.</p>
+<p><strong>Decision Tree</strong> misclassifies instance no. <strong>2</strong> &amp; <strong>4</strong>.</p>
+</div></blockquote>
+<p>Applying <strong>Wisdom of Crowd</strong> here, we can see instance no. “9” is misclassified by KNN, but LR &amp; DT classifies it correctly. So, if we combine the predictions and consider the majority one it will be classified correctly. Same goes for points 1, 7, 3 &amp; 4. Notice here instance no. “2” still remains misclassified, leaving the ensemble model accuracy at 90%, which is a very better score, if we consider their individual scores(70%, 80%, 80%).</p>
+</section>
+</section>
+<section id="voting-classifiers">
+<h2>Voting Classifiers<a class="headerlink" href="#voting-classifiers" title="Permalink to this headline">¶</a></h2>
+<p><img alt="" src="_images/ensem1.png" /></p>
+<p>The above ensemble model is also called <strong>“Voting Classifier”</strong>, as the task performed is of classification and the prediction is made by majority votes. Surprising enough, this isn’t the only case. This Voting Classifier often achieves a higher accuracy than the best classifier in the ensemble. In Fact, even if classifier is a <em>weak learner</em> (meaning it does only slightly better than random guessing), the ensemble can still be a <em>strong leanrner</em> (achieving high accuracy), provided there are a  sufficient number of weak learners and they are sufficiently diverse.</p>
+<blockquote>
+<div><p>What do I mean by <strong>sufficiently diverse</strong> here?</p>
+<blockquote>
+<div><p>Consider a case, where you make an ensemble, taking 5 or 7 models, and still there isn’t any considerable boost in accuracy. What do you suppose the reason here can be?: A fair answer to this can be maybe they all are following the same “Learning regime”.</p>
+</div></blockquote>
+</div></blockquote>
+<hr class="docutils" />
+<blockquote>
+<div></div></blockquote>
+<section id="learning-regime">
+<h3>Learning Regime<a class="headerlink" href="#learning-regime" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Learning Regime is the learning curve followed by the model. Say, if we train 2 same KNN models on same dataset. Both of the models will have same “learning regime”.</p>
+<p>For Ensemble to work, the models should have different learning regimes, or else they’ll produce same (correlated) errors, thus the voting will have no impact. So, for effective ensembling, the errors must be uncorrelated.</p>
+<p>The best way to know if the errors are correlated or not, is to have a look on accuracy of inidividual v/s ensemble model.</p>
+<p>If <span class="math notranslate nohighlight">\(Accuracy_{individual} = Accuracy_{ensemble}\)</span> #means Errors are <strong>correlated</strong>.</p>
+<p>If <span class="math notranslate nohighlight">\(Accuracy_{individual} &lt; Accuracy_{ensemble}\)</span> #means Errors are <strong>uncorrelated</strong>.</p>
+</div></blockquote>
+<p><strong>So Is changing the model only way to change the learning curve?</strong></p>
+<blockquote>
+<div><p>No, you can also change the value of hyperparameters (like value of K in KNN), to obtain different learning regimes. Or you can divide the data and pass it to different models, which will also alter the learning curve.</p>
+</div></blockquote>
+</section>
+<p>Now let’s try out Voting Classifier through sklearn library.</p>
+<p>This time we’ll use a very common dataset known as Moon Dataset : This is a toy dataset for binary classification in which the data points are shaped as two interleaving half circles.</p>
+<p>To know more about moon dataset, visit : <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.datasets.make_moons.html">https://scikit-learn.org/stable/modules/generated/sklearn.datasets.make_moons.html</a></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+
+<span class="c1">#Importing the data</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;./Data/Ensemble/X_data.npy&quot;</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;./Data/Ensemble/Y_data.npy&quot;</span><span class="p">)</span>
+
+<span class="c1">#Splitting Training &amp; Validation Dataset</span>
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.33</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+
+<span class="c1">#Plotting the Data</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X_train</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">X_train</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">c</span> <span class="o">=</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1">#Shape of data</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Training =&gt; X:</span><span class="si">{</span><span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">, y:</span><span class="si">{</span><span class="n">y_train</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Testing =&gt; X:</span><span class="si">{</span><span class="n">X_test</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">, y:</span><span class="si">{</span><span class="n">y_test</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/7. Ensemble_4_0.png" src="_images/7. Ensemble_4_0.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Training =&gt; X:(670, 2), y:(670,)
+Testing =&gt; X:(330, 2), y:(330,)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">VotingClassifier</span>
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LogisticRegression</span>
+<span class="kn">from</span> <span class="nn">sklearn.svm</span> <span class="kn">import</span> <span class="n">SVC</span>
+<span class="kn">from</span> <span class="nn">sklearn.tree</span> <span class="kn">import</span> <span class="n">DecisionTreeClassifier</span>
+
+<span class="n">lr</span> <span class="o">=</span> <span class="n">LogisticRegression</span><span class="p">()</span> <span class="c1">#Logistic Regression</span>
+<span class="n">svm</span> <span class="o">=</span> <span class="n">SVC</span><span class="p">()</span> <span class="c1">#SVM =&gt; Support Vector Machine</span>
+<span class="n">dt</span> <span class="o">=</span> <span class="n">DecisionTreeClassifier</span><span class="p">()</span> <span class="c1">#Decision Tree</span>
+
+<span class="n">voting_clf</span> <span class="o">=</span> <span class="n">VotingClassifier</span><span class="p">(</span><span class="n">estimators</span><span class="o">=</span><span class="p">[(</span><span class="s1">&#39;lr&#39;</span><span class="p">,</span> <span class="n">lr</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;svm&#39;</span><span class="p">,</span> <span class="n">svm</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;dt&quot;</span><span class="p">,</span> <span class="n">dt</span><span class="p">)])</span>
+<span class="n">voting_clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span><span class="n">y_train</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>VotingClassifier(estimators=[(&#39;lr&#39;, LogisticRegression()), (&#39;svm&#39;, SVC()),
+                             (&#39;dt&#39;, DecisionTreeClassifier())])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">accuracy_score</span>
+
+<span class="k">for</span> <span class="n">classifier</span> <span class="ow">in</span> <span class="p">(</span><span class="n">lr</span><span class="p">,</span> <span class="n">svm</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">voting_clf</span><span class="p">):</span>
+    <span class="n">classifier</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span><span class="n">y_train</span><span class="p">)</span>
+    <span class="n">y_pred</span> <span class="o">=</span> <span class="n">classifier</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">classifier</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="s2">&quot;=&gt;&quot;</span><span class="p">,</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>LogisticRegression =&gt; 0.8636363636363636
+SVC =&gt; 0.9254545454545454
+DecisionTreeClassifier =&gt; 0.906060606060606
+VotingClassifier =&gt; 0.9424242424242424
+</pre></div>
+</div>
+</div>
+</div>
+<p>There you have it! The Voting Classifier slightly outperforms all the individual classifiers.</p>
+<p>This is the benefit of Ensemble Learning. However the difference in this accuracy will increase with the increase in uncorrelation of the error of these models.</p>
+<p>Now as we’ve seen <strong>Voting Classifier</strong> (a famous technique for ensemble learning), let’s have a look on different types of Ensemble Learning. These types differ on the technique they follow.</p>
+</section>
+<section id="types-of-ensemble-learning">
+<h2>Types of Ensemble Learning<a class="headerlink" href="#types-of-ensemble-learning" title="Permalink to this headline">¶</a></h2>
+<ol class="simple">
+<li><p>Bagging &amp; Pasting</p></li>
+<li><p>Gradient Boosting &amp; Adaptive Boosting</p></li>
+<li><p>Stacking</p></li>
+</ol>
+<section id="bootstrap-aggregation-bagging-pasting">
+<h3>Bootstrap Aggregation [Bagging] &amp; Pasting<a class="headerlink" href="#bootstrap-aggregation-bagging-pasting" title="Permalink to this headline">¶</a></h3>
+<p>One way to get a diverse set of classifiers is to use very different training algorithms, as just discussed. Another approach is to use same training algorithm for every predictor and train them on different random subsets of the training set. Whem sampling is performed with replacement, this method is called <em><strong>Bagging</strong></em>(short for Bootstrap Aggregation). And when sampling is performed without replacement, it is called <em><strong>Pasting</strong></em>.</p>
+<p>In other words, both bagging and pasting allow training instances to be sampled several times across multiple predictors, but only bagging allows training instances to be sampled several times for the same predictor.</p>
+<p><img alt="" src="_images/ensem2.png" /></p>
+<p>Once all predictors are trained, the ensemble can make a prediction for a new instance by simply aggregating the predictions of all predictors. The aggregation function is typically the <em>statistical mode</em> (the prediction that is most occuring) for classification, or the <em>statistical mean</em> (average) for regression.</p>
+<p>You can train these different models in parallel systems, via different CPU Cores or even different servers. Similarly, predictions can be made in parallel as well. This is one of the reasons bagging and pasting are very popular methods: they scale very well.</p>
+<p>Now let’s have a look on sklearn implementation of Bagging and Pasting</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">BaggingClassifier</span>
+<span class="kn">from</span> <span class="nn">sklearn.tree</span> <span class="kn">import</span> <span class="n">DecisionTreeClassifier</span>
+
+
+<span class="c1">#Individual Decision Tree Classifier</span>
+<span class="n">dt</span> <span class="o">=</span> <span class="n">DecisionTreeClassifier</span><span class="p">()</span>
+<span class="n">dt</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span><span class="n">y_train</span><span class="p">)</span>
+<span class="n">y_pred</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Individual Decision Tree Model:&quot;</span><span class="p">,</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span><span class="n">y_pred</span><span class="p">))</span>
+
+
+<span class="c1">#Ensemble Classification model with Decision Tree as base estimator</span>
+<span class="n">bag_clf</span> <span class="o">=</span> <span class="n">BaggingClassifier</span><span class="p">(</span><span class="n">dt</span><span class="p">,</span> <span class="n">n_estimators</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">max_samples</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">bootstrap</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">bag_clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="n">y_pred</span> <span class="o">=</span> <span class="n">bag_clf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Ensemble Decision Tree Model:&quot;</span><span class="p">,</span><span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Individual Decision Tree Model: 0.906060606060606
+Ensemble Decision Tree Model: 0.9484848484848485
+</pre></div>
+</div>
+</div>
+</div>
+<p>You can clearly observe the difference in their accuracies using this approach. This proves the effectiveness of Bagging. You can prepare a Pasting Model by setting “bootstrap” parameter of BaggingClassifier to “False”, which means the replacement of instances is not allowed i.e. Pasting.</p>
+<p>Bootstrapping introduces a bit more diversity in the subsets that each predictor is trained on, so bagging ends up with slightly higher bias than pasting; but the extra diversity also means that the predictors end up being less correlated, thus increasing ensembling efficiency. Overall, in simpler terms Bagging often results in better models, which exaplains why it is generally preferred over pasting.</p>
+<p><strong>Note :</strong> The <code class="docutils literal notranslate"><span class="pre">BaggingClassifier</span></code> class supports sampling the features as well. Sampling is controlled by 2 hyperparameters: <code class="docutils literal notranslate"><span class="pre">max_features</span></code> and <code class="docutils literal notranslate"><span class="pre">bootstrap_features</span></code>. They allow random sampling of features for the model with or without repitition. Thus, each predictor can be trained on a random subset of the input features as well. Sampling feature results in even more predictor diversity, hence giving less correlation and making ensemble more effective.</p>
+<section id="random-forests">
+<h4>Random Forests<a class="headerlink" href="#random-forests" title="Permalink to this headline">¶</a></h4>
+<p>It is a very famous and widely used Ensemble, which provides a considerable accuracy boost in many cases. Random Forest is an ensemble of Decision Trees, generally trained via the Bagging method (or sometimes pasting), typically with <code class="docutils literal notranslate"><span class="pre">max_samples</span></code> set to size of the training set. Instead of building a <code class="docutils literal notranslate"><span class="pre">BaggingClassifier</span></code> and passing it in a <code class="docutils literal notranslate"><span class="pre">DecisionTreeClassifier</span></code>(like we did above), We can instead use the <code class="docutils literal notranslate"><span class="pre">RandomForestClassifier</span></code> class, which is more convenient.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">RandomForestClassifier</span>
+<span class="n">rnd_clf</span> <span class="o">=</span> <span class="n">RandomForestClassifier</span><span class="p">(</span><span class="n">n_estimators</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">max_leaf_nodes</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">rnd_clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+
+<span class="n">y_pred_rf</span> <span class="o">=</span> <span class="n">rnd_clf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Accuracy Score:&quot;</span><span class="p">,</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Accuracy Score: 0.9363636363636364
+</pre></div>
+</div>
+</div>
+</div>
+<p>With a few exceptions, a <code class="docutils literal notranslate"><span class="pre">RandomForestClassifier</span></code> has all the hyperparameters of a <code class="docutils literal notranslate"><span class="pre">DecisionTreeClassifier</span></code> (to control how trees are grown), plus all the hyperparameters of a <code class="docutils literal notranslate"><span class="pre">BaggingClassifier</span></code> to control ensemble itself.</p>
+<p>The Random Forest algorithm introduces extra randomness when growing trees, instead of searching for the very best feature when splitting a node, is searches for the best feature among a random subset of features.</p>
+</section>
+</section>
+<section id="boosting">
+<h3>Boosting<a class="headerlink" href="#boosting" title="Permalink to this headline">¶</a></h3>
+<p>As we saw Bagging, in which we train different models by changing the learning regime, and we can say these models have no connection with each other and each of them gives prediction according to their own. So we can do parallel training of different models here.</p>
+<p>But boosting works on a slightly different manner, it’s basically training the second model on the errors of the first one and third for the errors of second and so on. So, it is a sequential training in which each model tries to correct its predecessor. There are many boosting methods available, but by far the most popular are <strong>AdaBoost</strong> (short for Adaptive Boosting) and <strong>Gradient Boosting</strong>. Let’s start with AdaBooost first.</p>
+<section id="adaboost">
+<h4>AdaBoost<a class="headerlink" href="#adaboost" title="Permalink to this headline">¶</a></h4>
+<p>One way for a new predictor to correct its predecessor is to pay a bit more attention to the training instances that the predecessor underfitted. This results in new predictors focusing more and more on the hard cases. This is technique used by AdaBoost.</p>
+<p>For example, when training an AdaBoost classifier, the algorithm first trains a base classifier (such as Decision Tree) and uses it to make predictions on the training set. The algorithm then increases the relative weight of misclassified training instances. Then it trains a second classifier, using the updated weights, and again makes predictions on the training set, updates the instances weights, and so on.</p>
+<p>Consider the error equation :</p>
+<p><span class="math notranslate nohighlight">\(\large{e = \sum_{i = 1}^n y_i - \hat{y}_i}\)</span></p>
+<blockquote>
+<div><p>For n = 100 :-</p>
+<blockquote>
+<div><p><span class="math notranslate nohighlight">\(e = (y_1 - \hat{y}_1) + (y_2 - \hat{y}_2) + \hspace{1mm}...\hspace{1mm} + \mathbf{6}(y_{26} - \hat{y}_{26}) + \hspace{1mm}...\hspace{1mm} + \mathbf{10} (y_{56} - \hat{y}_{56}) + \hspace{1mm}...\hspace{1mm}+(y_{100} - \hat{y}_{100})\)</span></p>
+</div></blockquote>
+</div></blockquote>
+<p>Suppose my model was misclassifying instance no. <strong>26</strong> &amp; <strong>56</strong>. So I can multiply these instances with some constants, so that my equation for the next model have some extra weight for these points, which means it will contain some bias for these instances, and try to focus on classifying them correctly. This is the base for Adaptive Boosting.</p>
+<p>Consider a Classification Dataset:</p>
+<p><img alt="ensemble.png" src="_images/ensem3.png" /></p>
+<p>Now if we train an individual Decision Tree model, it’s decision boundary will look something like this, and as we can see it misclassifies a lot of points.</p>
+<p><img alt="ensemble2.png" src="_images/ensem4.png" /></p>
+<p>So, what we do in Adaptive Boosting is introduce some bias for the misclassified points, so our next model emphasize on them more which will somewhat enhance the decision boundary for our dataset.</p>
+<p>So, we multiply the terms of these points with some constant that can differ for each point as well, as we use more and more models. Finally, the algorithm stops when the desired number of predictors is reached, or when a perfect predictor is found. To make predictions, AdaBoost simply computes the predictions of all the predictors and weighs them using the predictor weights. The predicted class is the one that receives the majority of weighted votes.</p>
+<p><img alt="ensemble3.png" src="_images/ensem5.png" /></p>
+<p>Now, let’s have a look on Scikit Learn Implementation of AdaBoost. Scikit-Learn uses a multiclass version of AdaBoost called <em><strong>SAMME</strong></em> [<strong>S</strong>tagewise <strong>A</strong>dditive <strong>M</strong>odeling using a <strong>M</strong>ulticlass <strong>E</strong>xponential loss function]. When there are just two classes (Binary Classification), SAMME is equivalent to AdaBoost. So let’s compare the accuracies of individual decision tree and AdaBoost ensemble of Decision Trees.
+The code below trains an AdaBoost Classifier based on 200 Decision Trees using Scikit-Learn’s <code class="docutils literal notranslate"><span class="pre">AdaBoostClassifier</span></code> class.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">AdaBoostClassifier</span>
+
+<span class="n">ada_clf</span> <span class="o">=</span> <span class="n">AdaBoostClassifier</span><span class="p">(</span><span class="n">DecisionTreeClassifier</span><span class="p">(</span><span class="n">max_depth</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">n_estimators</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">ada_clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+
+<span class="n">dt</span> <span class="o">=</span> <span class="n">DecisionTreeClassifier</span><span class="p">()</span>
+<span class="n">dt</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+
+<span class="n">y_pred_ensemble</span> <span class="o">=</span> <span class="n">ada_clf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+<span class="n">y_pred_dt</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Individual Decision Tree Accuracy&quot;</span><span class="p">,</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_pred_dt</span><span class="p">,</span> <span class="n">y_test</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;AdaBoost Ensemble Accuracy&quot;</span><span class="p">,</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_pred_ensemble</span><span class="p">,</span> <span class="n">y_test</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Individual Decision Tree Accuracy 0.9121212121212121
+AdaBoost Ensemble Accuracy 0.9424242424242424
+</pre></div>
+</div>
+</div>
+</div>
+<p>As you can see the accuracy increased from 90% to 94%. As we performed Classification task using <code class="docutils literal notranslate"><span class="pre">AdaBoostClassifier</span></code>, regression tasks can also be performed using <code class="docutils literal notranslate"><span class="pre">AdaBoostRegressor</span></code>.</p>
+</section>
+<section id="gradient-boosting">
+<h4>Gradient Boosting<a class="headerlink" href="#gradient-boosting" title="Permalink to this headline">¶</a></h4>
+<p>Another very popular boosting algorithm is <strong>Gradient Boosting</strong>. Just like AdaBoost, Gradient Boosting works sequentially adding predictors to an ensemble, each one correcting its predecessor. However, instead of tweaking the instance weights at every iteration like AdaBoost does, this method tries to fit the new predictor to the <em>residual errors</em> made by the previous predictor. The concept of Gradient Boosting can be understood easily by taking an example.</p>
+<p>Consider the case of Linear Regression.</p>
+<blockquote>
+<div><p><span class="math notranslate nohighlight">\(e = y - \hat{y}\)</span></p>
+</div></blockquote>
+<p>Let’s take our I<span class="math notranslate nohighlight">\(^{st}\)</span> model and put this equation.</p>
+<blockquote>
+<div><p><span class="math notranslate nohighlight">\(e_1 = y - \hat{y}_1\)</span></p>
+</div></blockquote>
+<p>Suppose it returned some error <span class="math notranslate nohighlight">\(e_1\)</span>, so now we’ll train our next model on this error like:</p>
+<blockquote>
+<div><p><span class="math notranslate nohighlight">\(e_2 = e_1 - \hat{e}_1\hspace{1.5cm}\)</span> or we can say</p>
+<p><span class="math notranslate nohighlight">\(e_2 = y - \hat{y}_1 - \hat{e}_1\)</span></p>
+</div></blockquote>
+<p>Compare above equation with <span class="math notranslate nohighlight">\(e = y - \hat{y}\)</span> , we can say</p>
+<blockquote>
+<div><p><span class="math notranslate nohighlight">\(\hat{y} = \hat{y}_1 + \hat{e}_1\)</span></p>
+</div></blockquote>
+<p>For Mutiple Models:</p>
+<blockquote>
+<div><p><span class="math notranslate nohighlight">\(\hat{y} = \hat{y}_1 + \hat{e}_1 + \hat{e}_2 + \hat{e}_3 + \hat{e}_4 + ...\)</span></p>
+</div></blockquote>
+<p><strong>Writing this programatically:</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.tree</span> <span class="kn">import</span> <span class="n">DecisionTreeRegressor</span>
+
+<span class="n">tree_reg1</span> <span class="o">=</span> <span class="n">DecisionTreeRegressor</span><span class="p">(</span><span class="n">max_depth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">tree_reg1</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+
+<span class="n">e1</span> <span class="o">=</span> <span class="n">y_train</span> <span class="o">-</span> <span class="n">tree_reg1</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+<span class="n">tree_reg2</span> <span class="o">=</span> <span class="n">DecisionTreeRegressor</span><span class="p">(</span><span class="n">max_depth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">tree_reg2</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">e1</span><span class="p">)</span>
+
+<span class="n">e2</span> <span class="o">=</span> <span class="n">e1</span> <span class="o">-</span> <span class="n">tree_reg1</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+<span class="n">tree_reg3</span> <span class="o">=</span> <span class="n">DecisionTreeRegressor</span><span class="p">(</span><span class="n">max_depth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">tree_reg3</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">e2</span><span class="p">)</span>
+
+<span class="n">y_pred_ensemble</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">tree</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span> <span class="k">for</span> <span class="n">tree</span> <span class="ow">in</span> <span class="p">(</span><span class="n">tree_reg1</span><span class="p">,</span> <span class="n">tree_reg2</span><span class="p">,</span> <span class="n">tree_reg3</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Or the above same code, can be implemented using sklearn implementation.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">GradientBoostingRegressor</span>
+<span class="n">gbr</span> <span class="o">=</span> <span class="n">GradientBoostingRegressor</span><span class="p">(</span><span class="n">max_depth</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">n_estimators</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">learning_rate</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+<span class="n">gbr</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+
+<span class="n">y_pred_ensemble</span> <span class="o">=</span> <span class="n">gbr</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Individual Decision Tree Accuracy&quot;</span><span class="p">,</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_pred_dt</span><span class="p">,</span> <span class="n">y_test</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Gradient Boosting Ensemble Accuracy&quot;</span><span class="p">,</span><span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_pred</span><span class="p">,</span> <span class="n">y_test</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Individual Decision Tree Accuracy 0.9121212121212121
+Gradient Boosting Ensemble Accuracy 0.9363636363636364
+</pre></div>
+</div>
+</div>
+</div>
+<p>You can observe the accuracy boost, here also.</p>
+<p>Now let’s try to understand the graphical representation of the error also (Refer to the figure below). The figure represents the predictions of these three trees in the left column, and the ensemble’s prediction in the right column. In the first row, the ensemble has just one tree, so its predictions are exactly the same as the first tree’s predictions. In the second row, a new tree is trained on the residual errors of the first tree. On the right you can see that the ensemble’s predictions are equal to the sum of the predictions of the first two trees. Similarly, in the third row another tree is trained on the residual errors of the second tree. You can see that the ensemble’s predictions gradually get better as trees are added to the ensemble.</p>
+<p><img alt="gb%20%284%29.png" src="_images/ensem6.png" /></p>
+<p>The <code class="docutils literal notranslate"><span class="pre">learning_rate</span></code> hyperparameter scales the contribution of each tree. If you set it to a low value, such as 0.1, you will need more trees in the ensemble to fit the training set, but the predictions will usually generalize better. So keeping the learning rate very low may lead to the overfitting of the model. See the Figure below.</p>
+<p><img alt="gb%20%281%29%20(1).png" src="_images/ensem7.png" /></p>
+<p>The same way Gradient Boosting can also be used for classification tasks. You can import it by <code class="docutils literal notranslate"><span class="pre">GradientBoostingClassifier</span></code> under the ensemble module of scikit-learn.</p>
+</section>
+</section>
+<section id="stacking">
+<h3>Stacking<a class="headerlink" href="#stacking" title="Permalink to this headline">¶</a></h3>
+<p>The last ensemble method is Stacking. It is based on simple idea, instead of using trivial functions(like hard voting) to aggregate the predictions of all predictors in an ensemble, why don’t we train a model to perform this aggregation.</p>
+<p><img alt="stacking1%20%281%29.png" src="_images/ensem8.png" /></p>
+<p>The new model used to combine the results is known as <strong>Blender</strong>. We can also divide our training data and pass it on to different predictors and then aggregate the results using this Blender.</p>
+<p>It is actually possible to train several different blenders, to get a whole layer of blenders as well. So we can perform multi-layer Stacking as well. Refer to figure below for better understanding.</p>
+<p><img alt="stacking2%20%281%29.png" src="_images/ensem9.png" /></p>
+<p>Unfortunately, Scikit-Learn does not support stacking directly, but it is not too hard to roll out your own implementation.</p>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        
+            <!-- Previous / next buttons -->
+<div class='prev-next-area'> 
+    <a class='left-prev' id="prev-link" href="6.%20Decision%20Trees.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Decision Tree Algorithm</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="9.1%20Naive%20Bayes.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Naive Bayes Algorithm</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer">
+    <div class="container">
+      <p>
+        
+          By Coding Blocks Pvt Ltd<br/>
+        
+            &copy; Copyright 2021.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+
+  </body>
+</html>

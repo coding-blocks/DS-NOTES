@@ -1,0 +1,655 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Logistic Regression MLE &amp; Implementation &#8212; Data Science Notes</title>
+    
+  <link href="_static/css/theme.css" rel="stylesheet">
+  <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="_static/js/index.be7d3bbb2ef33a8344ce.js">
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/togglebutton.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script>
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Decision Tree Algorithm" href="6.%20Decision%20Trees.html" />
+    <link rel="prev" title="Logistic Regression" href="5.1%20%20Logistic%20Regression.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="_static/logo.svg" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">Data Science Notes</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="intro.html">
+   Introduction
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Machine Learning
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="1.1%20Introduction%20to%20Numpy.html">
+   Numpy
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="1.2%20Introduction%20to%20Matplotlib.html">
+   Matplotlib: Visualization with Python
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="1.3%20Introduction%20to%20Pandas.html">
+   Pandas
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="2.%20KNN.html">
+   K - Nearest Neighbour
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="3.1%20Linear%20Regression.html">
+   Linear Regression
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="3.2%20Multi-Variate%20Regression.html">
+   Multi Variable Regression
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="3.3%20MLE%20-%20Linear%20Regression.html">
+   MLE - Linear Regression
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="3.4%20GLM%20-%20Linear%20Regression.html">
+   Generalised linear model-Linear Regression
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="4.%20Gradient%20Descent.html">
+   Gradient Descent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="5.1%20%20Logistic%20Regression.html">
+   Logistic Regression
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Logistic Regression MLE &amp; Implementation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="6.%20Decision%20Trees.html">
+   Decision Tree Algorithm
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="7.%20Ensemble.html">
+   Ensemble Learning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="9.1%20Naive%20Bayes.html">
+   Naive Bayes Algorithm
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="9.2%20Multinomial%20Naive%20Bayes.html">
+   Multinomial Naive Bayes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="11.%20Imbalanced%20Dataset.html">
+   Imbalanced Dataset
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="12.%20PCA.html">
+   Principal Component Analysis
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  About
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="About%20the%20Authors.html">
+   About the Authors
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="_sources/5.2 Maximum Likelihood Estimation and Implementation.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/executablebooks/jupyter-book/master?urlpath=tree/5.2 Maximum Likelihood Estimation and Implementation.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#mle-logistic-regression">
+   MLE - Logistic Regression
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#logistic-regression-implementation-code">
+   Logistic Regression Implementation (Code)
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#a-quick-overview-of-the-code">
+     A Quick-Overview of the Code
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <section class="tex2jax_ignore mathjax_ignore" id="logistic-regression-mle-implementation">
+<h1>Logistic Regression MLE &amp; Implementation<a class="headerlink" href="#logistic-regression-mle-implementation" title="Permalink to this headline">¶</a></h1>
+<p>As we tried to find a Maximum Likelihood Function for the Linear Regression, we’ll try the same approach for Logistic Regression as well and try to maximize a likelihood function, so that under the assumed statistical model the observed data is most probable. And then we’ll try to minimize our Loss function of Logistic Regression using Gradient Descent Implementation. So let’s start with MLE first.</p>
+<section id="mle-logistic-regression">
+<h2>MLE - Logistic Regression<a class="headerlink" href="#mle-logistic-regression" title="Permalink to this headline">¶</a></h2>
+<p>Firstly, we need to know which type of distribution our data follows and then we can proceed. And as in the case of Logistic Regression, we are already aware that it follows Bernoulli Distribution. (We saw it in previous notebook).</p>
+<p>The general Bernoulli Distribution equation looks like:</p>
+<blockquote>
+<div><p><span class="math notranslate nohighlight">\(\large{P(y) = p^y (1-p)^{1-y}}\)</span></p>
+</div></blockquote>
+<p>The Bernoulli distribution is a discrete distribution having two possible outcomes labelled by <span class="math notranslate nohighlight">\(y=0\)</span> and <span class="math notranslate nohighlight">\(y=1\)</span> in which <span class="math notranslate nohighlight">\(y=1\)</span> (“success”) occurs with probability “<span class="math notranslate nohighlight">\(p\)</span>” and <span class="math notranslate nohighlight">\(y=0\)</span> (“failure”) occurs with probability “<span class="math notranslate nohighlight">\(1-p\)</span>”, where <span class="math notranslate nohighlight">\(0&lt;p&lt;1\)</span></p>
+<p>You can refer on <a class="reference external" href="https://mathworld.wolfram.com/BernoulliDistribution.html">https://mathworld.wolfram.com/BernoulliDistribution.html</a> for more understanding on this equation.</p>
+<p>So now we can say,</p>
+<blockquote>
+<div><p><span class="math notranslate nohighlight">\(\large{P(y_i/X_i) = \hat{y}_i^{y_i}\hspace{2mm} (1-\hat{y}_i)^{1 - y_i}}\)</span></p>
+<blockquote>
+<div><p><span class="math notranslate nohighlight">\(\hat{y}_i =&gt; y_ipred\)</span></p>
+<p><span class="math notranslate nohighlight">\(y_i =&gt; y_itrue\)</span></p>
+<p><span class="math notranslate nohighlight">\(X_i =&gt; Given \hspace{2mm}dataset\)</span></p>
+</div></blockquote>
+</div></blockquote>
+<p>This Equation means value of <span class="math notranslate nohighlight">\(y_i\)</span> when the dataset <span class="math notranslate nohighlight">\(X_i\)</span> is given is equal to bernoulli distribution equation, as the value of <span class="math notranslate nohighlight">\(y_i\)</span> can be either <span class="math notranslate nohighlight">\(0\)</span> or <span class="math notranslate nohighlight">\(1\)</span>.</p>
+<p>The above equation is for single <span class="math notranslate nohighlight">\(i^{th}\)</span> instance, writting it for the whole dataset the equation becomes:</p>
+<blockquote>
+<div><p><span class="math notranslate nohighlight">\(\large{P(y/X) = \prod^n_{i=1}\hat{y}_i^{y_i}\hspace{2mm} (1-\hat{y}_i)^{1 - y_i}}\)</span>
+(This is the Likelihood we need to maximize.)</p>
+</div></blockquote>
+<p>Taking log:</p>
+<blockquote>
+<div><p><span class="math notranslate nohighlight">\(P(y/X) = \sum^n_{i=1}log(\hat{y}_i^{y_i}\hspace{2mm} (1-\hat{y}_i)^{1 - y_i})\)</span></p>
+</div></blockquote>
+<p>We know we need to maximize this likelihood, to get the most probable dataset. But to further simplify the calculations and making it more general, we should minimize the Loss function instead. So to convert this Likelihood into Loss Function we simply need to put a (-ve) sign.</p>
+<blockquote>
+<div><p><strong>Note:</strong></p>
+<p>We can also proceed by maximizing the likelihood, but we converted it to Loss function so that further we’re able to compare it with other algorithm results. Otherwise working on maximizing the Likelihood will eventually give the same results.</p>
+</div></blockquote>
+<p>So the Loss function becomes,</p>
+<p><span class="math notranslate nohighlight">\(L = -\sum^n_{i=1}log(\hat{y}_i^{y_i}\hspace{2mm} (1-\hat{y}_i)^{1 - y_i})\)</span></p>
+<p>and we have to minimize the loss function now.</p>
+<p><span class="math notranslate nohighlight">\(L = -\sum^n_{i=1}log(\hat{y}_i^{y_i}\hspace{2mm} (1-\hat{y}_i)^{1 - y_i})\)</span></p>
+<p><span class="math notranslate nohighlight">\(L = -\sum^n_{i=1}[y_i \hspace{1mm}log(\hat{y}_i) + (1 - y_i)\hspace{1mm}log(1-\hat{y}_i)]\)</span></p>
+<p>As we know <span class="math notranslate nohighlight">\(\hat{y}_i\)</span> is our <span class="math notranslate nohighlight">\(y_{prediction}\)</span>, that will be found out using the Sigmoid function. So we can say</p>
+<blockquote>
+<div><p><span class="math notranslate nohighlight">\(\hat{y}_i = \sigma(Z_i) =\dfrac{1}{1 + e^{-Z_i}}\hspace{1cm}\)</span> where <span class="math notranslate nohighlight">\(Z_i = X_iW\)</span></p>
+</div></blockquote>
+<p>Substituting the values, Loss function becomes:</p>
+<blockquote>
+<div><p><span class="math notranslate nohighlight">\(L(W) = -\sum^n_{i=1}\begin{bmatrix}y_i \hspace{1mm}log\begin{pmatrix}\dfrac{1}{1 + e^{-Z_i}} \end{pmatrix} + (1 - y_i)\hspace{1mm}log\begin{pmatrix}1-\dfrac{1}{1 + e^{-Z_i}}\end{pmatrix} \end{bmatrix}\)</span></p>
+</div></blockquote>
+<p>or we can say:</p>
+<blockquote>
+<div><p><span class="math notranslate nohighlight">\(L(W) = -\sum^n_{i=1}\begin{bmatrix}y_i \hspace{1mm}log\begin{pmatrix} \sigma(Z_i) \end{pmatrix} + (1 - y_i)\hspace{1mm} log\begin{pmatrix} 1 - \sigma(Z_i) \end{pmatrix} \end{bmatrix}\)</span></p>
+</div></blockquote>
+<hr class="docutils" />
+<p>So now by chain rule of differentiation:</p>
+<p><span class="math notranslate nohighlight">\(\dfrac{dL(W)}{dW} = \dfrac{dL}{d\sigma(Z_i)}\)</span> X <span class="math notranslate nohighlight">\(\dfrac{d\sigma(Z_i)}{dZ_i}\)</span> X <span class="math notranslate nohighlight">\(\dfrac{dZ_i}{dW}\)</span></p>
+<blockquote>
+<div><p>1. <span class="math notranslate nohighlight">\(\large{\dfrac{dZ_i}{dW}} :-\)</span></p>
+<blockquote>
+<div><p><span class="math notranslate nohighlight">\(Z_i = X_iW\)</span></p>
+<p><span class="math notranslate nohighlight">\(\therefore \dfrac{dZ_i}{dW} = X_i\)</span></p>
+</div></blockquote>
+<p>2. <span class="math notranslate nohighlight">\(\large{\dfrac{d\sigma(Z_i)}{dZ_i}} :-\)</span></p>
+<blockquote>
+<div><p><span class="math notranslate nohighlight">\(\sigma(Z_i) = \dfrac{1}{1 + e^{-Z_i}}\)</span></p>
+<p><span class="math notranslate nohighlight">\(\dfrac{d\begin{pmatrix} \dfrac{1}{1 + e^{-Z_i}} \end{pmatrix}}{dZ_i} = \dfrac{1}{(1 + e^{-Z_i})^2} \begin{bmatrix} \begin{pmatrix}\dfrac{1}{1 + e^{-Z_i}} \times 0 \end{pmatrix}- \begin{pmatrix} 1 \times e^{-Z_i}\end{pmatrix}(-1)\end{bmatrix}\)</span> #By Division Rule</p>
+<p><span class="math notranslate nohighlight">\(\dfrac{d\begin{pmatrix} \sigma(Z_i) \end{pmatrix}}{dZ_i} = \dfrac{1}{(1 + e^{-Z_i})^2} \times (e^{-Z})\)</span></p>
+<p><span class="math notranslate nohighlight">\(\dfrac{d\begin{pmatrix} \sigma(Z_i) \end{pmatrix}}{dZ_i} = \dfrac{1}{(1 + e^{-Z_i})} \times \dfrac{(e^{-Z})}{(1 + e^{-Z_i})}\)</span></p>
+<p><span class="math notranslate nohighlight">\(\dfrac{d\begin{pmatrix} \sigma(Z_i) \end{pmatrix}}{dZ_i} = \sigma(Z_i) \times \dfrac{(e^{-Z})}{(1 + e^{-Z_i})} \hspace{2cm} \because \begin{bmatrix} \dfrac{1}{(1 + e^{-Z_i})} = \sigma(Z_i) \end{bmatrix}\)</span></p>
+<p><span class="math notranslate nohighlight">\(\dfrac{d\begin{pmatrix} \sigma(Z_i) \end{pmatrix}}{dZ_i} = \sigma(Z_i) \times \dfrac{1 + (e^{-Z}) - 1}{(1 + e^{-Z_i})} \hspace{2cm}\)</span></p>
+<p><span class="math notranslate nohighlight">\(\dfrac{d\begin{pmatrix} \sigma(Z_i) \end{pmatrix}}{dZ_i} = \sigma(Z_i) \times \begin{bmatrix} 1 - \dfrac{1}{(1 + e^{-Z_i})} \end{bmatrix} \hspace{2cm}\)</span></p>
+<p><span class="math notranslate nohighlight">\(\therefore \dfrac{d\begin{pmatrix} \sigma(Z_i) \end{pmatrix}}{dZ_i} = \sigma(Z_i) \times \begin{bmatrix} 1 - \sigma(Z_i) \end{bmatrix} \hspace{1cm}\)</span> <strong># Important Conclusion</strong></p>
+</div></blockquote>
+<p>3. <span class="math notranslate nohighlight">\(\large{\dfrac{dL}{d\sigma(Z_i)}} :-\)</span></p>
+<blockquote>
+<div><p><span class="math notranslate nohighlight">\(L = -\sum^n_{i=1}\begin{bmatrix}y_i \hspace{1mm}log\begin{pmatrix} \sigma(Z_i) \end{pmatrix} + (1 - y_i)\hspace{1mm} log\begin{pmatrix} 1 - \sigma(Z_i) \end{pmatrix} \end{bmatrix}\)</span></p>
+<p><span class="math notranslate nohighlight">\(\dfrac{dL}{d\sigma(Z_i)} = -\sum^n_{i=1}\dfrac{d\begin{bmatrix}y_i \hspace{1mm}log\begin{pmatrix} \sigma(Z_i) \end{pmatrix} + (1 - y_i)\hspace{1mm} log\begin{pmatrix} 1 - \sigma(Z_i) \end{pmatrix} \end{bmatrix}}{d\sigma(Z_i)}\)</span></p>
+<p><span class="math notranslate nohighlight">\(\dfrac{dL}{d\sigma(Z_i)} = -\sum^n_{i=1}\begin{bmatrix}\begin{pmatrix}y_i \times \dfrac{1}{\sigma(Z_i)} \end{pmatrix} + \begin{pmatrix} (1 - y_i) \times \dfrac{1}{1-\sigma(Z_i)} \times (-1) \end{pmatrix}\end{bmatrix}\)</span></p>
+<p><span class="math notranslate nohighlight">\(\therefore\dfrac{dL}{d\sigma(Z_i)} = -\sum^n_{i=1} \begin{bmatrix} \begin{pmatrix} \dfrac{y_i}{\sigma(Z_i)} \end{pmatrix} - \begin{pmatrix} \dfrac{1 - y_i}{1-\sigma(Z_i)} \end{pmatrix}\end{bmatrix}\)</span></p>
+</div></blockquote>
+</div></blockquote>
+<hr class="docutils" />
+<p><span class="math notranslate nohighlight">\(\dfrac{dL(W)}{dW} = \dfrac{dL}{d\sigma(Z_i)}\)</span> X <span class="math notranslate nohighlight">\(\dfrac{d\sigma(Z_i)}{dZ_i}\)</span> X <span class="math notranslate nohighlight">\(\dfrac{dZ_i}{dW}\)</span></p>
+<p>Substituting The Values:</p>
+<p><span class="math notranslate nohighlight">\(\dfrac{dL(W)}{dW} = -\sum^n_{i=1}\begin{bmatrix}\begin{pmatrix} \dfrac{y_i}{\sigma(Z_i)} \end{pmatrix} - \begin{pmatrix} \dfrac{1 - y_i}{1-\sigma(Z_i)} \end{pmatrix}\end{bmatrix} \hspace{1cm} \times \hspace{1cm} 
+\sigma(Z_i) \times \begin{bmatrix} 1 - \sigma(Z_i) \end{bmatrix}
+\hspace{1cm} \times \hspace{1cm} X_i\)</span></p>
+<p><span class="math notranslate nohighlight">\(\dfrac{dL(W)}{dW} = -\sum^n_{i=1}
+\begin{bmatrix}\begin{pmatrix} 
+\dfrac{y_i}{\sigma(Z_i)} \times \sigma(Z_i) \times \begin{bmatrix} 1 - \sigma(Z_i) \end{bmatrix} \times X_i\end{pmatrix} - 
+\begin{pmatrix} \dfrac{1 - y_i}{1-\sigma(Z_i)} \times \sigma(Z_i) \times \begin{bmatrix} 1 - \sigma(Z_i) \end{bmatrix}  \times X_i \end{pmatrix} \end{bmatrix}\)</span></p>
+<p><span class="math notranslate nohighlight">\(\dfrac{dL(W)}{dW} = -\sum^n_{i=1}
+\begin{bmatrix}\begin{pmatrix}
+y_i  \times \begin{bmatrix} 1 - \sigma(Z_i) \end{bmatrix} \times X_i\end{pmatrix} - 
+\begin{pmatrix} (1 - y_i) \times \sigma(Z_i) \times X_i \end{pmatrix} \end{bmatrix}\)</span></p>
+<p><span class="math notranslate nohighlight">\(\dfrac{dL(W)}{dW} = -\sum^n_{i=1} \begin{bmatrix}
+y_iX_i - y_i \sigma(Z_i)X_i - \sigma(Z_i)X_i + y_i\sigma(Z_i)X_i
+\end{bmatrix}\)</span></p>
+<p><span class="math notranslate nohighlight">\(\dfrac{dL(W)}{dW} = -\sum^n_{i=1} \begin{bmatrix}
+y_iX_i - \sigma(Z_i)X_i 
+\end{bmatrix}\)</span></p>
+<p><span class="math notranslate nohighlight">\(\dfrac{dL(W)}{dW} = -\sum^n_{i=1} \begin{bmatrix}
+y_i - \sigma(Z_i) 
+\end{bmatrix}X_i\)</span></p>
+<hr class="docutils" />
+<blockquote>
+<div><p><strong>Note :</strong></p>
+<p>If you now compare this gradient of loss function of Logistic Regression with the gradient of Linear Regression Loss function, you’ll find it very similar(if you neglect the constants).</p>
+</div></blockquote>
+<hr class="docutils" />
+<p>Now as we got the gradient of this Loss function, we don’t need to equate it with <span class="math notranslate nohighlight">\(0\)</span> (which is a tedious process on its own), as we now know to find the minima using the Gradient Descent Optimization.</p>
+<p>So now let’s move to the implementation of Logistic Regression [Coding Part]</p>
+</section>
+<section id="logistic-regression-implementation-code">
+<h2>Logistic Regression Implementation (Code)<a class="headerlink" href="#logistic-regression-implementation-code" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;./Data/Logistic Regression/X_data.npy&quot;</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;./Data/Logistic Regression/y_data.npy&quot;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(200, 2) (200,)
+</pre></div>
+</div>
+</div>
+</div>
+<p>X looks like:<br>
+[[ 2.071561  ,  2.73830923],<br>
+[ 1.65916405,  1.05213506],<br>
+[ 1.31405726,  4.97514453],<br>
+[-0.76778341,  1.03544876],<br>
+[10.25399588,  7.16450164],… <b>200 instances</b>]<br>
+<br>
+y looks like:<br>
+[1., 1., 1., 1., 0., 0.,… <b>200 instances</b>]</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/5.2 Maximum Likelihood Estimation and Implementation_9_0.png" src="_images/5.2 Maximum Likelihood Estimation and Implementation_9_0.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">LogisticRegressionCustom</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.01</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">learning_rate</span> <span class="o">=</span> <span class="n">learning_rate</span>
+    
+    <span class="k">def</span> <span class="nf">sigmoid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Z</span><span class="p">):</span>
+        <span class="k">return</span> <span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">e</span><span class="p">)</span><span class="o">**-</span><span class="n">Z</span><span class="p">)</span>
+    
+    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">W</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">get_gradient</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span> <span class="c1">#dL/dW</span>
+        <span class="n">gradient</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+            <span class="n">gradient</span><span class="o">.</span><span class="n">append</span><span class="p">(((</span><span class="n">y</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">))</span> <span class="o">*</span> <span class="o">-</span><span class="n">X</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+        
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">gradient</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+    
+    <span class="k">def</span> <span class="nf">batch_gradient_descent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">n_epochs</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
+        <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+        <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">1</span><span class="p">)),</span> <span class="n">X</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="c1">#constant column added</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">W</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">1</span><span class="p">)</span> <span class="c1">#Randomly initialising W</span>
+        <span class="n">losses</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_epochs</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">W</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">W</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">learning_rate</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">get_gradient</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+
+    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;batch&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;batch&quot;</span><span class="p">:</span>
+            <span class="n">losses</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_gradient_descent</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            
+        <span class="c1">#Methods unimplemented for Stochastic &amp; Mini-Batch Gradient Descent</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lr</span> <span class="o">=</span> <span class="n">LogisticRegressionCustom</span><span class="p">()</span>
+<span class="n">lr</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">lr</span><span class="o">.</span><span class="n">W</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[11.82607369]
+ [-1.65411588]
+ [-0.79292882]]
+</pre></div>
+</div>
+</div>
+</div>
+<section id="a-quick-overview-of-the-code">
+<h3>A Quick-Overview of the Code<a class="headerlink" href="#a-quick-overview-of-the-code" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p><strong>__init__ function :-</strong></p>
+<blockquote>
+<div><p>This is the constructor of LogisticRegressionCustom class used to initialise the object variables.</p>
+</div></blockquote>
+</div></blockquote>
+<p><strong>sigmoid Function :-</strong></p>
+<blockquote>
+<div><blockquote>
+<div><p>This function takes any value of <span class="math notranslate nohighlight">\(Z\)</span> and calculates the sigmoid of that value using the formula<br />
+<span class="math notranslate nohighlight">\(\sigma(Z) = \dfrac{1}{1+ e^{-Z}}\)</span></p>
+</div></blockquote>
+<p><strong>predict Function :-</strong></p>
+<blockquote>
+<div><p>It returns the prediction of our model, or we can say it returns the value of <span class="math notranslate nohighlight">\(\sigma(Z)\)</span>, i.e. <span class="math notranslate nohighlight">\(\sigma(Z) = \sigma(XW)\)</span></p>
+</div></blockquote>
+<p><strong>get_gradient Function :-</strong></p>
+<blockquote>
+<div><p>This is the function which gives the value of <span class="math notranslate nohighlight">\(\dfrac{dL}{dW}\)</span>, across every feature of <span class="math notranslate nohighlight">\(X\)</span>.</p>
+</div></blockquote>
+<p><strong>batch_gradient_descent Function :-</strong></p>
+<blockquote>
+<div><p>This function implements the Batch Gradient Descent Optimization, using the Gradient Descent Formula. Notice here we don’t need to explicitly add the constant column in <span class="math notranslate nohighlight">\(X\)</span>, our function does that task internally.</p>
+</div></blockquote>
+<p><strong>fit Function :-</strong></p>
+<blockquote>
+<div><p>This function trains our model and calls the suitable Gradient Descent Methods, here we only implemented Batch Gradient Descent method for explanation.</p>
+</div></blockquote>
+</div></blockquote>
+<p>Now as we implemented Logistic Regression on our own, let’s have a look on <b>sklearn</b> Logistic Regression as well and compare the results.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LogisticRegression</span>
+<span class="n">lr1</span> <span class="o">=</span> <span class="n">LogisticRegression</span><span class="p">(</span><span class="n">max_iter</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+<span class="n">lr1</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">y</span><span class="o">.</span><span class="n">ravel</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>LogisticRegression(max_iter=1000)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lr1</span><span class="o">.</span><span class="n">intercept_</span><span class="p">,</span> <span class="n">lr1</span><span class="o">.</span><span class="n">coef_</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([12.38871017]), array([[-1.54760191, -0.98471034]]))
+</pre></div>
+</div>
+</div>
+</div>
+<p>And as we can see the results here are very similar, which means our implementation of Logistic Regression is very accurate.</p>
+<p>Note that we only implemented the basic mandatory functions in our code, therefore our implementation can be improved by adding various functions like Accuracy, Loss function, etc. So you can try to implement those functions on your own and improve the code.</p>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        
+            <!-- Previous / next buttons -->
+<div class='prev-next-area'> 
+    <a class='left-prev' id="prev-link" href="5.1%20%20Logistic%20Regression.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Logistic Regression</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="6.%20Decision%20Trees.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Decision Tree Algorithm</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer">
+    <div class="container">
+      <p>
+        
+          By Coding Blocks Pvt Ltd<br/>
+        
+            &copy; Copyright 2021.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+
+  </body>
+</html>

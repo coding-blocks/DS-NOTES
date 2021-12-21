@@ -1,0 +1,907 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Decision Tree Algorithm &#8212; Data Science Notes</title>
+    
+  <link href="_static/css/theme.css" rel="stylesheet">
+  <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="_static/js/index.be7d3bbb2ef33a8344ce.js">
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/togglebutton.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script>
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Ensemble Learning" href="7.%20Ensemble.html" />
+    <link rel="prev" title="Logistic Regression MLE &amp; Implementation" href="5.2%20Maximum%20Likelihood%20Estimation%20and%20Implementation.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="_static/logo.svg" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">Data Science Notes</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="intro.html">
+   Introduction
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Machine Learning
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="1.1%20Introduction%20to%20Numpy.html">
+   Numpy
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="1.2%20Introduction%20to%20Matplotlib.html">
+   Matplotlib: Visualization with Python
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="1.3%20Introduction%20to%20Pandas.html">
+   Pandas
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="2.%20KNN.html">
+   K - Nearest Neighbour
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="3.1%20Linear%20Regression.html">
+   Linear Regression
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="3.2%20Multi-Variate%20Regression.html">
+   Multi Variable Regression
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="3.3%20MLE%20-%20Linear%20Regression.html">
+   MLE - Linear Regression
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="3.4%20GLM%20-%20Linear%20Regression.html">
+   Generalised linear model-Linear Regression
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="4.%20Gradient%20Descent.html">
+   Gradient Descent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="5.1%20%20Logistic%20Regression.html">
+   Logistic Regression
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="5.2%20Maximum%20Likelihood%20Estimation%20and%20Implementation.html">
+   Logistic Regression MLE &amp; Implementation
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Decision Tree Algorithm
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="7.%20Ensemble.html">
+   Ensemble Learning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="9.1%20Naive%20Bayes.html">
+   Naive Bayes Algorithm
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="9.2%20Multinomial%20Naive%20Bayes.html">
+   Multinomial Naive Bayes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="11.%20Imbalanced%20Dataset.html">
+   Imbalanced Dataset
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="12.%20PCA.html">
+   Principal Component Analysis
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  About
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="About%20the%20Authors.html">
+   About the Authors
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="_sources/6. Decision Trees.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/executablebooks/jupyter-book/master?urlpath=tree/6. Decision Trees.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#entropy">
+   Entropy
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#entropy-for-features">
+     Entropy For Features
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#information-gain">
+   Information Gain
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#gini-impurity">
+   Gini Impurity
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#entropy-vs-gini-impurity">
+     Entropy vs Gini Impurity
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#code-implementation">
+   Code Implementation
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#training-and-predicting">
+   Training and Predicting
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#binary-decision-tree">
+   Binary Decision Tree
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#visualizing-decision-surface">
+   Visualizing Decision Surface
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#advantages-of-decision-trees">
+   Advantages of Decision Trees
+  </a>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <section class="tex2jax_ignore mathjax_ignore" id="decision-tree-algorithm">
+<h1>Decision Tree Algorithm<a class="headerlink" href="#decision-tree-algorithm" title="Permalink to this headline">¶</a></h1>
+<p>In this section we are going to discuss a new algorithm called <strong>Decision Tree</strong>.Decision Trees (DTs) are a non-parametric supervised learning method used for classification and regression. The idea is to create a model that predicts the value of a target variable by learning simple decision rules inferred from the data features.</p>
+<p>The name Decision tree is given as it create a tree like structure taking decision to which child to pick depending on the information learned from the <a class="reference external" href="http://features.It">features.It</a> can be understood by looking at the following diagram which is for intuitive purpose.This is simple classification whether to go to play tennis or not depending upon information we have from features.</p>
+<p><img alt="image.png" src="_images/dt1.png" /></p>
+<section id="entropy">
+<h2>Entropy<a class="headerlink" href="#entropy" title="Permalink to this headline">¶</a></h2>
+<p>As you might infer from the diagram above if we find out the structure of the tree then it is easy to predict.For finding the optimal structure of the tree like every other algorithm we have to find some kind of loss function.Here as you can see we ask questions regarding the information from features. which feature’s question comes earlier in the tree decides a lot about tree structure. if we can find out which feature to use at a given level then we can construct the tree.</p>
+<p>Also we can think we will want to have the decisive feature or called <strong>distinguishing features</strong> earlier in the tree structure as it helps us to decide a lot feature in earlier stages.<br />
+A <strong>Distinguishing Features</strong> is  which could uniquely identify an object, bringing together details from other groups of units of information such as identification, inscription, and condition which could in a sentence uniquely identify an object.</p>
+<p>To find out this we use <strong>Entropy</strong>.Entropy is nothing but the measure of disorder. it help us to identify which feature is distinguishing depending upon the value it gives.</p>
+<p>The Mathematical formula for Entropy is as follows -</p>
+<blockquote>
+<div><p><span class="math notranslate nohighlight">\(\large{H(data)=-\sum_{i=1}^n p(x)\times\log_2(p(x))}\)</span></p>
+</div></blockquote>
+<p>Entropy. Sometimes also denoted using the letter ‘H’
+Where ‘Pi’ is simply the  probability of an element/class ‘i’ in our data. For simplicity’s sake let’s say we only have two classes , a positive class and a negative class. So if we had a total of 100 data points in our dataset with 30 belonging to the positive class and 70 belonging to the negative class then ‘P+’ would be 3/10 and ‘P-’ would be 7/10.</p>
+<p>If I was to calculate the entropy of my classes in this example using the formula above. Here’s what I would get.</p>
+<blockquote>
+<div><p><span class="math notranslate nohighlight">\(\Large{-\frac{3}{10}\times\log_2(\dfrac{3}{10})-\frac{7}{10}\times\log_2(\frac{7}{10}) = 0.88}\)</span></p>
+</div></blockquote>
+<p>The entropy here is approximately 0.88. This is considered a high entropy , a high level of disorder ( meaning low level of purity). <strong>Entropy is measured between 0 and 1</strong>.(Depending on the number of classes in your dataset, entropy can be greater than 1 but it means the same thing , a very high level of disorder.</p>
+<p>A high level of entropy shows that this feature is not that distinguishable. It can also be interpreted as a low value of entropy shows if divided along this attribute a majority of data will belong to one specific <a class="reference external" href="http://class.It">class.It</a> can be shown by the following diagram</p>
+<p><img alt="image.png" src="_images/dt2.png" /></p>
+<p>From the above shown diagram we can also conclude that <strong>Entropy is maximum when all outcomes are equally likely</strong> and <strong>Entropy is minimum when only one outcome is likely</strong>.</p>
+<section id="entropy-for-features">
+<h3>Entropy For Features<a class="headerlink" href="#entropy-for-features" title="Permalink to this headline">¶</a></h3>
+<p>For calculating Entropy for a feature we have to consider that it may have more than one distinct values. In the example taken above of going to play tennis or not, Let say for feature <strong>Outlook</strong> it has three distinct values-</p>
+<ol class="simple">
+<li><p>sunny</p></li>
+<li><p>Rainy</p></li>
+<li><p>overcast</p></li>
+</ol>
+<p>The entropy of sunny, rainy and overcast can be easily calculated by above mentioned formula, But for calculating the entropy of the <code class="docutils literal notranslate"><span class="pre">Feature</span> <span class="pre">-</span> <span class="pre">Outlook</span></code> we will have to take the weighted sum of the entropy of all the distinct values that feature has taken is the data set-</p>
+<blockquote>
+<div><p><span class="math notranslate nohighlight">\(H(F)=\sum_{i=1}^s\large{\frac{n_{S}}{n}}\times H(S)\)</span></p>
+</div></blockquote>
+<p><span class="math notranslate nohighlight">\(s\)</span> is the number of distinct value that feature can take in that dataset, <span class="math notranslate nohighlight">\(n_S\)</span> is the number of points belonging to that value of the feature(S), <span class="math notranslate nohighlight">\(H(S)\)</span> is entropy of that feature, n is the total number of data points belonging to that feature.</p>
+</section>
+</section>
+<section id="information-gain">
+<h2>Information Gain<a class="headerlink" href="#information-gain" title="Permalink to this headline">¶</a></h2>
+<p>As entropy will tell us how varied our data is, we have to find out a measure showcasing how better it will be if we were to split along a certain feature at the present level of our tree as after splitting the data also gets splitted we can calculate entropy for both the state and find the diffrence this diffrence is called <code class="docutils literal notranslate"><span class="pre">Information</span> <span class="pre">gain</span></code>.</p>
+<p>Information gain is the reduction in entropy or surprise by transforming a dataset and is often used in training decision trees.Information gain is calculated by comparing the entropy of the dataset before and after a transformation.For example, we may wish to evaluate the impact on purity by splitting a dataset S by a feature F.This can be calculated as follows:</p>
+<blockquote>
+<div><p><span class="math notranslate nohighlight">\(IG(data, F) = H(data) – H(F)\)</span></p>
+</div></blockquote>
+<blockquote>
+<div><p><span class="math notranslate nohighlight">\(IG(data, F) = H(data) – \sum_{i=1}^s\large{\frac{n_{S}}{n}}\times H(S)\)</span></p>
+</div></blockquote>
+<p>Where IG(data, F) is the information gain for the dataset <strong>data</strong>  if divided across the feature <strong>F</strong>, <strong>H(S)</strong> is the entropy for the dataset before any change (described above) and <strong>H(F)</strong> is the  entropy for the dataset given that it got splitted for distinct values of Feature <strong>F</strong>.And other symbol has same meaning specified above.</p>
+</section>
+<section id="gini-impurity">
+<h2>Gini Impurity<a class="headerlink" href="#gini-impurity" title="Permalink to this headline">¶</a></h2>
+<p>Just like we calculate entropy <code class="docutils literal notranslate"><span class="pre">Gini</span> <span class="pre">impurity</span></code> is also one of teh methods that be used to measure the impurity of the data present at that point.The Gini impurity measure is one of the methods used in decision tree algorithms to decide the optimal split from a root node, and subsequent <a class="reference external" href="http://splits.It">splits.It</a> can be mathematically represented as-</p>
+<blockquote>
+<div><p><span class="math notranslate nohighlight">\(\large{GI=1-\sum_{i=1}^{n}p_i^2}\)</span></p>
+</div></blockquote>
+<p>Where <span class="math notranslate nohighlight">\(p_i\)</span> is the probability of the class i given the value for which we are calculating for, n represents the total number of class.for two class say positive(+) and negative(-) it can be representes as-</p>
+<blockquote>
+<div><p><span class="math notranslate nohighlight">\(\large{GI=1-[p_+^2+p_-^2]}\)</span></p>
+</div></blockquote>
+<section id="entropy-vs-gini-impurity">
+<h3>Entropy vs Gini Impurity<a class="headerlink" href="#entropy-vs-gini-impurity" title="Permalink to this headline">¶</a></h3>
+<p>Now we have learned about Gini Impurity and Entropy and how it actually works. Also, we have seen how we can calculate Gini Impurity/Entropy for a split/feature.</p>
+<p>The internal working of both methods is very similar and both are used for computing the feature/split after every new splitting. But if we compare both the methods then <code class="docutils literal notranslate"><span class="pre">Gini</span> <span class="pre">Impurity</span> <span class="pre">is</span> <span class="pre">more</span> <span class="pre">efficient</span> <span class="pre">than</span> <span class="pre">entropy</span> <span class="pre">in</span> <span class="pre">terms</span> <span class="pre">of</span> <span class="pre">computing</span> <span class="pre">power</span></code>. As you can see in the graph for entropy, it first increases up to 1 and then starts decreasing, but in the case of Gini impurity it only goes up to 0.5 and then it starts decreasing, hence it requires less computational power. The range of Entropy lies in between 0 to 1 and the <code class="docutils literal notranslate"><span class="pre">range</span> <span class="pre">of</span> <span class="pre">Gini</span> <span class="pre">Impurity</span> <span class="pre">lies</span> <span class="pre">in</span> <span class="pre">between</span> <span class="pre">0</span> <span class="pre">to</span> <span class="pre">0.5</span></code>. Hence we can conclude that Gini Impurity is better as compared to entropy for computation.</p>
+<p>Below graph shows a comparison between gini impurity and entopy with respect to the value of p.</p>
+<p><img alt="image-2.png" src="_images/dt3.png" /></p>
+</section>
+</section>
+<section id="code-implementation">
+<h2>Code Implementation<a class="headerlink" href="#code-implementation" title="Permalink to this headline">¶</a></h2>
+<p>Let us now begin with the coding part of our decision tree for sake of simplicity we are gonna take the very same data with which we began our discussion <em>whether to go to play golf or not</em>.(Here we are going to decide for golf)prerequistes of the coding part is that you must be familiar with generic trees and recursion as we are going to construct a generic tree with help of recursion.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># importing libraries</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;./Data/DecisionTree/data.csv&quot;</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="s2">&quot;Unnamed: 0&quot;</span><span class="p">)</span>
+<span class="n">data</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Outlook</th>
+      <th>Temperature</th>
+      <th>Humidity</th>
+      <th>Windy</th>
+      <th>Play Golf</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Rainy</td>
+      <td>Hot</td>
+      <td>High</td>
+      <td>False</td>
+      <td>No</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Rainy</td>
+      <td>Hot</td>
+      <td>High</td>
+      <td>True</td>
+      <td>No</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Overcast</td>
+      <td>Hot</td>
+      <td>High</td>
+      <td>False</td>
+      <td>Yes</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Sunny</td>
+      <td>Mild</td>
+      <td>High</td>
+      <td>False</td>
+      <td>Yes</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Sunny</td>
+      <td>Cool</td>
+      <td>Normal</td>
+      <td>False</td>
+      <td>Yes</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p><strong>Let us seprate our data into features(X) and label(y)</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s2">&quot;Play Golf&quot;</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;Play Golf&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>As for the tree most important thing is node so now we will make our node class every such node will store some information just like any other tree it will have a <em>list of it’s child</em>,<br />
+<em>The feature across which it got spllited</em>,<br />
+<em>The data(X,y) present at that node after possible previous splits</em></p>
+<p>Also note one thing when will the prediction will happen you want your prediction when your data has answered every question it faced in the decision tree meaning it has gone every level of your tree <em>Thus, prediction will happen at the leaf node</em>. Therefore the node will carry two more attributes a <em>boolean variable to identify that it is a leaf node or not</em> and <em>prediction of that node</em>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Node</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">feature</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">children</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">X</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">leaf</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pred</span> <span class="o">=</span> <span class="kc">None</span>
+    
+    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">leaf</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Prediction called at non-leaf node.&quot;</span><span class="p">)</span>
+
+        <span class="n">counts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+        <span class="n">prob_yes</span> <span class="o">=</span> <span class="n">prob_no</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="s2">&quot;Yes&quot;</span> <span class="ow">in</span> <span class="n">counts</span><span class="p">:</span>        
+            <span class="n">prob_yes</span> <span class="o">=</span> <span class="n">counts</span><span class="p">[</span><span class="s2">&quot;Yes&quot;</span><span class="p">]</span><span class="o">/</span><span class="n">counts</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+        <span class="k">if</span> <span class="s2">&quot;No&quot;</span> <span class="ow">in</span> <span class="n">counts</span><span class="p">:</span>
+            <span class="n">prob_no</span> <span class="o">=</span> <span class="n">counts</span><span class="p">[</span><span class="s2">&quot;No&quot;</span><span class="p">]</span><span class="o">/</span><span class="n">counts</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;Yes&quot;</span><span class="p">:</span> <span class="n">prob_yes</span><span class="p">,</span> <span class="s2">&quot;No&quot;</span><span class="p">:</span> <span class="n">prob_no</span><span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Note that we have made the predict method in node class itself as every node will have it’s prediction in itself.The prediction method is based upon the majority rule if more data says <em>Yes</em> at that point we give it as our prediction for that node.We return a python dictionary having the possible answer as key and their probability as value as you can see in code above.</p>
+<p><strong>Now we are going to implement Our decision tree class.</strong></p>
+<p>As to calculate Which feature to choose and split across a particular node we are gonna use <em>Information gain</em> <a class="reference external" href="http://value.as">value.as</a> you you know to calculate information gain we need entropy before the split and entropy after the split.we have made to methods for this <em>entropy</em> and <code class="docutils literal notranslate"><span class="pre">*entropy_after_split*</span></code> we will choose that feature which will have maximum information gain so, we can sy that <strong>Decision tree is a greedy algorithm technique</strong> Now let’s see the whole code and then we will discuss other methods in that.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">DecisionTreeCustom</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">root</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">pass</span>
+    
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">entropy</span><span class="p">(</span><span class="n">y</span><span class="p">):</span>
+        <span class="n">counts</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+        <span class="n">prob_yes</span> <span class="o">=</span> <span class="n">prob_no</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="s2">&quot;Yes&quot;</span> <span class="ow">in</span> <span class="n">counts</span><span class="p">:</span>        
+            <span class="n">prob_yes</span> <span class="o">=</span> <span class="n">counts</span><span class="p">[</span><span class="s2">&quot;Yes&quot;</span><span class="p">]</span><span class="o">/</span><span class="n">counts</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+        <span class="k">if</span> <span class="s2">&quot;No&quot;</span> <span class="ow">in</span> <span class="n">counts</span><span class="p">:</span>
+            <span class="n">prob_no</span> <span class="o">=</span> <span class="n">counts</span><span class="p">[</span><span class="s2">&quot;No&quot;</span><span class="p">]</span><span class="o">/</span><span class="n">counts</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+        <span class="n">log_yes</span> <span class="o">=</span> <span class="n">log_no</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="n">prob_yes</span><span class="p">:</span>
+            <span class="n">log_yes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="n">prob_yes</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">prob_no</span><span class="p">:</span>
+            <span class="n">log_no</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="n">prob_no</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="o">-</span><span class="p">(</span><span class="n">prob_yes</span><span class="o">*</span><span class="n">log_yes</span> <span class="o">+</span> <span class="n">prob_no</span> <span class="o">*</span> <span class="n">log_no</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">entropy_after_split</span><span class="p">(</span><span class="n">feature</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+        <span class="n">unique</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">feature</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
+        <span class="n">entropy</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">unique</span><span class="p">:</span>
+            <span class="n">splitted_y</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="n">X</span><span class="p">[</span><span class="n">feature</span><span class="p">]</span> <span class="o">==</span> <span class="n">val</span><span class="p">]</span>
+            <span class="n">weight</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">splitted_y</span><span class="p">)</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+            <span class="n">entropy</span> <span class="o">+=</span> <span class="n">weight</span><span class="o">*</span><span class="n">DecisionTreeCustom</span><span class="o">.</span><span class="n">entropy</span><span class="p">(</span><span class="n">splitted_y</span><span class="p">)</span>
+        
+        <span class="k">return</span> <span class="n">entropy</span>
+            
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">make_split</span><span class="p">(</span><span class="n">feature</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+        <span class="n">unique</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">feature</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
+        <span class="n">children</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">unique</span><span class="p">:</span>
+            <span class="n">node</span> <span class="o">=</span> <span class="n">Node</span><span class="p">()</span>
+            <span class="n">node</span><span class="o">.</span><span class="n">X</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">X</span><span class="p">[</span><span class="n">feature</span><span class="p">]</span> <span class="o">==</span> <span class="n">val</span><span class="p">]</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="n">feature</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">node</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="n">X</span><span class="p">[</span><span class="n">feature</span><span class="p">]</span> <span class="o">==</span> <span class="n">val</span><span class="p">]</span>
+            <span class="n">children</span><span class="p">[</span><span class="n">val</span><span class="p">]</span> <span class="o">=</span> <span class="n">node</span>
+        
+        <span class="k">return</span> <span class="n">children</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">make_tree</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+        <span class="n">own_entropy</span> <span class="o">=</span> <span class="n">DecisionTreeCustom</span><span class="o">.</span><span class="n">entropy</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+        <span class="n">features</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">columns</span>
+        <span class="n">feature_info_gains</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">feature</span> <span class="ow">in</span> <span class="n">features</span><span class="p">:</span>
+            <span class="n">feature_info_gains</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">own_entropy</span> <span class="o">-</span> <span class="n">DecisionTreeCustom</span><span class="o">.</span><span class="n">entropy_after_split</span><span class="p">(</span><span class="n">feature</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
+        
+        <span class="n">ix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">feature_info_gains</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">feature_info_gains</span><span class="p">[</span><span class="n">ix</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">node</span><span class="o">.</span><span class="n">feature</span> <span class="o">=</span> <span class="n">features</span><span class="p">[</span><span class="n">ix</span><span class="p">]</span>
+            <span class="n">node</span><span class="o">.</span><span class="n">children</span> <span class="o">=</span> <span class="n">DecisionTreeCustom</span><span class="o">.</span><span class="n">make_split</span><span class="p">(</span><span class="n">features</span><span class="p">[</span><span class="n">ix</span><span class="p">],</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">children</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+                <span class="n">DecisionTreeCustom</span><span class="o">.</span><span class="n">make_tree</span><span class="p">(</span><span class="n">child</span><span class="p">,</span> <span class="n">child</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">child</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">node</span><span class="o">.</span><span class="n">leaf</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">node</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">y</span> 
+            <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">root</span> <span class="o">=</span> <span class="n">Node</span><span class="p">()</span>
+        <span class="n">DecisionTreeCustom</span><span class="o">.</span><span class="n">make_tree</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span>
+    
+    <span class="k">def</span> <span class="nf">predict_tree_recursive</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">leaf</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">node</span><span class="o">.</span><span class="n">predict</span><span class="p">()</span>
+        
+        <span class="n">val</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">node</span><span class="o">.</span><span class="n">feature</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">DecisionTreeCustom</span><span class="o">.</span><span class="n">predict_tree_recursive</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">children</span><span class="p">[</span><span class="n">val</span><span class="p">],</span> <span class="n">X</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">predict_tree</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">DecisionTreeCustom</span><span class="o">.</span><span class="n">predict_tree_recursive</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">,</span> <span class="n">X</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+        <span class="n">y_pred</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">row_ix</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">)):</span>
+            <span class="n">y_pred</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">predict_tree</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">row_ix</span><span class="p">]))</span>
+
+        <span class="k">return</span> <span class="n">y_pred</span>
+
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">print_tree_recursive</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">intent</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">end</span><span class="o">=</span><span class="n">intent</span><span class="p">)</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">leaf</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Leaf-&gt;&quot;</span><span class="p">,</span> <span class="n">node</span><span class="o">.</span><span class="n">predict</span><span class="p">())</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Feature Split-&gt;&quot;</span><span class="p">,</span> <span class="n">node</span><span class="o">.</span><span class="n">feature</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">child_name</span><span class="p">,</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">children</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">intent</span><span class="p">,</span> <span class="n">child_name</span><span class="p">,</span> <span class="s2">&quot;--&gt;&quot;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
+                <span class="n">DecisionTreeCustom</span><span class="o">.</span><span class="n">print_tree_recursive</span><span class="p">(</span><span class="n">child</span><span class="p">,</span> <span class="n">intent</span><span class="o">+</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">print_tree</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">DecisionTreeCustom</span><span class="o">.</span><span class="n">print_tree_recursive</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here we are using <em><code class="docutils literal notranslate"><span class="pre">make_tree</span></code></em> function to construct the tree it calulates entropy before the split and then the entropy after the split for each feature and then calculates the information gain and chooses the feature with the highest value.For making the further subtree before calling itself recursively it callls <em><code class="docutils literal notranslate"><span class="pre">make_split</span></code></em> function to make the childrens on the basis of the all the unique value that feature can take and divide the data accordingly and then calls itself recursively for constructing further subtrees.<em><code class="docutils literal notranslate"><span class="pre">fit</span></code></em> function just takes the intial data that user provides intializes the root node and then called <code class="docutils literal notranslate"><span class="pre">make_tree</span></code> function.</p>
+</section>
+<section id="training-and-predicting">
+<h2>Training and Predicting<a class="headerlink" href="#training-and-predicting" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dt</span> <span class="o">=</span> <span class="n">DecisionTreeCustom</span><span class="p">()</span> <span class="c1">#making object of the class</span>
+<span class="n">dt</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="n">dt</span><span class="o">.</span><span class="n">print_tree</span><span class="p">()</span> <span class="c1"># Recursive method to print the tree formed</span>
+
+<span class="c1">## Structure of this tree might be diffrent from what was shown earlier in the diagram.</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Feature Split-&gt; Outlook
+ Rainy --&gt; 	Feature Split-&gt; Temperature
+	 Hot --&gt; 		Leaf-&gt; {&#39;Yes&#39;: 0, &#39;No&#39;: 1.0}
+	 Mild --&gt; 		Leaf-&gt; {&#39;Yes&#39;: 0, &#39;No&#39;: 1.0}
+	 Cool --&gt; 		Leaf-&gt; {&#39;Yes&#39;: 1.0, &#39;No&#39;: 0}
+ Overcast --&gt; 	Leaf-&gt; {&#39;Yes&#39;: 1.0, &#39;No&#39;: 0}
+ Sunny --&gt; 	Feature Split-&gt; Windy
+	 False --&gt; 		Leaf-&gt; {&#39;Yes&#39;: 1.0, &#39;No&#39;: 0}
+	 True --&gt; 		Leaf-&gt; {&#39;Yes&#39;: 0, &#39;No&#39;: 1.0}
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Predictions</span>
+<span class="n">dt</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[{&#39;Yes&#39;: 0, &#39;No&#39;: 1.0},
+ {&#39;Yes&#39;: 0, &#39;No&#39;: 1.0},
+ {&#39;Yes&#39;: 1.0, &#39;No&#39;: 0},
+ {&#39;Yes&#39;: 1.0, &#39;No&#39;: 0},
+ {&#39;Yes&#39;: 1.0, &#39;No&#39;: 0},
+ {&#39;Yes&#39;: 0, &#39;No&#39;: 1.0},
+ {&#39;Yes&#39;: 1.0, &#39;No&#39;: 0},
+ {&#39;Yes&#39;: 0, &#39;No&#39;: 1.0},
+ {&#39;Yes&#39;: 1.0, &#39;No&#39;: 0},
+ {&#39;Yes&#39;: 1.0, &#39;No&#39;: 0}]
+</pre></div>
+</div>
+</div>
+</div>
+<p>let us discuss how predict method works as by calling <code class="docutils literal notranslate"><span class="pre">fit</span></code> function we have already constructed our tree now we just have to traverse the tree according to the data point given to us and then take the prediction of leaf node. <em><code class="docutils literal notranslate"><span class="pre">predict</span></code></em> method calls <em><code class="docutils literal notranslate"><span class="pre">predict_tree</span></code></em> for every data point in the given data then return the prediction list.<em><code class="docutils literal notranslate"><span class="pre">predict_tree</span></code></em> function calls <em><code class="docutils literal notranslate"><span class="pre">predict_tree_recursive</span></code></em> which traverse tree recursively by going to node then checking the feature on which that node got splitted and then call the children of that node depending upon what value of that feature our data has.whenever it reaches a leaf node it calls <code class="docutils literal notranslate"><span class="pre">node</span> <span class="pre">class</span></code> <em><code class="docutils literal notranslate"><span class="pre">predict</span></code></em> method for prediction.</p>
+</section>
+<section id="binary-decision-tree">
+<h2>Binary Decision Tree<a class="headerlink" href="#binary-decision-tree" title="Permalink to this headline">¶</a></h2>
+<p>Above way of algorithm we just discussed and implemented forms a generic tree i.e. it can have any number of child.One more way of implement it just by making the tree a binary tree.This is calleed binary decision tree.<br />
+A <strong>Binary Decision Tree</strong> is a structure based on a sequential decision process. Starting from the root, a feature is evaluated and one of the two branches is selected. This procedure is repeated until a final leaf is reached, which normally represents the classification target you’re looking for.
+We split the node on the basis of one of the value of the optimal features.This can be done for bith continous and discrete features for discrete we tend to choose on <em>yes or no</em> basis and for continous features we set a threshold.Below given diagram will hepl you to understand better.</p>
+<p><img alt="image.png" src="_images/dt4.png" /></p>
+<hr class="docutils" />
+<p><strong>Scikit learn uses binary method to contruct the decision tree</strong> so we are going to see the scikit learn implementation of the decision tree.before that let’s prepare one custom dataset and visualize it.</p>
+<hr class="docutils" />
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">make_blobs</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make_blobs</span><span class="p">(</span><span class="mi">150</span><span class="p">,</span> <span class="n">centers</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/6. Decision Trees_17_0.png" src="_images/6. Decision Trees_17_0.png" />
+</div>
+</div>
+<p><strong>Training the model</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Training of the model</span>
+<span class="kn">from</span> <span class="nn">sklearn.tree</span> <span class="kn">import</span> <span class="n">DecisionTreeClassifier</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">DecisionTreeClassifier</span><span class="p">()</span>
+<span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>DecisionTreeClassifier()
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Making Predictions</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Y_pred</span><span class="o">=</span><span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="n">Y_pred</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0, 0, 2, 1, 2, 1, 0, 0, 2, 1, 2, 2, 1, 2, 1, 0, 2, 0, 1, 1, 0, 2,
+       1, 2, 1, 2, 2, 0, 2, 1, 1, 0, 2, 2, 1, 1, 2, 2, 1, 0, 0, 2, 0, 0,
+       1, 0, 0, 1, 0, 2, 0, 1, 1, 0, 0, 2, 0, 1, 2, 0, 2, 2, 2, 1, 1, 1,
+       1, 2, 1, 1, 2, 0, 1, 0, 0, 0, 1, 1, 1, 0, 0, 2, 0, 2, 1, 0, 0, 1,
+       2, 0, 2, 0, 0, 2, 2, 1, 2, 2, 0, 1, 1, 1, 0, 0, 1, 0, 2, 1, 0, 2,
+       2, 0, 1, 2, 2, 1, 2, 1, 2, 0, 2, 2, 1, 2, 0, 2, 2, 1, 1, 2, 0, 0,
+       1, 1, 0, 1, 2, 1, 1, 2, 0, 0, 2, 1, 0, 0, 2, 0, 0, 1])
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Calculating Accuracy</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">Y_pred</span><span class="o">==</span><span class="n">y</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.0
+</pre></div>
+</div>
+</div>
+</div>
+<hr class="docutils" />
+<blockquote>
+<div><p>scikit learn class of decision tree has many hyper-parameters that can be changed and considered in order to get our model perform better on the given dataset given to us you can learn more about these hyper parameters and thier effect on our tree from here :-</p>
+<p>( <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.tree.DecisionTreeClassifier.html">https://scikit-learn.org/stable/modules/generated/sklearn.tree.DecisionTreeClassifier.html</a> )</p>
+</div></blockquote>
+</section>
+<hr class="docutils" />
+<section id="visualizing-decision-surface">
+<h2>Visualizing Decision Surface<a class="headerlink" href="#visualizing-decision-surface" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X_f0</span> <span class="o">=</span> <span class="p">(</span><span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
+<span class="n">X_f1</span> <span class="o">=</span> <span class="p">(</span><span class="n">X</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
+<span class="n">_x</span><span class="p">,</span> <span class="n">_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">X_f0</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">X_f0</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">50</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">X_f1</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">X_f1</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">50</span><span class="p">))</span>
+<span class="n">c</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">_x</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="n">_y</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)]))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">contourf</span><span class="p">(</span><span class="n">_x</span><span class="p">,</span> <span class="n">_y</span><span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">_x</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">edgecolors</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/6. Decision Trees_26_0.png" src="_images/6. Decision Trees_26_0.png" />
+</div>
+</div>
+<p>As you can see the decision surface here is collection of straight lines the reason for this is the division is actually done on the basis of value for example at a particular node if data has value of a feature greater than the set optimal value it is claasified in one class other wise it is classified in another class this when represented in graph wiil be straight line parallel to the feature axis.</p>
+</section>
+<section id="advantages-of-decision-trees">
+<h2>Advantages of Decision Trees<a class="headerlink" href="#advantages-of-decision-trees" title="Permalink to this headline">¶</a></h2>
+<p>1. <strong>Easy to read and interpret</strong></p>
+<blockquote>
+<div><p>One of the advantages of decision trees is that their outputs are easy to read and interpret without requiring statistical knowledge. For example, when using decision trees to present demographic information on customers, the marketing department staff can read and interpret the graphical representation of the data without requiring statistical knowledge.</p>
+<p>The data can also generate important insights on the probabilities, costs, and alternatives to various strategies formulated by the marketing department.</p>
+</div></blockquote>
+<p>2. <strong>Easy to prepare</strong></p>
+<blockquote>
+<div><p>Compared to other decision techniques, decision trees take less effort for data preparation. However, users need to have ready information to create new variables with the power to predict the target variable. They can also create classifications of data without having to compute complex calculations. For complex situations, users can combine decision trees with other methods.</p>
+</div></blockquote>
+<p>3. <strong>Less data cleaning required</strong></p>
+<blockquote>
+<div><p>Another advantage of decision trees is that there is less data cleaning required once the variables have been created. Cases of missing values and outliers have less significance on the decision tree’s data.</p>
+</div></blockquote>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        
+            <!-- Previous / next buttons -->
+<div class='prev-next-area'> 
+    <a class='left-prev' id="prev-link" href="5.2%20Maximum%20Likelihood%20Estimation%20and%20Implementation.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Logistic Regression MLE &amp; Implementation</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="7.%20Ensemble.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Ensemble Learning</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer">
+    <div class="container">
+      <p>
+        
+          By Coding Blocks Pvt Ltd<br/>
+        
+            &copy; Copyright 2021.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+
+  </body>
+</html>
